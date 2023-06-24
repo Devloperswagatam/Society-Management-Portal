@@ -21,7 +21,6 @@ import lombok.ToString;
 public class Resident {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-//	@OneToMany
 	private Integer rid;
 	
 	@NotNull(message = "First name is mandatory")

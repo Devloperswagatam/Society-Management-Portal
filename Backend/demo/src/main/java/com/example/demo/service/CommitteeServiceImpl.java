@@ -27,7 +27,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Override
 	public Committee addCommittee(Committee committee) throws CommitteeException {
-		Committee existCommittee = committeeRepository.findByEmail(committee.getResident().getEmail());
+		Committee existCommittee = committeeRepository.findById(committee.getRid()).get();
 		
 		if(existCommittee != null) {
 			throw new CommitteeException("Resident email already exist");

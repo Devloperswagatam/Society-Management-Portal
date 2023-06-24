@@ -7,5 +7,5 @@ import com.example.demo.entity.Committee;
 
 @Repository
 public interface CommitteeRepository extends JpaRepository<Committee, Integer>{
-	public Committee findByEmail(String email);
+	
 }
