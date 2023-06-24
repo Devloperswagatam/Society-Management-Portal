@@ -36,4 +36,22 @@ public class GlobalException {
 		err.setDescription(re.getDescription(false));
 		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(EventsException.class)
+	public ResponseEntity<MyErrorDetails> EventsExceptionHandler(EventsException me, WebRequest re) {
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(me.getMessage());
+		err.setDescription(re.getDescription(false));
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(VotersException.class)
+	public ResponseEntity<MyErrorDetails> VotersExceptionHandler(VotersException me, WebRequest re) {
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(me.getMessage());
+		err.setDescription(re.getDescription(false));
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+	}
 }
