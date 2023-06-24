@@ -54,4 +54,13 @@ public class GlobalException {
 		err.setDescription(re.getDescription(false));
 		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(CandidateException.class)
+	public ResponseEntity<MyErrorDetails> CandidateExceptionHandler(CandidateException me, WebRequest re) {
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(me.getMessage());
+		err.setDescription(re.getDescription(false));
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+	}
 }
