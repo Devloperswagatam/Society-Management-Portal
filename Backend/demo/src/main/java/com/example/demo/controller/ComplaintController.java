@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Complaint;
+import com.example.demo.exception.ComplaintException;
 import com.example.demo.repository.ComplaintRepository;
 @RestController
 @RequestMapping("/api")
@@ -21,12 +22,12 @@ public class ComplaintController {
 	ComplaintRepository complaintRepo;
 	
 	@PostMapping("/complaints")
-	public String createComplaint(@RequestBody Complaint complaint) {
+	public String createComplaint(@RequestBody Complaint complaint) throws ComplaintException {
 		complaintRepo.save(complaint);
 		return "Complaint has been created successfully";
 	}
 	@GetMapping("complaints")
-	public ResponseEntity<List<Complaint>> getAllComplaints(){
+	public ResponseEntity<List<Complaint>> getAllComplaints()throws ComplaintException{
 		List<Complaint> cmplist = new ArrayList<>();
 		complaintRepo.findAll().forEach(cmplist::add);
 		return new ResponseEntity<List<Complaint>>(cmplist, HttpStatus.OK);

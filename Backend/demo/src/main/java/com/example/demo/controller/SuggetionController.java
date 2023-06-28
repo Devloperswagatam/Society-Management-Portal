@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.Complaint;
 import com.example.demo.entity.Suggetion;
+import com.example.demo.exception.SuggetionException;
 import com.example.demo.repository.SuggetionRepository;
 
 @RestController
@@ -23,12 +23,12 @@ public class SuggetionController {
 	SuggetionRepository suggestRepo;
 	
 	@PostMapping("/addSuggetion")
-	public String createSuggetion(@RequestBody Suggetion suggetion) {
+	public String createSuggetion(@RequestBody Suggetion suggetion) throws SuggetionException {
 		suggestRepo.save(suggetion);
 		return "Suggetion has been created successfully";
 	}
 	@GetMapping("/allSuggetion")
-	public ResponseEntity<List<Suggetion>> getAllSuggetion(){
+	public ResponseEntity<List<Suggetion>> getAllSuggetion()throws SuggetionException {
 		List<Suggetion> sugglist = new ArrayList<>();
 		suggestRepo.findAll().forEach(sugglist::add);
 		return new ResponseEntity<List<Suggetion>>(sugglist, HttpStatus.OK);
