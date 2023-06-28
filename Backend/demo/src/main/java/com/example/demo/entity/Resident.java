@@ -20,32 +20,35 @@ import lombok.ToString;
 @Entity
 public class Resident {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue
 	private Integer rid;
 	
-	@NotNull(message = "First name is mandatory")
-	private String Fname;
+//	@NotNull(message = "Name is mandatory")
+	private String name;
 	
-	@NotNull(message = "Last name is mandatory")
-	private String Lname;
-	
-	@NotNull(message = "Phone number is mandatory")
-	@Size(max = 10,min = 10, message = "Require only 10 digit")
+//	@NotNull(message = "Phone number is mandatory")
+//	@Size(max = 10,min = 10, message = "Require only 10 digit")
 	private String phoneNumber;
 	
-	@NotNull(message = "Email is mandatory")
-	@Email(message = "Require email format")
+//	@NotNull(message = "Email is mandatory")
+//	@Email(message = "Require email format")
 	private String email;
 	
-	@NotNull(message = "Wing number is mandatory")
-	private Integer WingNo;
+//	@NotNull(message = "Password is mandatory")
+	private String password;
 	
-	@NotNull(message = "Flat number is mandatory")
-	private Integer FlatNo;
+//	@NotNull(message = "Wing number is mandatory")
+	private Integer wingNo;
 	
-	@NotNull(message = "Floor number is mandatory")
-	private Integer FloorNo;
+//	@NotNull(message = "Flat number is mandatory")
+	private Integer flatNo;
 	
-	@NotNull(message = "Member count is mandatory")
-	private Integer MemberCount;
+//	@NotNull(message = "Floor number is mandatory")
+	private Integer floorNo;
+	
+//	@NotNull(message = "Member count is mandatory")
+	private Integer memberCount;
+	
+//	@NotNull(message = "Role is mandatory")
+	private String role;
 }

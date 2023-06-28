@@ -24,6 +24,8 @@ public class ResidentController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<Resident> addResident(@RequestBody Resident resident)throws ResidentException{
+		
+		System.out.println("This is resident controller");
 		Resident returnResident = residentService.addResident(resident);
 		return new ResponseEntity<Resident>(returnResident,HttpStatus.CREATED);
 	}
