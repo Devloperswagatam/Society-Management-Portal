@@ -11,5 +11,7 @@ import com.example.demo.entity.Resident;
 public interface ResidentRepository extends JpaRepository<Resident, Integer>{
 	public Resident findByEmail(String email);
 	
+//	Optional<Resident> findByEmail(String email);
+	
 //	public Resident findByName(String email);
 }

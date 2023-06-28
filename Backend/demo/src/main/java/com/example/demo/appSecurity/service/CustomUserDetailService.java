@@ -1,4 +1,4 @@
-package com.example.demo.AppSecurity.service;
+package com.example.demo.appSecurity.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.AppSecurity.model.CustomUserDetails;
+import com.example.demo.appSecurity.model.CustomUserDetails;
 import com.example.demo.entity.Resident;
 import com.example.demo.repository.ResidentRepository;
 

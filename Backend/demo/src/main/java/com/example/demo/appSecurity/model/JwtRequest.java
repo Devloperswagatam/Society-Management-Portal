@@ -1,4 +1,4 @@
-package com.example.demo.AppSecurity.model;
+package com.example.demo.appSecurity.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

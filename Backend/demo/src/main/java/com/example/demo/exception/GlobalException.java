@@ -72,4 +72,22 @@ public class GlobalException {
 		err.setDescription(re.getDescription(false));
 		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(AccountsException.class)
+	public ResponseEntity<MyErrorDetails> AccountsExceptionHandler(AccountsException me, WebRequest re) {
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(me.getMessage());
+		err.setDescription(re.getDescription(false));
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(BulletinException.class)
+	public ResponseEntity<MyErrorDetails> BulletinExceptionHandler(BulletinException me, WebRequest re) {
+		MyErrorDetails err = new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(me.getMessage());
+		err.setDescription(re.getDescription(false));
+		return new ResponseEntity<MyErrorDetails>(err, HttpStatus.BAD_REQUEST);
+	}
 }

@@ -1,4 +1,4 @@
-package com.example.demo.AppSecurity.config;
+package com.example.demo.appSecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.demo.AppSecurity.security.JwtAuthenticationEntryPoint;
-import com.example.demo.AppSecurity.security.JwtAuthenticationFilter;
+import com.example.demo.appSecurity.security.JwtAuthenticationEntryPoint;
+import com.example.demo.appSecurity.security.JwtAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {

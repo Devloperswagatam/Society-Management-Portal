@@ -1,4 +1,4 @@
-package com.example.demo.AppSecurity.model;
+package com.example.demo.appSecurity.model;
 
 import java.util.Collection;
 import java.util.List;

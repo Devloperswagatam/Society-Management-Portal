@@ -1,4 +1,4 @@
-package com.example.demo.AppSecurity.config;
+package com.example.demo.appSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

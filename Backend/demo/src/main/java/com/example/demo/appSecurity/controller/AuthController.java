@@ -1,4 +1,4 @@
-package com.example.demo.AppSecurity.controller;
+package com.example.demo.appSecurity.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.AppSecurity.model.JwtRequest;
-import com.example.demo.AppSecurity.model.JwtResponse;
-import com.example.demo.AppSecurity.security.JwtHelper;
+import com.example.demo.appSecurity.model.JwtRequest;
+import com.example.demo.appSecurity.model.JwtResponse;
+import com.example.demo.appSecurity.security.JwtHelper;
 
 @RestController
 @RequestMapping("/auth")

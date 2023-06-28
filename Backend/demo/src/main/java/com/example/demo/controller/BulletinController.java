@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Bulletin;
+import com.example.demo.exception.BulletinException;
 import com.example.demo.repository.BulletinRepository;
 @RestController
 @RequestMapping("/notes")
@@ -21,12 +22,12 @@ public class BulletinController {
 	BulletinRepository bulletinRepo;
 	
 	@PostMapping("/note")
-	public String createNotes(@RequestBody Bulletin bulletin) {
+	public String createNotes(@RequestBody Bulletin bulletin) throws BulletinException{
 		bulletinRepo.save(bulletin);
 		return "Notes has been created successfully";
 	}
 	@GetMapping("/note")
-	public ResponseEntity<List<Bulletin>> getAllNotes(){
+	public ResponseEntity<List<Bulletin>> getAllNotes() throws BulletinException{
 		List<Bulletin> notelist = new ArrayList<>();
 		bulletinRepo.findAll().forEach(notelist::add);
 		return new ResponseEntity<List<Bulletin>>(notelist, HttpStatus.OK);
