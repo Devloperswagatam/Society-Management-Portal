@@ -1,9 +1,8 @@
 package com.example.demo.exception;
 
 public class BulletinException extends Exception{
-	BulletinException(){}
-	
-	BulletinException(String message){
+	public BulletinException() {};
+	public BulletinException(String message) {
 		super(message);
 	}
 }
