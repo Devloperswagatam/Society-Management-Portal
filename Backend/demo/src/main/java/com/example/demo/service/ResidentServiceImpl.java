@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Resident;
@@ -15,15 +16,14 @@ public class ResidentServiceImpl implements ResidentService{
 	
 	@Autowired
 	private ResidentRepository residentRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public Resident addResident(Resident resident) throws ResidentException{
-		Resident existResident = residentRepository.findByEmail(resident.getEmail());
-		if(existResident != null) {
-			throw new ResidentException("Resident email already exist");
-		}else {
+		resident.setPassword(passwordEncoder.encode(resident.getPassword()));
 			return residentRepository.save(resident);
-		}
 	}
 
 	@Override
@@ -32,11 +32,22 @@ public class ResidentServiceImpl implements ResidentService{
 			throw new ResidentException("Null value is not allowed");
 		}
 		
-		Optional<Resident> optional = residentRepository.findById(resident.getRid());
-		if(optional.isEmpty()) {
-			throw new ResidentException("No resident exist with given resident id :"+ resident.getRid());
+		Resident existResident = residentRepository.findByEmail(resident.getEmail());
+		if(existResident == null) {
+			throw new ResidentException("No resident exist with given email :"+ resident.getEmail());
 		}
-		return residentRepository.save(resident);
+		
+		
+		existResident.setPhoneNumber(resident.getPhoneNumber());
+		existResident.setName(resident.getName());
+		existResident.setEmail(resident.getEmail());
+		existResident.setPassword(passwordEncoder.encode(resident.getPassword()));
+		existResident.setFlatNo(resident.getFlatNo());
+		existResident.setFloorNo(resident.getFloorNo());
+		existResident.setWingNo(resident.getWingNo());
+		existResident.setMemberCount(resident.getMemberCount());
+		existResident.setRole(resident.getRole());
+		return residentRepository.save(existResident);
 	}
 
 	@Override
