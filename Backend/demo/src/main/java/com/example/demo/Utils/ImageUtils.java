@@ -1,11 +1,11 @@
-package com.example.demo.Utils;
+package com.example.demo.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class ImageUtils {
-	  public static byte[] compressImage(byte[] data) {
+	 public static byte[] compressImage(byte[] data) {
 	        Deflater deflater = new Deflater();
 	        deflater.setLevel(Deflater.BEST_COMPRESSION);
 	        deflater.setInput(data);

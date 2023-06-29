@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.Bulletin;
 import com.example.demo.repository.BulletinRepository;
 
-
-
-
 @RestController
 @RequestMapping("/notice")
 public class BulletinController {
@@ -30,8 +27,8 @@ public class BulletinController {
 	@GetMapping("/bulletin/{id}")
 	public Bulletin getBulletinByid(@PathVariable("id")Long id) {
 		return repository.findById(id).get();
-				
 	}
+				
 	@PostMapping("/bulletin")
 	public String addBulletin(@RequestBody Bulletin bulletin ) {
 		repository.save(bulletin);
