@@ -22,7 +22,7 @@ public class ResidentController {
 	@Autowired
 	private ResidentService residentService;
 	
-	@PostMapping("/add")
+	@PostMapping("/resident")
 	public ResponseEntity<Resident> addResident(@RequestBody Resident resident)throws ResidentException{
 		
 		System.out.println("This is resident controller");
@@ -30,13 +30,13 @@ public class ResidentController {
 		return new ResponseEntity<Resident>(returnResident,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/update")
+	@PutMapping("/resident")
 	public ResponseEntity<Resident> updateResident(@RequestBody Resident resident) throws ResidentException{
 		Resident returnResident = residentService.updateResident(resident);
 		return new ResponseEntity<Resident>(returnResident,HttpStatus.OK);
 	}
 	
-	@GetMapping("/all")
+	@GetMapping("/resident")
 	public ResponseEntity<List<Resident>> viewAllResident() throws ResidentException{
 		List<Resident> residents = residentService.viewAllResidents();
 		return new ResponseEntity<List<Resident>>(residents,HttpStatus.OK);

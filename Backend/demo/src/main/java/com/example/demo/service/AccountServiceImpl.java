@@ -68,4 +68,22 @@ public class AccountServiceImpl implements AccountService{
         }
 	}
 
+	@Override
+	public Accounts updateStatus(Integer billNo) throws AccountsException, ResidentException {
+		Optional<Accounts> accountOptional = accountsRepository.findById(billNo);
+	    if (accountOptional.isPresent()) {
+	        Accounts account = accountOptional.get();
+	        
+	        // Update the status
+	        account.setStatus("paid");
+	        
+	        // Save the updated account to the database
+	        Accounts updatedAccount = accountsRepository.save(account);
+	        
+	        return updatedAccount;
+	    } else {
+	        throw new AccountsException("Payment status is still pending");
+	    }
+	}
+
 }
