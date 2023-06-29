@@ -1,9 +1,13 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,8 +24,10 @@ public class Candidate {
 	@Id
 	private Integer rid;
 	
+	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name = "rid")
+	@MapsId
+	@JoinColumn(name = "rid",referencedColumnName = "rid")
 	private Resident resident;
 	
 	@NotNull(message = "Post name is mandatory")

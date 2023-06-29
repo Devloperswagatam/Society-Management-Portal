@@ -7,5 +7,5 @@ import com.example.demo.entity.Candidate;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Integer>{
-
+//	Candidate findByEmail(String email);
 }

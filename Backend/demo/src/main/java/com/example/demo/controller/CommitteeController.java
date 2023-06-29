@@ -19,7 +19,7 @@ public class CommitteeController {
 	@Autowired
 	private CommitteeService committeeService;
 	
-	@GetMapping("/all")
+	@GetMapping("/member")
 	public ResponseEntity<List<Committee>> viewAllCommittee() throws CommitteeException{
 		List<Committee> returnCommittee = committeeService.viewAllCommittee();
 		return new ResponseEntity<List<Committee>>(returnCommittee,HttpStatus.OK);
