@@ -23,32 +23,32 @@ public class Resident {
 	@GeneratedValue
 	private Integer rid;
 	
-//	@NotNull(message = "Name is mandatory")
+	@NotNull(message = "Name is mandatory")
 	private String name;
 	
-//	@NotNull(message = "Phone number is mandatory")
-//	@Size(max = 10,min = 10, message = "Require only 10 digit")
+	@NotNull(message = "Phone number is mandatory")
+	@Size(max = 10,min = 10, message = "Require only 10 digit")
 	private String phoneNumber;
 	
-//	@NotNull(message = "Email is mandatory")
-//	@Email(message = "Require email format")
+	@NotNull(message = "Email is mandatory")
+	@Email(message = "Require email format")
 	private String email;
 	
-//	@NotNull(message = "Password is mandatory")
+	@NotNull(message = "Password is mandatory")
 	private String password;
 	
-//	@NotNull(message = "Wing number is mandatory")
+	@NotNull(message = "Wing number is mandatory")
 	private Integer wingNo;
 	
-//	@NotNull(message = "Flat number is mandatory")
+	@NotNull(message = "Flat number is mandatory")
 	private Integer flatNo;
 	
-//	@NotNull(message = "Floor number is mandatory")
+	@NotNull(message = "Floor number is mandatory")
 	private Integer floorNo;
 	
-//	@NotNull(message = "Member count is mandatory")
+	@NotNull(message = "Member count is mandatory")
 	private Integer memberCount;
 	
-//	@NotNull(message = "Role is mandatory")
+	@NotNull(message = "Role is mandatory")
 	private String role;
 }
