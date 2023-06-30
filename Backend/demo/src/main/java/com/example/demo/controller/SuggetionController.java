@@ -7,30 +7,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Suggetion;
+import com.example.demo.exception.ResidentException;
 import com.example.demo.exception.SuggetionException;
 import com.example.demo.repository.SuggetionRepository;
+import com.example.demo.service.SuggestionService;
 
 @RestController
-@RequestMapping("/suggetion")
+@RequestMapping("/sugg")
 public class SuggetionController {
 	@Autowired
 	SuggetionRepository suggestRepo;
+	@Autowired
+	SuggestionService service;
 	
-	@PostMapping("/addSuggetion")
-	public String createSuggetion(@RequestBody Suggetion suggetion) throws SuggetionException {
-		suggestRepo.save(suggetion);
-		return "Suggetion has been created successfully";
+	@PostMapping("/suggetion")
+	public ResponseEntity<Suggetion> createSuggetion(@RequestBody Suggetion suggetion) throws SuggetionException, ResidentException{
+		return new ResponseEntity<Suggetion>(service.createSuggetion(suggetion),HttpStatus.CREATED);
 	}
-	@GetMapping("/allSuggetion")
+	@GetMapping("/suggetion")
 	public ResponseEntity<List<Suggetion>> getAllSuggetion()throws SuggetionException {
 		List<Suggetion> sugglist = new ArrayList<>();
 		suggestRepo.findAll().forEach(sugglist::add);
 		return new ResponseEntity<List<Suggetion>>(sugglist, HttpStatus.OK);
+	}
+	@GetMapping("/suggetion/{rid}")
+	public ResponseEntity<List<Suggetion>> getSuggestionByResidentId(@PathVariable("rid") Integer rid) throws SuggetionException, ResidentException{
+		return new ResponseEntity<List<Suggetion>>(service.getSuggestionByResidentId(rid),HttpStatus.OK);
+	}
+	@PutMapping("/suggetion/{id}")
+	public ResponseEntity<Suggetion> updateStatus(@PathVariable("id") Long id) throws SuggetionException,ResidentException{
+		return new ResponseEntity<Suggetion>(service.updateStatus(id),HttpStatus.OK);
 	}
 }

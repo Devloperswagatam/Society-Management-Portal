@@ -40,6 +40,7 @@ public class BulletinController {
 		if(bulletin.getId()==bulletin.getId())
 		{
 			bulletin1.setId(bulletin.getId());
+			bulletin1.setResident(bulletin.getResident());
 			bulletin1.setDescription(bulletin.getDescription());
 			bulletin1.setName(bulletin.getName());
 		}

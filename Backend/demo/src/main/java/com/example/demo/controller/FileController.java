@@ -38,7 +38,8 @@ public class FileController {
 
 	}
 	 @DeleteMapping("/{id}")
-	    public void deleteFile(@PathVariable Long id) throws IOException {
+	    public String deleteFile(@PathVariable Long id) throws IOException {
 	        service.deleteImage(id);
+	        return "Image Deleted";
 	    }
 }
