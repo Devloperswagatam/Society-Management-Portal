@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,10 +33,12 @@ public class Resident {
 	@Size(max = 10,min = 10, message = "Require only 10 digit")
 	private String phoneNumber;
 	
+	@Column(unique = true)
 	@NotNull(message = "Email is mandatory")
 	@Email(message = "Require email format")
 	private String email;
 	
+	@JsonIgnore
 	@NotNull(message = "Password is mandatory")
 	private String password;
 	

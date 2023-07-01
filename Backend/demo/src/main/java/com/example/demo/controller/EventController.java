@@ -25,12 +25,12 @@ public class EventController {
 	private EventService eventService;
 	
 	
-	@GetMapping("/all")
+	@GetMapping("/event")
 	public ResponseEntity<List<Event_Schedule>> viewAllEvents() throws EventsException{
 		return new ResponseEntity<List<Event_Schedule>>(eventService.viewEvent(),HttpStatus.OK);
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/event")
 	public ResponseEntity<Event_Schedule> addEvent(@RequestBody Event_Schedule event) throws EventsException{
 		return new ResponseEntity<Event_Schedule>(eventService.addEvent(event),HttpStatus.CREATED);
 	}

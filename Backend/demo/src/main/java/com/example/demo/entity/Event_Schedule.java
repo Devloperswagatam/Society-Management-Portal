@@ -11,7 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,7 +53,7 @@ public class Event_Schedule {
 	@NotNull(message = "Description is mandatory")
 	private String description;
 	
-	@OneToMany(targetEntity = Resident.class)
+	@ManyToMany(targetEntity = Resident.class)
 	private List<Resident> organizerTeam = new ArrayList<>();
 	
 	
