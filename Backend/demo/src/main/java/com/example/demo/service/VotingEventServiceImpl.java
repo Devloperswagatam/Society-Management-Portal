@@ -1,9 +1,16 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,10 +38,10 @@ public class VotingEventServiceImpl implements VotingEventService {
 
 	@Autowired
 	private ResidentRepository residentRepository;
-	
+
 	@Autowired
 	private ResidentService residentService;
-	
+
 	@Autowired
 	private EmailSenderService emailSenderService;
 
@@ -56,19 +63,20 @@ public class VotingEventServiceImpl implements VotingEventService {
 					throw new IllegalArgumentException("The new voting event clashes with an existing event.");
 				}
 			}
-
+			
+			
+			votingEvent.setYear(Year.now());
 			votingEventRepository.save(votingEvent);
-			
-			
-			//sending voting event reminder to all residents
-			
+
+			// sending voting event reminder to all residents
+
 			List<Resident> allResident = residentService.viewAllResidents();
-			for(Resident resident : allResident) {
-				emailSenderService.sendEmail(resident.getEmail(),
-											"Voting Event",
-											"Dear "+resident.getName()+" there's an voting event on "+votingEvent.getStartTime()+". So please nominate yourself or give vote to your candidates.");
+			for (Resident resident : allResident) {
+				emailSenderService.sendEmail(resident.getEmail(), "Voting Event",
+						"Dear " + resident.getName() + " there's an voting event on " + votingEvent.getStartTime()
+								+ ". So please nominate yourself or give vote to your candidates.");
 			}
-			
+
 		} catch (Exception err) {
 			err.printStackTrace();
 			throw new RuntimeException("Failed to create voting event !!");
@@ -85,15 +93,22 @@ public class VotingEventServiceImpl implements VotingEventService {
 		Resident existResident = residentRepository.findByEmail(username);
 //		Integer rid = existResident.getRid();
 
+		// Fetch the VotingEvent and Resident
+		VotingEvent votingEvent = votingEventRepository.findById(votingId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
+
+		// Check if the voting event has already started
+		LocalDateTime currentTime = LocalDateTime.now();
+		if (currentTime.isAfter(votingEvent.getStartTime())) {
+			throw new IllegalStateException("Voting event has already started. Nomination is no longer allowed !!");
+		}
+		
+
 		// Check if resident is already nominated for another post in the same voting
 		// event
 		if (candidateRepository.existsByridAndVotingEventVotingId(existResident.getRid(), votingId)) {
 			throw new IllegalStateException("Resident is already nominated for this post in this voting event.");
 		}
-
-		// Fetch the VotingEvent and Resident
-		VotingEvent votingEvent = votingEventRepository.findById(votingId)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
 
 		// Create a new Candidate entity and save it
 		Candidate candidate = new Candidate();
@@ -102,12 +117,12 @@ public class VotingEventServiceImpl implements VotingEventService {
 		candidate.setNumberOfVotes(1);
 		candidate.setPostName(votingEvent.getPostname());
 		candidateRepository.save(candidate);
-		
-		//sending confirmation to the candidates
-		
-		emailSenderService.sendEmail(candidate.getResident().getEmail(),
-										"Candidate Confirmation",
-										"Dear "+candidate.getResident().getName()+", you have nominated youself for the "+candidate.getPostName()+" post");
+
+		// sending confirmation to the candidates
+
+		emailSenderService.sendEmail(candidate.getResident().getEmail(), "Candidate Confirmation",
+				"Dear " + candidate.getResident().getName() + ", you have nominated youself for the "
+						+ candidate.getPostName() + " post");
 
 	}
 
@@ -120,17 +135,38 @@ public class VotingEventServiceImpl implements VotingEventService {
 		// Fetch the VotingEvent and Resident
 		VotingEvent votingEvent = votingEventRepository.findById(votingId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
+		
+		//check the voting event is still open or closed
+		LocalDateTime currentTime = LocalDateTime.now();
+//		System.out.println("Currrent timme is "+ currentTime);
+//		System.out.println("Event start time "+ votingEvent.getStartTime());
+		
+		
+		if(currentTime.isAfter(votingEvent.getEndTime())) {
+			throw new IllegalArgumentException("Voting event is already closed, you can't vote !!");
+		}
+		
+		System.out.println("Event end time "+ votingEvent.getEndTime());
+		
+		
+		
+		
+		
 		Resident currResident = residentRepository.findByEmail(username);
 
 		Candidate existCandidate = candidateRepository.findById(currResident.getRid()).orElse(null);
 
-		if (existCandidate != null) {
-			throw new IllegalStateException("Not a candidate !!");
+		if (existCandidate != null && existCandidate.getRid().equals(rid)) {
+			throw new IllegalStateException("Your a candidate, you have already voted !!");
 		}
 
 		// Check if the voter has already voted
 		if (voterRepository.existsByridAndVotingEventVotingId(currResident.getRid(), votingId)) {
 			throw new IllegalStateException("Resident has already voted in this voting event.");
+		}
+		
+		if(currentTime.isBefore(votingEvent.getStartTime())) {
+			throw new IllegalArgumentException("Voting event not yet started !!");
 		}
 
 		// Create a new Voter entity and save it
@@ -152,41 +188,77 @@ public class VotingEventServiceImpl implements VotingEventService {
 	@Override
 	public void closeVotingEvent(Integer votingId) {
 
-		 VotingEvent votingEvent = votingEventRepository.findById(votingId)
-	                .orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
+		VotingEvent votingEvent = votingEventRepository.findById(votingId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
 
-	        if (votingEvent.getStatus().equals("open")) {
-	            if (LocalDateTime.now().isAfter(votingEvent.getEndTime())) {
-	                votingEvent.setStatus("closed");
-	                votingEventRepository.save(votingEvent);
-	            } else {
-	                throw new IllegalArgumentException("Voting time is not yet passed!");
-	            }
-	        } else {
-	            throw new IllegalArgumentException("Voting event is already closed!");
-	        }
+		if (votingEvent.getStatus().equals("open")) {
+			if (LocalDateTime.now().isAfter(votingEvent.getEndTime())) {
+				votingEvent.setStatus("closed");
+				votingEventRepository.save(votingEvent);
+			} else {
+				throw new IllegalArgumentException("Voting time is not yet passed!");
+			}
+		} else {
+			throw new IllegalArgumentException("Voting event is already closed!");
+		}
 
 	}
-	
-	
-	// Scheduled method to automatically close voting events
-    @Scheduled(fixedDelay = 60000) 
-    public void automaticallyCloseVotingEvents() {
-        List<VotingEvent> openEvents = votingEventRepository.findByStatus("open");
-        LocalDateTime currentTime = LocalDateTime.now();
 
-        for (VotingEvent event : openEvents) {
-            if (event.getEndTime().isBefore(currentTime)) {
-                event.setStatus("closed");
-                votingEventRepository.save(event);
-                System.out.println("Voting event closed successfully !!");
-            }
-        }
-    }
+	// Scheduled method to automatically close voting events
+//    @Scheduled(fixedDelay = 60000) 
+	@EventListener(ApplicationReadyEvent.class)
+	public void automaticallyCloseVotingEvents() {
+		List<VotingEvent> openEvents = votingEventRepository.findByStatus("open");
+		LocalDateTime currentTime = LocalDateTime.now();
+
+		for (VotingEvent event : openEvents) {
+			if (event.getEndTime().isBefore(currentTime)) {
+				event.setStatus("closed");
+				votingEventRepository.save(event);
+				System.out.println("Voting event closed successfully !!");
+			}
+		}
+	}
 
 	@Override
 	public List<VotingEvent> getAllVotingEvents() {
 		return votingEventRepository.findAll();
+	}
+
+	@Override
+	public void removeCandidate() {
+		try {
+		List<VotingEvent> allVotingEvents = votingEventRepository.findByYearAndStatus(Year.now(),
+				"closed");
+		for(VotingEvent event : allVotingEvents) {
+			List<Candidate> allCandidates = candidateRepository.findByVotingEvent(event);
+			// Find the candidate with the maximum number of votes
+	        int maxVotes = 0;
+	        for (Candidate candidate : allCandidates) {
+	            int votes = candidate.getNumberOfVotes();
+	            if (votes > maxVotes) {
+	                maxVotes = votes;
+	            }
+	        }
+	        
+	     // Remove candidates with fewer votes
+//	        List<Candidate> candidatesToRemove = new ArrayList<>();
+	        for (Candidate candidate : allCandidates) {
+	            
+	            if (candidate.getNumberOfVotes() < maxVotes) {
+	            	allCandidates.remove(candidate);
+	                candidateRepository.delete(candidate);
+	            }
+	        }
+	        
+	        candidateRepository.saveAll(allCandidates);
+	        System.out.println("Loosing candidates are removed !!");
+		}
+		}catch(Exception err) {
+			err.printStackTrace();
+			throw new IllegalArgumentException("Exception occured while removing candidates !! "+err.getMessage());
+		}
+		
 	}
 
 }

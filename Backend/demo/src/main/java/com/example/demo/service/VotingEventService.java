@@ -15,4 +15,6 @@ public interface VotingEventService {
 	public void closeVotingEvent(Integer votingId);
 	
 	public List<VotingEvent> getAllVotingEvents();
+	
+	public void removeCandidate();
 }

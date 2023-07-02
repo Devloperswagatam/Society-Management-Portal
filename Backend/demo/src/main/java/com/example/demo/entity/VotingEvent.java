@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +29,8 @@ public class VotingEvent {
 	private LocalDateTime startTime;
 
 	private LocalDateTime endTime;
+	
+	private Year year;
 
 	private String description;
 

@@ -8,5 +8,5 @@ import com.example.demo.exception.CommitteeException;
 public interface CommitteeService {
 	public List<Committee> viewAllCommittee() throws CommitteeException;
 	
-	public Committee addCommittee(Committee committee) throws CommitteeException;
+	public void addCommittee() throws CommitteeException;
 }
