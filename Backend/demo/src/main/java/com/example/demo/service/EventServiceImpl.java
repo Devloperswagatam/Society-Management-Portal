@@ -105,7 +105,7 @@ public class EventServiceImpl implements EventService{
 		//Sending event confirmation via mail
 		emailSenderService.sendEmail(existResident.getEmail(),
 				"Event Schedule Confirmation",
-				"Dear "+existResident.getName()+" You have been added to the organizer team for the "+eventSchedule.getEName()+" Event.");
+				"Dear "+existResident.getName()+" You have been added to the organizer team for the "+eventSchedule.getEName()+" event on "+eventSchedule.getStartTime()+".");
 		
 		
 		eventsRepository.save(eventSchedule);

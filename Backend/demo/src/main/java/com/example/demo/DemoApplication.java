@@ -14,6 +14,7 @@ import com.example.demo.entity.Accounts;
 import com.example.demo.entity.Resident;
 import com.example.demo.exception.CommitteeException;
 import com.example.demo.repository.AccountsRepository;
+import com.example.demo.repository.ResidentRepository;
 import com.example.demo.service.AccountService;
 import com.example.demo.service.CommitteeService;
 import com.example.demo.service.EmailSenderService;
@@ -29,9 +30,15 @@ public class DemoApplication {
 
 	@Autowired
 	private ResidentService residentService;
+	
+	@Autowired
+	private ResidentRepository residentRepository;
 
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private AccountsRepository accountsRepository;
 
 	@Autowired
 	private CommitteeService committeeService;
@@ -43,34 +50,21 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 		System.out.println("Runninggg.......");
 	}
-	
-//	@Scheduled(fixedDelay = 60000)
-	@EventListener(ApplicationReadyEvent.class)
-	public void addCommittee() throws CommitteeException {
 
-		committeeService.addCommittee();
 
-	}
-	
-	@Scheduled(fixedDelay = 60000)
-	@EventListener(ApplicationReadyEvent.class)
-	public void removeCandidate() {
-		votingEventService.removeCandidate();
-	}
-
-//	@Scheduled(fixedRate = 10000)
-//	@EventListener(ApplicationReadyEvent.class)
+//	@Scheduled(fixedRate = 300000) //cron expression for every month's 1st day at 1:00 AM ("0 0 1 1 * ?")
+////	@EventListener(ApplicationReadyEvent.class)
 //	public void sendMail() {
 //		try {
 //			
 //			//Get all the residents
-//			List<Resident> residents = residentService.viewAllResidents();
+//			List<Resident> residents = residentRepository.findAll();
 //			
 //			//visit individual resident
 //			for (Resident resident : residents) {
 //				
 //				//Get all the accounts of each resident
-//				List<Accounts> allAccounts = accountService.getAccountsByResidentId(resident.getRid());
+//				List<Accounts> allAccounts = accountsRepository.findByResident(resident);
 //				
 //				//visit each account
 //				for (Accounts account : allAccounts) {
@@ -93,5 +87,47 @@ public class DemoApplication {
 //			e.printStackTrace();
 //		}
 //	}
+	
+	
+//	@Scheduled(fixedRate = 300000) // (cron = "0 0 0 1 * ?") for every months 1st day at 12:00 AM
+//    public void createAccountScheduled() {
+//        try {
+//            // Retrieve all residents
+//            List<Resident> residents = residentRepository.findAll();
+//
+//            // Create account for each resident
+//            for (Resident resident : residents) {
+//            	accountService.createAccount(resident);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new IllegalArgumentException("Error at account creation "+e.getMessage());
+//        }
+//    }
+	
+	@Scheduled(fixedDelay = 180000)
+//	@EventListener(ApplicationReadyEvent.class)
+	public void performScheduledTasks() throws CommitteeException {
+	    automaticallyCloseVotingEvents();
+	    addCommittee();
+	    removeCandidate();
+	}
+	
+	public void automaticallyCloseVotingEvents() {
+		votingEventService.automaticallyCloseVotingEvents();
+	}
+	
+	
+
+	public void addCommittee() throws CommitteeException {
+
+		committeeService.addCommittee();
+
+	}
+	
+
+	public void removeCandidate() {
+		votingEventService.removeCandidate();
+	}
 
 }

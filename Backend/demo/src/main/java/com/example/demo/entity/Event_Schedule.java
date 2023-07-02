@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +40,10 @@ public class Event_Schedule {
 	private Double budget;
 	
 	@NotNull(message = "Start Time is mandatory")
-	private LocalTime startTime;
+	private LocalDateTime startTime;
 	
 	@NotNull(message = "End Time is mandatory")
-	private LocalTime endTime;
-	
-	@NotNull(message = "Start Date is mandatory")
-	private LocalDate startDate;
-	
-	@NotNull(message = "End Date is mandatory")
-	private LocalDate endDate;
+	private LocalDateTime endTime;
 	
 	@NotNull(message = "Description is mandatory")
 	private String description;

@@ -17,73 +17,86 @@ import com.example.demo.repository.AccountsRepository;
 import com.example.demo.repository.ResidentRepository;
 
 @Service
-public class AccountServiceImpl implements AccountService{
-	
+public class AccountServiceImpl implements AccountService {
+
 	@Autowired
 	private AccountsRepository accountsRepository;
-	
+
 	@Autowired
 	private ResidentRepository residentRepository;
-	
-	
 
 	@Override
 	public List<Accounts> getAccountsByResidentId(Integer residentId) throws AccountsException, ResidentException {
-		 Optional<Resident> residentOptional = residentRepository.findById(residentId);
-	        if (residentOptional.isPresent()) {
-	            Resident resident = residentOptional.get();
-	            List<Accounts> accounts = accountsRepository.findByResident(resident);
-	            return accounts;
-	        } else {
-	            throw new ResidentException("Resident does not exist");
-	        }
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		Resident existResident = residentRepository.findByEmail(username);
+		if (!existResident.getRole().equals("committee")) {
+			throw new ResidentException("Committee login required");
+		}
+
+		Optional<Resident> residentOptional = residentRepository.findById(residentId);
+		if (residentOptional.isPresent()) {
+			Resident resident = residentOptional.get();
+			List<Accounts> accounts = accountsRepository.findByResident(resident);
+			return accounts;
+		} else {
+			throw new ResidentException("Resident does not exist");
+		}
 	}
 
 	@Override
-	public Accounts createAccount(Accounts account) throws AccountsException, ResidentException {
-		 
-		//Security context holds the current users login credentials 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		
-		
-//		System.out.println("user name is "+ username);
-		
-		
-		// Retrieve the resident from the database based on the resident email
-		
-		Resident residentOptional = residentRepository.findByEmail(username);
-//        Resident residentOptional = residentRepository.findById(rid).get();
-        if (residentOptional != null) {
-            Resident resident = residentOptional;
-            account.setResident(resident);
-            
-            // Save the new account to the database
-            account.setDate(LocalDateTime.now());
-            Accounts createdAccount = accountsRepository.save(account);
-            
-            return createdAccount;
-        } else {
-            throw new AccountsException("Account is not created !!");
-        }
+	public Accounts createAccount(Resident resident) throws AccountsException, ResidentException {
+
+		if (resident == null) {
+			throw new AccountsException("Account is not created !!");
+		}
+
+		Accounts newAccount = new Accounts();
+		newAccount.setAmount(5000.00);
+		newAccount.setDate(LocalDateTime.now());
+		newAccount.setResident(resident);
+		newAccount.setStatus("pending");
+
+		return accountsRepository.save(newAccount);
 	}
 
 	@Override
 	public Accounts updateStatus(Integer billNo) throws AccountsException, ResidentException {
 		Optional<Accounts> accountOptional = accountsRepository.findById(billNo);
-	    if (accountOptional.isPresent()) {
-	        Accounts account = accountOptional.get();
-	        
-	        // Update the status
-	        account.setStatus("paid");
-	        
-	        // Save the updated account to the database
-	        Accounts updatedAccount = accountsRepository.save(account);
-	        
-	        return updatedAccount;
-	    } else {
-	        throw new AccountsException("Payment status is still pending");
-	    }
+		if (accountOptional.isPresent()) {
+			Accounts account = accountOptional.get();
+
+			// Update the status
+			account.setStatus("paid");
+
+			// Save the updated account to the database
+			Accounts updatedAccount = accountsRepository.save(account);
+
+			return updatedAccount;
+		} else {
+			throw new AccountsException("Payment status is still pending");
+		}
+	}
+
+	@Override
+	public List<Accounts> viewLogedInResidentsAccounts() throws AccountsException, ResidentException {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		Resident existResident = residentRepository.findByEmail(username);
+//		if(!existResident.getRole().equals("resident")) {
+//			throw new ResidentException("Only resident have access to this !!");
+//		}
+
+		List<Accounts> allAccounts = accountsRepository.findByResident(existResident);
+		if (allAccounts.size() == 0) {
+			throw new AccountsException("NO accounts are present !!");
+		}
+		return allAccounts;
+
 	}
 
 }

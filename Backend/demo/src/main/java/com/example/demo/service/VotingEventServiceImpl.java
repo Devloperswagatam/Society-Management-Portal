@@ -48,6 +48,15 @@ public class VotingEventServiceImpl implements VotingEventService {
 	@Override
 	public void createVotingEvent(VotingEvent votingEvent) {
 		try {
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+			
+			Resident existResident = residentRepository.findByEmail(username);
+			
+			if(!existResident.getRole().equals("committee")) {
+				throw new IllegalArgumentException("Committee login required !!");
+			}
 
 			LocalDateTime newEventStartTime = votingEvent.getStartTime();
 			LocalDateTime newEventEndTime = votingEvent.getEndTime();
@@ -109,6 +118,14 @@ public class VotingEventServiceImpl implements VotingEventService {
 		if (candidateRepository.existsByridAndVotingEventVotingId(existResident.getRid(), votingId)) {
 			throw new IllegalStateException("Resident is already nominated for this post in this voting event.");
 		}
+		
+		//check if there already a candidate from your flat no
+		List<Candidate> allCandidates = candidateRepository.findByVotingEvent(votingEvent);
+		for(Candidate candidate : allCandidates) {
+			if(existResident.getFlatNo().equals(candidate.getResident().getFlatNo())) {
+				throw new IllegalStateException("A member from your flat is already nominated !!");
+			}
+		}
 
 		// Create a new Candidate entity and save it
 		Candidate candidate = new Candidate();
@@ -146,7 +163,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 			throw new IllegalArgumentException("Voting event is already closed, you can't vote !!");
 		}
 		
-		System.out.println("Event end time "+ votingEvent.getEndTime());
+//		System.out.println("Event end time "+ votingEvent.getEndTime());
 		
 		
 		
@@ -187,6 +204,15 @@ public class VotingEventServiceImpl implements VotingEventService {
 
 	@Override
 	public void closeVotingEvent(Integer votingId) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		Resident existResident = residentRepository.findByEmail(username);
+		
+		if(!existResident.getRole().equals("committee")) {
+			throw new IllegalArgumentException("Committee login required !!");
+		}
 
 		VotingEvent votingEvent = votingEventRepository.findById(votingId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
@@ -205,8 +231,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 	}
 
 	// Scheduled method to automatically close voting events
-//    @Scheduled(fixedDelay = 60000) 
-	@EventListener(ApplicationReadyEvent.class)
+
 	public void automaticallyCloseVotingEvents() {
 		List<VotingEvent> openEvents = votingEventRepository.findByStatus("open");
 		LocalDateTime currentTime = LocalDateTime.now();

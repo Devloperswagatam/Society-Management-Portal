@@ -17,5 +17,6 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	Optional<Candidate> findByridAndVotingEventVotingId(Integer rid, Integer votingId);
 	
 	List<Candidate> findByVotingEvent(VotingEvent event);
+	
 
 }
