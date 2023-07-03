@@ -8,12 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
-<<<<<<< HEAD
-=======
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.example.demo.entity.Accounts;
->>>>>>> 2ffe7b82cf15033799effd50c17899de5f925f92
 import com.example.demo.entity.Resident;
 import com.example.demo.exception.CommitteeException;
 import com.example.demo.repository.AccountsRepository;
@@ -92,22 +89,6 @@ public class DemoApplication {
 //	}
 	
 	
-<<<<<<< HEAD
-	//@Scheduled(fixedRate = 10000)
-	@EventListener(ApplicationReadyEvent.class)
-	public void sendMail() {
-	    try {
-	        List<Resident> residents = residentService.viewAllResidents();
-	        for (Resident resident : residents) {
-	            emailSenderService.sendEmail(resident.getEmail(),
-	                    "Maintenance Due",
-	                    "Dear Mr. "+resident.getName()+", your last month's maintenance is due. Please pay before the deadline.");
-	        }
-	    } catch (Exception e) {
-	        // Handle any exceptions that occur during sending emails
-	        e.printStackTrace();
-	    }
-=======
 //	@Scheduled(fixedRate = 300000) // (cron = "0 0 0 1 * ?") for every months 1st day at 12:00 AM
 //    public void createAccountScheduled() {
 //        try {
@@ -141,7 +122,6 @@ public class DemoApplication {
 	@Scheduled(fixedRate = 60000)
 	public void removeCandidate() {
 		votingEventService.removeCandidate();
->>>>>>> 2ffe7b82cf15033799effd50c17899de5f925f92
 	}
 
 }
