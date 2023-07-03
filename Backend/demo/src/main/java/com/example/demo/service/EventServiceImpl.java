@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Event_Schedule;
@@ -20,14 +23,64 @@ public class EventServiceImpl implements EventService{
 	
 	@Autowired
 	private ResidentRepository residentRepo;
+	
+	@Autowired
+	private EmailSenderService  emailSenderService;
 
 	@Override
 	public Event_Schedule addEvent(Event_Schedule event) throws EventsException {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		Resident existResident = residentRepo.findByEmail(username);
+		
+		
 		if(event == null) {
 			throw new EventsException("Event is null");
 		}
+		
+		List<Event_Schedule> events = eventsRepository.findAll();
+		for(Event_Schedule oldEvent : events) {
+			if (hasTimeCollision(event, oldEvent)) {
+	            throw new EventsException("New event clashes with an existing event");
+	        }
+		}
+		
+		
+		
+		
+		event.addResidentToOrganizerTeam(existResident);
+		
+		
+		//Sending event confermation through mail
+		
+		for(Resident organizer : event.getOrganizerTeam()) {
+			emailSenderService.sendEmail(organizer.getEmail(),
+										"Event Schedule Confirmation",
+										"Dear "+organizer.getName()+" You have been added to the organizer team for the "+event.getEName()+" Event.");
+		}
+		
+		
+		
 		return eventsRepository.save(event);
 	}
+	
+	
+	private boolean hasTimeCollision(Event_Schedule newEvent, Event_Schedule oldEvent) {
+	    // Compare start and end times
+	    if (newEvent.getStartTime().isBefore(oldEvent.getEndTime()) &&
+	            newEvent.getEndTime().isAfter(oldEvent.getStartTime())) {
+	        return true; // Collision detected
+	    }
+	    
+	    // No collision
+	    return false;
+	}
+	
+	
+	
+	
 
 	@Override
 	public List<Event_Schedule> viewEvent() throws EventsException {
@@ -48,6 +101,12 @@ public class EventServiceImpl implements EventService{
 		}
 
 		eventSchedule.addResidentToOrganizerTeam(existResident);
+		
+		//Sending event confirmation via mail
+		emailSenderService.sendEmail(existResident.getEmail(),
+				"Event Schedule Confirmation",
+				"Dear "+existResident.getName()+" You have been added to the organizer team for the "+eventSchedule.getEName()+" event on "+eventSchedule.getStartTime()+".");
+		
 		
 		eventsRepository.save(eventSchedule);
 	}

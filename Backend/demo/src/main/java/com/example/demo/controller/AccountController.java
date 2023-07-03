@@ -30,14 +30,19 @@ public class AccountController {
 		return new ResponseEntity<List<Accounts>>(accountService.getAccountsByResidentId(rid),HttpStatus.OK);
 	}
 	
-	@PostMapping("/account")
-	public ResponseEntity<Accounts> createAccount(@RequestBody Accounts account) throws AccountsException, ResidentException{
-//		System.out.println("the id is :" + rid);
-		return new ResponseEntity<Accounts>(accountService.createAccount(account),HttpStatus.CREATED);
-	}
+//	@PostMapping("/account")
+//	public ResponseEntity<Accounts> createAccount(@RequestBody) throws AccountsException, ResidentException{
+////		System.out.println("the id is :" + rid);
+//		return new ResponseEntity<Accounts>(accountService.createAccount(),HttpStatus.CREATED);
+//	}
 	
 	@PutMapping("/account/{billNo}")
 	public ResponseEntity<Accounts> updateStatus(@PathVariable("billNo") Integer billNo) throws AccountsException,ResidentException{
 		return new ResponseEntity<Accounts>(accountService.updateStatus(billNo),HttpStatus.OK);
+	}
+	
+	@GetMapping("/account")
+	public ResponseEntity<List<Accounts>> viewLogedInResidentsAccounts() throws AccountsException, ResidentException{
+		return new ResponseEntity<List<Accounts>>(accountService.viewLogedInResidentsAccounts(),HttpStatus.OK);
 	}
 }

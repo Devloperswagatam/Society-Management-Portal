@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -29,6 +30,11 @@ public class Candidate {
 	@MapsId
 	@JoinColumn(name = "rid",referencedColumnName = "rid")
 	private Resident resident;
+	
+	@ManyToOne
+    @JoinColumn(name = "voting_id")
+    private VotingEvent votingEvent;
+	
 	
 	@NotNull(message = "Post name is mandatory")
 	private String postName;
