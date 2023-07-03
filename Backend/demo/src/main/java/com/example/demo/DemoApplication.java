@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-
 import com.example.demo.entity.Resident;
 import com.example.demo.service.EmailSenderService;
 import com.example.demo.service.ResidentService;
@@ -33,7 +31,7 @@ public class DemoApplication {
 	}
 	
 	
-	@Scheduled(fixedRate = 10000)
+	//@Scheduled(fixedRate = 10000)
 	@EventListener(ApplicationReadyEvent.class)
 	public void sendMail() {
 	    try {

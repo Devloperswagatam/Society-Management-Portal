@@ -1,7 +1,9 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,7 @@ public class Complaint {
     private Long cid;
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "rid", referencedColumnName = "rid")
+	@JoinColumn(name = "rid",referencedColumnName = "rid")
 	private Resident resident;
 	@NotNull(message = "title is Mandatory")
     private String title;
@@ -35,6 +37,7 @@ public class Complaint {
     private LocalDateTime date;
 	@NotNull(message = "status is Mandatory")
     private String status;
-    
+	
+    private String image;
 
 }

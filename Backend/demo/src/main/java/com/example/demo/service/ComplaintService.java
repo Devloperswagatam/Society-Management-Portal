@@ -9,7 +9,5 @@ import com.example.demo.exception.ResidentException;
 public interface ComplaintService {
 	List<Complaint> getComplaintsByResidentId(Integer residentId) throws ComplaintException, ResidentException;
 	
-	Complaint createComplaint(Complaint complaint) throws ComplaintException, ResidentException;
-	
 	Complaint updateStatus(Long id) throws  ResidentException, ComplaintException;
 }

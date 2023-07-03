@@ -37,6 +37,6 @@ public class Suggetion {
     private LocalDateTime date;
 	@NotNull(message = "status is Mandatory")
     private String status;
-	
+	private String image;
 
 }
