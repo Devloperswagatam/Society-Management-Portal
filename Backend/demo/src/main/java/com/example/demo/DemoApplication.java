@@ -105,27 +105,21 @@ public class DemoApplication {
 //        }
 //    }
 	
-	@Scheduled(fixedDelay = 180000)
-//	@EventListener(ApplicationReadyEvent.class)
-	public void performScheduledTasks() throws CommitteeException {
-	    automaticallyCloseVotingEvents();
-	    addCommittee();
-	    removeCandidate();
-	}
-	
+
+	@Scheduled(fixedRate = 30000)
 	public void automaticallyCloseVotingEvents() {
 		votingEventService.automaticallyCloseVotingEvents();
 	}
 	
 	
-
+	@Scheduled(fixedRate = 60000)
 	public void addCommittee() throws CommitteeException {
 
 		committeeService.addCommittee();
 
 	}
 	
-
+	@Scheduled(fixedRate = 60000)
 	public void removeCandidate() {
 		votingEventService.removeCandidate();
 	}

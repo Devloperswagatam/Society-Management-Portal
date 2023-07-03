@@ -43,7 +43,7 @@ public class ResidentServiceImpl implements ResidentService{
 		
 		
 		if(!existResident.getEmail().equals(resident.getEmail())) {
-			throw new ResidentException("Resident not exist !!");
+			throw new ResidentException("This is not you !!");
 		}
 		
 		
@@ -51,10 +51,16 @@ public class ResidentServiceImpl implements ResidentService{
 		existResident.setName(resident.getName());
 		existResident.setEmail(resident.getEmail());
 		existResident.setPassword(passwordEncoder.encode(resident.getPassword()));
-		existResident.setFlatNo(resident.getFlatNo());
-		existResident.setFloorNo(resident.getFloorNo());
-		existResident.setWingNo(resident.getWingNo());
-		existResident.setMemberCount(resident.getMemberCount());
+		
+		if(existResident.getRole().equals("committee")) {
+			
+			existResident.setFlatNo(resident.getFlatNo());
+			existResident.setFloorNo(resident.getFloorNo());
+			existResident.setWingNo(resident.getWingNo());
+			existResident.setMemberCount(resident.getMemberCount());
+		}
+		
+		
 		return residentRepository.save(existResident);
 	}
 

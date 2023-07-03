@@ -38,7 +38,7 @@ public class Resident {
 	@Email(message = "Require email format")
 	private String email;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@NotNull(message = "Password is mandatory")
 	private String password;
 	
