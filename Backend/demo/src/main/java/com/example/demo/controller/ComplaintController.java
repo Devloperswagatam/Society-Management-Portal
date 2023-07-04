@@ -11,13 +11,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Complaint;
@@ -28,9 +29,10 @@ import com.example.demo.repository.ResidentRepository;
 import com.example.demo.service.ComplaintService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-@RestController
+@Controller
 @RequestMapping("/api")
 public class ComplaintController {
+	public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/images/complaints";
 	@Autowired
 	ComplaintRepository complaintRepo;
 	@Autowired
@@ -40,7 +42,7 @@ public class ComplaintController {
 	@Autowired
 	private ObjectMapper mapper ;
 	@PostMapping("/complaints")
-	public  ResponseEntity<?> createComplaint(
+	public  ResponseEntity<?> saveComplaint(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("complaintData") String complaintData) throws IOException{
 	
@@ -74,5 +76,9 @@ public class ComplaintController {
 	@PutMapping("/complaints/{id}")
 	public ResponseEntity<Complaint> updateStatus(@PathVariable("id") Long id) throws ComplaintException,ResidentException{
 		return new ResponseEntity<Complaint>(complaintService.updateStatus(id),HttpStatus.OK);
+	}
+	@PostMapping("/complaint")
+	public ResponseEntity<Complaint> createComplaint(@RequestBody Complaint complaint) throws ComplaintException, ResidentException{
+		return new ResponseEntity<Complaint>(complaintService.createComplaint(complaint),HttpStatus.CREATED);
 	}
 }
