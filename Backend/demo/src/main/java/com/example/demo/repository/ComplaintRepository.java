@@ -10,4 +10,5 @@ import com.example.demo.entity.Resident;
 @Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, Long>{
 	List<Complaint> findByResident(Resident resident);
+	
 }

@@ -9,7 +9,7 @@ import com.example.demo.exception.SuggetionException;
 public interface SuggestionService {
 	List<Suggetion> getSuggestionByResidentId(Integer residentId) throws SuggetionException, ResidentException;
 	
-	//Suggetion createSuggetion(Suggetion suggestion) throws SuggetionException, ResidentException;
+	Suggetion createSuggetion(Suggetion suggestion) throws SuggetionException, ResidentException;
 	
 	Suggetion updateStatus(Long id) throws  ResidentException, SuggetionException;
 }

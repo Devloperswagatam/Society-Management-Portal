@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.example.demo.controller.ComplaintController;
 import com.example.demo.entity.Accounts;
 import com.example.demo.entity.Resident;
 import com.example.demo.exception.CommitteeException;
@@ -20,6 +22,7 @@ import com.example.demo.service.CommitteeService;
 import com.example.demo.service.EmailSenderService;
 import com.example.demo.service.ResidentService;
 import com.example.demo.service.VotingEventService;
+
 
 @SpringBootApplication
 @EnableScheduling
@@ -47,8 +50,10 @@ public class DemoApplication {
 	private VotingEventService votingEventService;
 
 	public static void main(String[] args) {
+		new File(ComplaintController.uploadDirectory).mkdir();
 		SpringApplication.run(DemoApplication.class, args);
 		System.out.println("Runninggg.......");
+		
 	}
 
 
