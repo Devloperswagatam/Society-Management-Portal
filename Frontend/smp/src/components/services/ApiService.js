@@ -23,6 +23,15 @@ class ApiService {
   addEvent(event) {
     return axios.post("http://localhost:8088/events/event", event, this.getConfig());
   }
+
+  //voting api
+  getVotingEvents() {
+    return axios.get("http://localhost:8088/residents/voting/event", this.getConfig());
+  }
+
+  addVotingEvent(event) {
+    return axios.post("http://localhost:8088/residents/voting/event", event, this.getConfig());
+  }
 }
 
 export default ApiService;

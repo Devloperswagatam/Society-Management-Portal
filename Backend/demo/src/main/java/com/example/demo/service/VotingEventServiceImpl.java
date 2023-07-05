@@ -75,6 +75,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 			
 			
 			votingEvent.setYear(Year.now());
+			votingEvent.setStatus("open");
 			votingEventRepository.save(votingEvent);
 
 			// sending voting event reminder to all residents

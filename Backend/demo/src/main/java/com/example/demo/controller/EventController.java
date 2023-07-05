@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,6 +30,7 @@ public class EventController {
 	
 	@GetMapping("/event")
 	public ResponseEntity<List<Event_Schedule>> viewAllEvents() throws EventsException{
+		
 		return new ResponseEntity<List<Event_Schedule>>(eventService.viewEvent(),HttpStatus.OK);
 	}
 	
