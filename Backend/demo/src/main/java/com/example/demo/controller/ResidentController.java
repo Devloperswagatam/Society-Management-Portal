@@ -43,4 +43,9 @@ public class ResidentController {
 		List<Resident> residents = residentService.viewAllResidents();
 		return new ResponseEntity<List<Resident>>(residents,HttpStatus.OK);
 	}
+	
+	@GetMapping("/resident/loggedin")
+	public ResponseEntity<Resident> viewLoggedInResident() throws ResidentException{
+		return new ResponseEntity<Resident>(residentService.viewLoggedInResident(),HttpStatus.OK);
+	}
 }

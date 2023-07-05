@@ -81,4 +81,13 @@ public class ResidentServiceImpl implements ResidentService{
 		return residents;
 	}
 
+	@Override
+	public Resident viewLoggedInResident() throws ResidentException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		Resident loggedResident = residentRepository.findByEmail(username);
+		return loggedResident;
+	}
+
 }
