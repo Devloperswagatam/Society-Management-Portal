@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import ApiService from './services/ApiService';
-
+import React, { useState } from "react";
+import ApiService from "./services/ApiService";
+import { Link } from "react-router-dom";
 const Voting = () => {
   const api = new ApiService();
-  const [postName, setPostName] = useState('');
-  const [description, setDescription] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [postName, setPostName] = useState("");
+  const [description, setDescription] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const handlePostNameChange = (e) => {
     setPostName(e.target.value);
@@ -32,42 +32,79 @@ const Voting = () => {
       endTime: endTime,
     };
 
-    api.addVotingEvent(votingEvent)
-      .then(response => {
+    api
+      .addVotingEvent(votingEvent)
+      .then((response) => {
         // Handle the response after adding the voting event
-        console.log('Voting event added successfully:', response.data);
+        console.log("Voting event added successfully:", response.data);
         // Clear the input fields
-        setPostName('');
-        setDescription('');
-        setStartTime('');
-        setEndTime('');
+        setPostName("");
+        setDescription("");
+        setStartTime("");
+        setEndTime("");
       })
-      .catch(error => {
+      .catch((error) => {
         // Handle the error if adding the voting event fails
-        console.error('Error adding voting event:', error);
+        console.error("Error adding voting event:", error);
       });
   };
 
   return (
-    <div>
-      <h2>Voting Page</h2>
-      <div>
-        <label>Post Name:</label>
-        <input type="text" value={postName} onChange={handlePostNameChange} />
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <h2 className="text-center m-4">Voting Page</h2>
+          <form>
+          <div className="mb-3">
+            <label htmlFor="postName" className="form-label">Post Name:</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter the Title"
+              value={postName}
+              onChange={handlePostNameChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="Description" className="form-label">Description:</label>
+            <input
+              type="text"
+              className="form-control"
+                placeholder="Enter Your Description"
+              value={description}
+              onChange={handleDescriptionChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="Status" className="form-label">Start Time:</label>
+            <input
+              type="datetime-local"
+              className="form-control"
+                placeholder="Enter start date"
+              value={startTime}
+              onChange={handleStartTimeChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="Status" className="form-label">End Time:</label>
+            <input
+              type="datetime-local"
+              className="form-control"
+              placeholder="Enter Your End Date"
+              value={endTime}
+              onChange={handleEndTimeChange}
+            />
+          </div>
+          <button 
+           type="submit"
+           className="btn btn-outline-primary" onClick={handleAddVotingEvent}>Add Voting Event</button>
+           <Link className="btn btn-outline-danger mx-2" to="/home">
+              Cancel
+            </Link>
+          </form>
+        </div>
+        
       </div>
-      <div>
-        <label>Description:</label>
-        <input type="text" value={description} onChange={handleDescriptionChange} />
-      </div>
-      <div>
-        <label>Start Time:</label>
-        <input type="datetime-local" value={startTime} onChange={handleStartTimeChange} />
-      </div>
-      <div>
-        <label>End Time:</label>
-        <input type="datetime-local" value={endTime} onChange={handleEndTimeChange} />
-      </div>
-      <button onClick={handleAddVotingEvent}>Add Voting Event</button>
     </div>
   );
 };

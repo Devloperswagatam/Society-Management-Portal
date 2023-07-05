@@ -7,8 +7,9 @@ import Voting from "./Voting";
 import Bulletin from "./Bulletin";
 import Login from "./Login";
 import Logout from "./Logout";
-import Profile from "./Profile"
-
+import Profile from "./Profile";
+import Complaint from "./Complaint";
+import Suggestion from "./Suggestion";
 const Menu = () => {
   return (
     <Router>
@@ -20,8 +21,9 @@ const Menu = () => {
         <Route path="/voting" element={<Voting />} />
         <Route path="/bulletin" element={<Bulletin />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/profile" element={<Profile/>}/>
-        
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/suggestion" element={<Suggestion />} />
+        <Route path="/complaint" element={<Complaint />} />
       </Routes>
     </Router>
   );
