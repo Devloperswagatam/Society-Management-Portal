@@ -11,9 +11,9 @@ class ApiService {
   }
 
   //login api
-  login=(userlogin)=>{
-    return axios.post("http://localhost:8088/auth/login",userlogin)
-  }
+  login = (userlogin) => {
+    return axios.post("http://localhost:8088/auth/login", userlogin);
+  };
 
   //Events api
   getEvents() {
@@ -21,16 +21,27 @@ class ApiService {
   }
 
   addEvent(event) {
-    return axios.post("http://localhost:8088/events/event", event, this.getConfig());
+    return axios.post(
+      "http://localhost:8088/events/event",
+      event,
+      this.getConfig()
+    );
   }
 
   //voting api
   getVotingEvents() {
-    return axios.get("http://localhost:8088/residents/voting/event", this.getConfig());
+    return axios.get(
+      "http://localhost:8088/residents/voting/event",
+      this.getConfig()
+    );
   }
 
   addVotingEvent(event) {
-    return axios.post("http://localhost:8088/residents/voting/event", event, this.getConfig());
+    return axios.post(
+      "http://localhost:8088/residents/voting/event",
+      event,
+      this.getConfig()
+    );
   }
 }
 

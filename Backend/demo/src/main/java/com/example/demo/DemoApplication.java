@@ -15,6 +15,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.demo.controller.ComplaintController;
 import com.example.demo.entity.Accounts;
@@ -62,7 +64,15 @@ public class DemoApplication {
 	}
 	
 	
-	
+//	@Bean
+//    public WebMvcConfigurer configure() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry reg) {
+//                reg.addMapping("/**").allowedOrigins("*");
+//            }
+//        };
+//    }
 
 
 //	@Scheduled(fixedRate = 300000) //cron expression for every month's 1st day at 1:00 AM ("0 0 1 1 * ?")

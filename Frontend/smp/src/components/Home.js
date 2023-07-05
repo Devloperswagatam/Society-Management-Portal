@@ -27,7 +27,7 @@ const Home = () => {
       <h3>Events:</h3>
       <ul>
         {events.map(event => (
-          <li key={event.eid}>{event.ename}</li>
+          <li key={event.eid}>{event.ename} {event.startTime} {event.endTime} {event.description}</li>
         ))}
       </ul>
     </div>
