@@ -7,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.example.demo.controller.ComplaintController;
 import com.example.demo.entity.Accounts;
@@ -55,6 +60,9 @@ public class DemoApplication {
 		System.out.println("Runninggg.......");
 		
 	}
+	
+	
+	
 
 
 //	@Scheduled(fixedRate = 300000) //cron expression for every month's 1st day at 1:00 AM ("0 0 1 1 * ?")
@@ -111,20 +119,20 @@ public class DemoApplication {
 //    }
 	
 
-	@Scheduled(fixedRate = 30000)
+//	@Scheduled(fixedRate = 30000)
 	public void automaticallyCloseVotingEvents() {
 		votingEventService.automaticallyCloseVotingEvents();
 	}
 	
 	
-	@Scheduled(fixedRate = 60000)
+//	@Scheduled(fixedRate = 60000)
 	public void addCommittee() throws CommitteeException {
 
 		committeeService.addCommittee();
 
 	}
 	
-	@Scheduled(fixedRate = 60000)
+//	@Scheduled(fixedRate = 60000)
 	public void removeCandidate() {
 		votingEventService.removeCandidate();
 	}
