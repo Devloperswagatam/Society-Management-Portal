@@ -15,6 +15,22 @@ class ApiService {
     return axios.post("http://localhost:8088/auth/login", userlogin);
   };
 
+  //Residents api
+  getLoggedResident() {
+    return axios.get(
+      "http://localhost:8088/residents/resident/loggedin",
+      this.getConfig()
+    );
+  }
+
+  addResident(resident) {
+    return axios.post(
+      "http://localhost:8088/residents/resident",
+      resident,
+      this.getConfig()
+    );
+  }
+
   //Events api
   getEvents() {
     return axios.get("http://localhost:8088/events/event", this.getConfig());
@@ -43,6 +59,18 @@ class ApiService {
       this.getConfig()
     );
   }
+
+  //Accounts api
+  getLoggedResidentsAccounts() {
+    return axios.get(
+      "http://localhost:8088/residents/accounts/account",
+      this.getConfig()
+    );
+  }
+
+  // changeAccountStatus(){
+  //   return axios.put("http://localhost:8088/residents/accounts/account/{billNo}");
+  // }
 }
 
 export default ApiService;

@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ApiService from "./services/ApiService";
 
 const Navbar = () => {
-  const isLoggedIn = sessionStorage.getItem("login");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const apiService = new ApiService();
+      try {
+        const response = await apiService.getLoggedResident();
+        const resident = response.data;
+        console.log(response.data);
+        setIsLoggedIn(true);
+        setRole(resident.role);
+      } catch (error) {
+        setIsLoggedIn(false);
+        setRole("");
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-primary">
@@ -23,7 +43,7 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
-            {isLoggedIn === "true" && (
+            {isLoggedIn && (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/home">
@@ -33,16 +53,6 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/events">
                     Events
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/voting">
-                    Voting
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/bulletin">
-                    Bulletin
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -60,6 +70,20 @@ const Navbar = () => {
                     Accounts
                   </Link>
                 </li>
+                {role === "committee" && (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/voting">
+                        Voting
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/bulletin">
+                        Bulletin
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" to="/logout">
                     Logout

@@ -8,5 +8,6 @@ import com.example.demo.exception.ResidentException;
 public interface ResidentService {
 	public Resident addResident(Resident resident)throws ResidentException;
 	public Resident updateResident(Resident resident)throws ResidentException;
-	public List<Resident> viewAllResidents()throws ResidentException;	
+	public List<Resident> viewAllResidents()throws ResidentException;
+	public Resident viewLoggedInResident() throws ResidentException;
 }

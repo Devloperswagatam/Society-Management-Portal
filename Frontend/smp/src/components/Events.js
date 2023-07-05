@@ -1,101 +1,150 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ApiService from './services/ApiService';
 
 const Events = () => {
   const api = new ApiService();
+  const [events, setEvents] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [newEvent, setNewEvent] = useState({
+    ename: '',
+    place: '',
+    budget: '',
+    startTime: '',
+    endTime: '',
+    description: '',
+  });
 
-  const [ename, setEventName] = useState('');
-  const [place, setPlace] = useState('');
-  const [budget, setBudget] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [description, setDescription] = useState('');
+  useEffect(() => {
+    // Fetch events when the component mounts
+    getEvents();
+  }, []);
 
-  const handleEventNameChange = (event) => {
-    setEventName(event.target.value);
-  };
-
-  const handlePlaceChange = (event) => {
-    setPlace(event.target.value);
-  };
-
-  const handleBudgetChange = (event) => {
-    setBudget(event.target.value);
-  };
-
-  const handleStartTimeChange = (event) => {
-    setStartTime(event.target.value);
-  };
-
-  const handleEndTimeChange = (event) => {
-    setEndTime(event.target.value);
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const handleCreateEvent = (event) => {
-    event.preventDefault();
-
-    const newEvent = {
-      ename,
-      place,
-      budget,
-      startTime,
-      endTime,
-      description,
-    };
-
-    api.addEvent(newEvent)
+  const getEvents = () => {
+    api
+      .getEvents()
       .then((response) => {
-        console.log('Event created successfully:', response.data);
-        // Perform any additional actions after event creation
+        console.log(response.data);
+        setEvents(response.data);
       })
       .catch((error) => {
-        console.error('Error creating event:', error);
-        // Handle any errors that occur during event creation
+        console.log('Error fetching events:', error);
       });
+  };
 
-    // Reset the input fields after event creation
-    setEventName('');
-    setPlace('');
-    setBudget('');
-    setStartTime('');
-    setEndTime('');
-    setDescription('');
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US');
+  };
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewEvent((prevEvent) => ({
+      ...prevEvent,
+      [name]: value,
+    }));
+  };
+
+  const addEvent = (e) => {
+    e.preventDefault();
+    api
+      .addEvent(newEvent)
+      .then((response) => {
+        console.log('Event added successfully:', response.data);
+        setNewEvent({
+          ename: '',
+          place: '',
+          budget: '',
+          startTime: '',
+          endTime: '',
+          description: '',
+        });
+        getEvents(); // Refresh events after adding a new event
+        toggleForm(); // Hide the form after adding the event
+      })
+      .catch((error) => {
+        console.log('Error adding event:', error);
+      });
   };
 
   return (
     <div>
-      <h2>Create Event</h2>
-      <form onSubmit={handleCreateEvent}>
-        <div>
-          <label>Event Name:</label>
-          <input type="text" value={ename} onChange={handleEventNameChange} required />
-        </div>
-        <div>
-          <label>Place:</label>
-          <input type="text" value={place} onChange={handlePlaceChange} required />
-        </div>
-        <div>
-          <label>Budget:</label>
-          <input type="number" value={budget} onChange={handleBudgetChange} required />
-        </div>
-        <div>
-          <label>Start Time:</label>
-          <input type="datetime-local" value={startTime} onChange={handleStartTimeChange} required />
-        </div>
-        <div>
-          <label>End Time:</label>
-          <input type="datetime-local" value={endTime} onChange={handleEndTimeChange} required />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea value={description} onChange={handleDescriptionChange} required />
-        </div>
-        <button type="submit">Create Event</button>
-      </form>
+      <h2>Events Page</h2>
+      <button onClick={toggleForm}>Create Event</button>
+
+      {showForm ? (
+        <form onSubmit={addEvent}>
+          <input
+            type="text"
+            name="ename"
+            placeholder="Event Name"
+            value={newEvent.ename}
+            onChange={handleChange}
+          />
+          <select
+            name="place"
+            value={newEvent.place}
+            onChange={handleChange}
+          >
+            <option value="">Select Place</option>
+            <option value="hall">Hall</option>
+            <option value="ground">Ground</option>
+          </select>
+          <input
+            type="text"
+            name="budget"
+            placeholder="Budget"
+            value={newEvent.budget}
+            onChange={handleChange}
+          />
+          <input
+            type="datetime-local"
+            name="startTime"
+            placeholder="Start Time"
+            value={newEvent.startTime}
+            onChange={handleChange}
+          />
+          <input
+            type="datetime-local"
+            name="endTime"
+            placeholder="End Time"
+            value={newEvent.endTime}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="description"
+            placeholder="Description"
+            value={newEvent.description}
+            onChange={handleChange}
+          />
+          <button type="submit">Add Event</button>
+        </form>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <tr key={event.eid}>
+                <td>{event.ename}</td>
+                <td>{formatDate(event.startTime)}</td>
+                <td>{formatDate(event.endTime)}</td>
+                <td>{event.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

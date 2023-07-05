@@ -8,6 +8,7 @@ import Bulletin from "./Bulletin";
 import Login from "./Login";
 import Logout from "./Logout";
 import Profile from "./Profile"
+import Account from "./Account";
 
 const Menu = () => {
   return (
@@ -19,6 +20,7 @@ const Menu = () => {
         <Route path="/events" element={<Events />} />
         <Route path="/voting" element={<Voting />} />
         <Route path="/bulletin" element={<Bulletin />} />
+        <Route path="/account" element={<Account/>}/>
         <Route path="/logout" element={<Logout />} />
         <Route path="/profile" element={<Profile/>}/>
         
