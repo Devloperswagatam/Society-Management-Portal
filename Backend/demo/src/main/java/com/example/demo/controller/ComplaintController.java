@@ -11,6 +11,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Complaint;
+import com.example.demo.entity.Resident;
 import com.example.demo.exception.ComplaintException;
 import com.example.demo.exception.ResidentException;
 import com.example.demo.repository.ComplaintRepository;
@@ -44,11 +47,13 @@ public class ComplaintController {
 	ResidentRepository residentRepo;
 	@Autowired
 	private ObjectMapper mapper ;
-	@PostMapping("/complaints")
+	@PostMapping
 	public  ResponseEntity<?> saveComplaint(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("complaintData") String complaintData) throws IOException{
-	
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Resident existResident = residentRepo.findByEmail(username);
 		//saving the files into the folder
 		String Path_Directory="C:\\Users\\hp\\Desktop\\Society Management portal\\Society-Management-Portal\\Backend\\demo\\src\\main\\resources\\static\\images\\complaints";
 		Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()),StandardCopyOption.REPLACE_EXISTING);
@@ -60,6 +65,7 @@ public class ComplaintController {
 		} catch (JsonProcessingException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Request");
 		}
+		complaint.setResident(existResident);
 		complaint.setImage(file.getOriginalFilename());
 		complaint.setDate(LocalDateTime.now());
 		complaintRepo.save(complaint);
