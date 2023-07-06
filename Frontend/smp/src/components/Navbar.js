@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,43 +67,24 @@ const Navbar = () => {
                     Bulletin
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/complaint">
-                    Complaint
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/suggestion">
-                    Suggestion
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/account">
-                    Accounts
-                  </Link>
-                </li>
+                <li>
+                   <DropdownButton id="dropdown-basic-button" variant="success" title="Namastey Resident">
+         <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+         <Dropdown.Item href="/complaint">Complaint</Dropdown.Item>
+         <Dropdown.Item href="/suggestion">Suggestion</Dropdown.Item>
+         <Dropdown.Item href="/account">Account</Dropdown.Item>
+         <Dropdown.Item href="/logout">Logout</Dropdown.Item>
+       </DropdownButton>
+       </li>
                 {role === "committee" && (
-                  <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Committee
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link class="dropdown-item" to="/profile">Profile</Link>
-                    <Link class="dropdown-item" to="/accounthandler">Account Handler</Link>
-                    <Link class="dropdown-item" to="/votinghandler">Voting Handler</Link>
-                  </div>
-                </li>
+                   <li>
+                   <DropdownButton id="dropdown-basic-button" variant="success" title="Namastey Comittee">
+         <Dropdown.Item href="/complaintHandler">Complaint</Dropdown.Item>
+         <Dropdown.Item href="/suggestionHandler">Suggestion</Dropdown.Item>
+         <Dropdown.Item href="/accountHandler">Account</Dropdown.Item>
+       </DropdownButton>
+       </li>
                 )}
-                <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/logout">
-                    Logout
-                  </Link>
-                </li>
               </>
             )}
           </ul>

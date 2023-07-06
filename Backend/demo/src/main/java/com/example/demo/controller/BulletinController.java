@@ -17,7 +17,7 @@ import com.example.demo.repository.BulletinRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/bull")
 public class BulletinController {
 	@Autowired
 	BulletinRepository repository;

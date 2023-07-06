@@ -31,7 +31,7 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager manager;
-
+    
 
     @Autowired
     private JwtHelper helper;

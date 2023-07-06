@@ -11,6 +11,10 @@ import Profile from "./Profile"
 import Account from "./Account";
 import Suggestion from "./Suggestion";
 import Complaint from "./Complaint";
+import ComplaintHandler from "./committee/ComplaintHandler";
+import SuggestionHandler from "./committee/SuggestionHandler";
+import VotingHandler from "./committee/VotingHandler";
+import BulletinHandler from "./committee/BulletinHandler";
 
 const Menu = () => {
   return (
@@ -27,6 +31,11 @@ const Menu = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/suggestion" element={<Suggestion />} />
         <Route path="/complaint" element={<Complaint />} />
+        <Route path="/complaintHandler" element={<ComplaintHandler />} />
+        <Route path="/suggestionHandler" element={<SuggestionHandler />} />
+        <Route path="/votingHandler" element={<VotingHandler />} />
+        <Route path="/bulletinHandler" element={<BulletinHandler />} />
+        
       </Routes>
     </Router>
   );
