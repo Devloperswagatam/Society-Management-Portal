@@ -99,6 +99,9 @@ const Navbar = () => {
                       <Dropdown.Item href="/votingHandler">
                         Voting
                       </Dropdown.Item>
+                      <Dropdown.Item href="/bulletinHandler">
+                        Bulletin
+                      </Dropdown.Item>
                     </DropdownButton>
                   </li>
                 )}

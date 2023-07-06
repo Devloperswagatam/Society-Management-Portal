@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ApiService from './services/ApiService';
+import { Link } from "react-router-dom";
 
 const Events = () => {
   const api = new ApiService();
@@ -76,15 +77,29 @@ const Events = () => {
       <button onClick={toggleForm}>Create Event</button>
 
       {showForm ? (
-        <form onSubmit={addEvent}>
-          <input
-            type="text"
-            name="ename"
-            placeholder="Event Name"
-            value={newEvent.ename}
-            onChange={handleChange}
-          />
-          <select
+         <div className="container">
+         <div className="row">
+           <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+             <h2 className="text-center m-4">Create Event</h2>
+             <form onSubmit={addEvent}>
+               <div className="mb-3">
+                 <label htmlFor="eventName" className="form-label">
+                   Event Name:
+                 </label>
+                 <input
+                   type="text"
+                   className="form-control"
+                   placeholder="Enter the Event Name"
+                   name="eventName"
+                   value={newEvent.ename}
+                   onChange={handleChange}
+                   required
+                 />
+               </div>
+               <div className="mb-4">
+                 <label htmlFor="Place">Place:</label>
+                 <select
+                 className="form-control"
             name="place"
             value={newEvent.place}
             onChange={handleChange}
@@ -93,36 +108,65 @@ const Events = () => {
             <option value="hall">Hall</option>
             <option value="ground">Ground</option>
           </select>
-          <input
-            type="text"
-            name="budget"
-            placeholder="Budget"
-            value={newEvent.budget}
-            onChange={handleChange}
-          />
-          <input
-            type="datetime-local"
-            name="startTime"
-            placeholder="Start Time"
-            value={newEvent.startTime}
-            onChange={handleChange}
-          />
-          <input
-            type="datetime-local"
-            name="endTime"
-            placeholder="End Time"
-            value={newEvent.endTime}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            value={newEvent.description}
-            onChange={handleChange}
-          />
-          <button type="submit">Add Event</button>
-        </form>
+                
+               </div>
+               <div className="mb-3">
+                 <label htmlFor="Budget" className="form-label">
+                   Budget:
+                 </label>
+                 <input
+                   type="number"
+                   className="form-control"
+                   placeholder="Enter the Event Budget"
+                   value={newEvent.budget}
+                   onChange={handleChange}
+                   required
+                 />
+               </div>
+               <div className="mb-3">
+                 <label htmlFor="StartTime" className="form-label">
+                   Start Time:
+                 </label>
+                 <input
+                   type="datetime-local"
+                   className="form-control"
+                   placeholder="Enter the Start Time"
+                   value={newEvent.startTime}
+                   onChange={handleChange}
+                   required
+                 />
+               </div>
+               <div className="mb-3">
+                 <label htmlFor="EndTime">End Time:</label>
+                 <input
+                   type="datetime-local"
+                   className="form-control"
+                   placeholder="Enter the Event End Time"
+                   value={newEvent.endTime}
+                   onChange={handleChange}
+                   required
+                 />
+               </div>
+               <div className="mb-3">
+                 <label htmlFor="Description">Description:</label>
+                 <textarea
+                   className="form-control"
+                   placeholder="Enter the Event Description"
+                   value={newEvent.description}
+                   onChange={handleChange}
+                   required
+                 />
+               </div>
+               <button className="btn btn-outline-primary" type="submit">
+                 Create Event
+               </button>
+               <Link className="btn btn-outline-danger mx-2" to="/home">
+                 Cancel
+               </Link>
+             </form>
+           </div>
+         </div>
+       </div>
       ) : (
         <table>
           <thead>

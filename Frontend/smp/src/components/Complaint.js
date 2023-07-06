@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 const Complaint = () => {
   const api = new ApiService();
+  
+  const[image, setImage]=useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
@@ -12,7 +14,10 @@ const Complaint = () => {
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
-
+  const handleFile=(complaint)=>{
+    const image = complaint.target.files[0];
+    setImage(image);
+  };
   const handelStatusChange = (e) => {
     setStatus(e.target.value);
   };
@@ -76,6 +81,17 @@ const Complaint = () => {
                 name="status"
                 value={status}
                 onChange={handelStatusChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="File" className="form-label">
+                Add Image :
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                value={image}
+                onChange={handleFile}
               />
             </div>
             <button type="submit" className="btn btn-outline-primary">
