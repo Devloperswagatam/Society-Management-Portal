@@ -59,6 +59,21 @@ class ApiService {
       this.getConfig()
     );
   }
+
+  getCandidatesByVotingId(votingId) {
+    return axios.get(
+      `http://localhost:8088/residents/voting/event/${votingId}`,
+      this.getConfig()
+    );
+  }
+
+  addCandidate(votingId) {
+    return axios.add(
+      `http://localhost:8088/residents/voting/candidates/${votingId}`,
+      this.getConfig()
+    );
+  }
+
   //Suggestion Api
   getSuggestions() {
     return axios.get("http://localhost:8088/sugg/suggestion", this.getConfig());

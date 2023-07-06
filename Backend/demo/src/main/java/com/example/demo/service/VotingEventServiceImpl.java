@@ -48,52 +48,52 @@ public class VotingEventServiceImpl implements VotingEventService {
 	@Override
 	public void createVotingEvent(VotingEvent votingEvent) {
 		try {
-			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String username = authentication.getName();
-			
+
 			Resident existResident = residentRepository.findByEmail(username);
-			
-			if(!existResident.getRole().equals("committee")) {
-				throw new IllegalArgumentException("Committee login required !!");
-			}
 
-			LocalDateTime newEventStartTime = votingEvent.getStartTime();
-			LocalDateTime newEventEndTime = votingEvent.getEndTime();
-
-			// Check for time overlap with existing voting events
-			List<VotingEvent> existingEvents = votingEventRepository.findAll();
-			for (VotingEvent existingEvent : existingEvents) {
-				LocalDateTime existingEventStartTime = existingEvent.getStartTime();
-				LocalDateTime existingEventEndTime = existingEvent.getEndTime();
-
-				if (newEventStartTime.isBefore(existingEventEndTime)
-						&& newEventEndTime.isAfter(existingEventStartTime)) {
+			if (!existResident.getRole().equals("committee")) {
+				throw new IllegalArgumentException("Committee login required!!");
+			} else {
+				if (hasTimeOverlap(votingEvent.getStartTime(), votingEvent.getEndTime())) {
 					throw new IllegalArgumentException("The new voting event clashes with an existing event.");
 				}
+
+				votingEvent.setYear(Year.now());
+				votingEvent.setStatus("open");
+				votingEventRepository.save(votingEvent);
+
+				// Sending voting event reminder to all residents
+				List<Resident> allResident = residentService.viewAllResidents();
+				for (Resident resident : allResident) {
+					emailSenderService.sendEmail(resident.getEmail(), "Voting Event",
+							"Dear " + resident.getName() + ", there's a voting event on " + votingEvent.getStartTime()
+									+ ". Please nominate yourself or vote for your candidates.");
+				}
 			}
-			
-			
-			votingEvent.setYear(Year.now());
-			votingEvent.setStatus("open");
-			votingEventRepository.save(votingEvent);
-
-			// sending voting event reminder to all residents
-
-			List<Resident> allResident = residentService.viewAllResidents();
-			for (Resident resident : allResident) {
-				emailSenderService.sendEmail(resident.getEmail(), "Voting Event",
-						"Dear " + resident.getName() + " there's an voting event on " + votingEvent.getStartTime()
-								+ ". So please nominate yourself or give vote to your candidates.");
-			}
-
 		} catch (Exception err) {
 			err.printStackTrace();
-			throw new RuntimeException("Failed to create voting event !!");
+			throw new IllegalArgumentException("Failed to create a voting event!!");
 		}
-
 	}
 
+	private boolean hasTimeOverlap(LocalDateTime newStartTime, LocalDateTime newEndTime) {
+		List<VotingEvent> existingEvents = votingEventRepository.findAll();
+		for (VotingEvent existingEvent : existingEvents) {
+			LocalDateTime existingStartTime = existingEvent.getStartTime();
+			LocalDateTime existingEndTime = existingEvent.getEndTime();
+
+			if (newStartTime.isBefore(existingEndTime) && newEndTime.isAfter(existingStartTime)) {
+				return true; // Time overlap found
+			}
+		}
+		return false; // No time overlap found
+	}
+
+	
+	
+	
 	@Override
 	public void nominateCandidate(Integer votingId) {
 
@@ -112,18 +112,17 @@ public class VotingEventServiceImpl implements VotingEventService {
 		if (currentTime.isAfter(votingEvent.getStartTime())) {
 			throw new IllegalStateException("Voting event has already started. Nomination is no longer allowed !!");
 		}
-		
 
 		// Check if resident is already nominated for another post in the same voting
 		// event
 		if (candidateRepository.existsByridAndVotingEventVotingId(existResident.getRid(), votingId)) {
 			throw new IllegalStateException("Resident is already nominated for this post in this voting event.");
 		}
-		
-		//check if there already a candidate from your flat no
+
+		// check if there already a candidate from your flat no
 		List<Candidate> allCandidates = candidateRepository.findByVotingEvent(votingEvent);
-		for(Candidate candidate : allCandidates) {
-			if(existResident.getFlatNo().equals(candidate.getResident().getFlatNo())) {
+		for (Candidate candidate : allCandidates) {
+			if (existResident.getFlatNo().equals(candidate.getResident().getFlatNo())) {
 				throw new IllegalStateException("A member from your flat is already nominated !!");
 			}
 		}
@@ -153,23 +152,18 @@ public class VotingEventServiceImpl implements VotingEventService {
 		// Fetch the VotingEvent and Resident
 		VotingEvent votingEvent = votingEventRepository.findById(votingId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
-		
-		//check the voting event is still open or closed
+
+		// check the voting event is still open or closed
 		LocalDateTime currentTime = LocalDateTime.now();
 //		System.out.println("Currrent timme is "+ currentTime);
 //		System.out.println("Event start time "+ votingEvent.getStartTime());
-		
-		
-		if(currentTime.isAfter(votingEvent.getEndTime())) {
+
+		if (currentTime.isAfter(votingEvent.getEndTime())) {
 			throw new IllegalArgumentException("Voting event is already closed, you can't vote !!");
 		}
-		
+
 //		System.out.println("Event end time "+ votingEvent.getEndTime());
-		
-		
-		
-		
-		
+
 		Resident currResident = residentRepository.findByEmail(username);
 
 		Candidate existCandidate = candidateRepository.findById(currResident.getRid()).orElse(null);
@@ -182,8 +176,8 @@ public class VotingEventServiceImpl implements VotingEventService {
 		if (voterRepository.existsByridAndVotingEventVotingId(currResident.getRid(), votingId)) {
 			throw new IllegalStateException("Resident has already voted in this voting event.");
 		}
-		
-		if(currentTime.isBefore(votingEvent.getStartTime())) {
+
+		if (currentTime.isBefore(votingEvent.getStartTime())) {
 			throw new IllegalArgumentException("Voting event not yet started !!");
 		}
 
@@ -205,13 +199,13 @@ public class VotingEventServiceImpl implements VotingEventService {
 
 	@Override
 	public void closeVotingEvent(Integer votingId) {
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		
+
 		Resident existResident = residentRepository.findByEmail(username);
-		
-		if(!existResident.getRole().equals("committee")) {
+
+		if (!existResident.getRole().equals("committee")) {
 			throw new IllegalArgumentException("Committee login required !!");
 		}
 
@@ -254,37 +248,43 @@ public class VotingEventServiceImpl implements VotingEventService {
 	@Override
 	public void removeCandidate() {
 		try {
-		List<VotingEvent> allVotingEvents = votingEventRepository.findByYearAndStatus(Year.now(),
-				"closed");
-		for(VotingEvent event : allVotingEvents) {
-			List<Candidate> allCandidates = candidateRepository.findByVotingEvent(event);
-			// Find the candidate with the maximum number of votes
-	        int maxVotes = 0;
-	        for (Candidate candidate : allCandidates) {
-	            int votes = candidate.getNumberOfVotes();
-	            if (votes > maxVotes) {
-	                maxVotes = votes;
-	            }
-	        }
-	        
-	     // Remove candidates with fewer votes
+			List<VotingEvent> allVotingEvents = votingEventRepository.findByYearAndStatus(Year.now(), "closed");
+			for (VotingEvent event : allVotingEvents) {
+				List<Candidate> allCandidates = candidateRepository.findByVotingEvent(event);
+				// Find the candidate with the maximum number of votes
+				int maxVotes = 0;
+				for (Candidate candidate : allCandidates) {
+					int votes = candidate.getNumberOfVotes();
+					if (votes > maxVotes) {
+						maxVotes = votes;
+					}
+				}
+
+				// Remove candidates with fewer votes
 //	        List<Candidate> candidatesToRemove = new ArrayList<>();
-	        for (Candidate candidate : allCandidates) {
-	            
-	            if (candidate.getNumberOfVotes() < maxVotes) {
-	            	allCandidates.remove(candidate);
-	                candidateRepository.delete(candidate);
-	            }
-	        }
-	        
-	        candidateRepository.saveAll(allCandidates);
-	        System.out.println("Loosing candidates are removed !!");
-		}
-		}catch(Exception err) {
+				for (Candidate candidate : allCandidates) {
+
+					if (candidate.getNumberOfVotes() < maxVotes) {
+						allCandidates.remove(candidate);
+						candidateRepository.delete(candidate);
+					}
+				}
+
+				candidateRepository.saveAll(allCandidates);
+				System.out.println("Loosing candidates are removed !!");
+			}
+		} catch (Exception err) {
 			err.printStackTrace();
-			throw new IllegalArgumentException("Exception occured while removing candidates !! "+err.getMessage());
+			throw new IllegalArgumentException("Exception occured while removing candidates !! " + err.getMessage());
 		}
-		
+
+	}
+
+	@Override
+	public List<Candidate> getAllCandidatesByVotingId(Integer votingId) {
+		VotingEvent votingEvent = votingEventRepository.findById(votingId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
+		return candidateRepository.findByVotingEvent(votingEvent);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.entity.Candidate;
 import com.example.demo.entity.VotingEvent;
 
 public interface VotingEventService {
@@ -19,4 +20,6 @@ public interface VotingEventService {
 	public void removeCandidate();
 	
 	public void automaticallyCloseVotingEvents();
+	
+	public List<Candidate> getAllCandidatesByVotingId(Integer votingId);
 }

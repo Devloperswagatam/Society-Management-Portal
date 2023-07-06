@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entity.Candidate;
 import com.example.demo.entity.VotingEvent;
 
 import com.example.demo.service.VotingEventService;
@@ -71,4 +72,10 @@ public class VotingController {
 	public ResponseEntity<List<VotingEvent>> getAllVotingEvents() {
 		return new ResponseEntity<List<VotingEvent>>(votingEventService.getAllVotingEvents(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/event/{votingId}")
+	public ResponseEntity<List<Candidate>> viewCandidatesByVotingEvent(@PathVariable("votingId") Integer votingId){
+		return new ResponseEntity<List<Candidate>>(votingEventService.getAllCandidatesByVotingId(votingId),HttpStatus.OK);
+	}
+	
 }
