@@ -56,6 +56,16 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/voting">
+                    Voting
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/bulletin">
+                    Bulletin
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/complaint">
                     Complaint
                   </Link>
@@ -71,19 +81,22 @@ const Navbar = () => {
                   </Link>
                 </li>
                 {role === "committee" && (
-                  <>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/voting">
-                        Voting
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/bulletin">
-                        Bulletin
-                      </Link>
-                    </li>
-                  </>
+                  <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Committee
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <Link class="dropdown-item" to="/profile">Profile</Link>
+                    <Link class="dropdown-item" to="/accounthandler">Account Handler</Link>
+                    <Link class="dropdown-item" to="/votinghandler">Voting Handler</Link>
+                  </div>
+                </li>
                 )}
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Profile
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/logout">
                     Logout

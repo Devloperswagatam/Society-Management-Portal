@@ -34,9 +34,16 @@ const Account = () => {
     setMonthFilter(e.target.value);
   };
 
-  const payAccount = (billNo) => {
-    // Implement the logic to handle the payment
-    console.log("Paying account:", billNo);
+  const payAccount = async (billNo) => {
+    try {
+      const updatedAccount = {
+        status: "paid",
+      };
+      await apiService.updateAccountStatus(billNo, updatedAccount);
+      fetchAccounts();
+    } catch (error) {
+      console.log("Error updating account status:", error);
+    }
   };
 
   const filteredAccounts = accounts.filter((account) => {
@@ -77,7 +84,7 @@ const Account = () => {
       </div>
 
       <table className="table">
-        <thead>
+        <thead className="thead-dark">
           <tr>
             <th>Date</th>
             <th>Status</th>

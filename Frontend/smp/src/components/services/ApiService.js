@@ -97,9 +97,13 @@ class ApiService {
     );
   }
 
-  // changeAccountStatus(){
-  //   return axios.put("http://localhost:8088/residents/accounts/account/{billNo}");
-  // }
+  updateAccountStatus(billNo, updatedAccount) {
+    return axios.put(
+      `http://localhost:8088/residents/accounts/account/${billNo}`,
+      updatedAccount,
+      this.getConfig()
+    );
+  }
 }
 
 export default ApiService;
