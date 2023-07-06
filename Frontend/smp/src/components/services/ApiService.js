@@ -86,14 +86,14 @@ class ApiService {
     );
   }
   //Complaint Api
-  getComplaint() {
+  getComplaints() {
     return axios.get("http://localhost:8088/api/complaint", this.getConfig());
   }
   addComplaint(complaint) {
     return axios.post("http://localhost:8088/api", complaint, this.getConfig());
   }
   //Bulletin Api
-  getBulletin() {
+  getBulletins() {
     return axios.get("http://localhost:8088/bull/notes", this.getConfig());
   }
   addBulletin(bulletin) {
