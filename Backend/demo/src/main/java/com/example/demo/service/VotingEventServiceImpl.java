@@ -150,7 +150,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 		String username = authentication.getName();
 
 		// Fetch the VotingEvent and Resident
-		VotingEvent votingEvent = votingEventRepository.findById(votingId)
+		VotingEvent existVotingEvent = votingEventRepository.findById(votingId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid voting event ID."));
 
 		// check the voting event is still open or closed
@@ -158,7 +158,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 //		System.out.println("Currrent timme is "+ currentTime);
 //		System.out.println("Event start time "+ votingEvent.getStartTime());
 
-		if (currentTime.isAfter(votingEvent.getEndTime())) {
+		if (currentTime.isAfter(existVotingEvent.getEndTime())) {
 			throw new IllegalArgumentException("Voting event is already closed, you can't vote !!");
 		}
 
@@ -168,7 +168,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 
 		Candidate existCandidate = candidateRepository.findById(currResident.getRid()).orElse(null);
 
-		if (existCandidate != null && existCandidate.getRid().equals(rid)) {
+		if (existCandidate != null && existCandidate.getVotingEvent().equals(existVotingEvent)) {
 			throw new IllegalStateException("Your a candidate, you have already voted !!");
 		}
 
@@ -177,13 +177,13 @@ public class VotingEventServiceImpl implements VotingEventService {
 			throw new IllegalStateException("Resident has already voted in this voting event.");
 		}
 
-		if (currentTime.isBefore(votingEvent.getStartTime())) {
+		if (currentTime.isBefore(existVotingEvent.getStartTime())) {
 			throw new IllegalArgumentException("Voting event not yet started !!");
 		}
 
 		// Create a new Voter entity and save it
 		Voters voter = new Voters();
-		voter.setVotingEvent(votingEvent);
+		voter.setVotingEvent(existVotingEvent);
 		voter.setResident(currResident);
 		voter.setDate(LocalDateTime.now());
 		voter.setHasVoted(true);
@@ -232,7 +232,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 		LocalDateTime currentTime = LocalDateTime.now();
 
 		for (VotingEvent event : openEvents) {
-			if (event.getEndTime().isBefore(currentTime)) {
+			if (currentTime.isAfter(event.getEndTime()) && currentTime.toLocalDate().equals(event.getEndTime().toLocalDate())) {
 				event.setStatus("closed");
 				votingEventRepository.save(event);
 				System.out.println("Voting event closed successfully !!");
