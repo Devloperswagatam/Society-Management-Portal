@@ -36,7 +36,6 @@ const Suggestion = () => {
       });
   };
   return (
-<<<<<<< HEAD
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
@@ -87,7 +86,6 @@ const Suggestion = () => {
               Cancel
             </Link>
           </form>
-=======
     <>
       <Navbar
         role={sessionStorage.getItem("role")}
@@ -149,10 +147,9 @@ const Suggestion = () => {
               </Link>
             </form>
           </div>
->>>>>>> 37404743a592094ea67564a61c2de0e5f1bc4af2
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default Suggestion;
