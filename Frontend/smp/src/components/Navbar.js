@@ -4,30 +4,31 @@ import ApiService from "./services/ApiService";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setRole] = useState("");
-  const [name,setName] = useState("");
+const Navbar = (props) => {
+  console.log("props = ", props);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [role, setRole] = useState("");
+  // const [name,setName] = useState("");
 
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      const apiService = new ApiService();
-      try {
-        const response = await apiService.getLoggedResident();
-        const resident = response.data;
-        console.log(response.data);
-        setIsLoggedIn(true);
-        setRole(resident.role);
-        setName(resident.name);
-      } catch (error) {
-        setIsLoggedIn(false);
-        setRole("");
-        setName("");
-      }
-    };
+  // useEffect(() => {
+  //   const checkLoginStatus = async () => {
+  //     const apiService = new ApiService();
+  //     try {
+  //       const response = await apiService.getLoggedResident();
+  //       const resident = response.data;
+  //       // console.log(response.data);
+  //       setIsLoggedIn(true);
+  //       setRole(resident.role);
+  //       setName(resident.name);
+  //     } catch (error) {
+  //       setIsLoggedIn(false);
+  //       setRole("");
+  //       setName("");
+  //     }
+  //   };
 
-    checkLoginStatus();
-  }, []);
+  //   checkLoginStatus();
+  // }, [isLoggedIn]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-primary">
@@ -48,7 +49,7 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
-            {isLoggedIn && (
+            {props.isLoggedIn && (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/home">
@@ -74,7 +75,7 @@ const Navbar = () => {
                   <DropdownButton
                     id="dropdown-basic-button"
                     variant="success"
-                    title={`Hi ${name}`}
+                    title={`Hi ${props.name}`}
                   >
                     <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                     <Dropdown.Item href="/complaint">Complaint</Dropdown.Item>
@@ -83,7 +84,7 @@ const Navbar = () => {
                     <Dropdown.Item href="/logout">Logout</Dropdown.Item>
                   </DropdownButton>
                 </li>
-                {role === "committee" && (
+                {props.role === "committee" && (
                   <li>
                     <DropdownButton
                       id="dropdown-basic-button"

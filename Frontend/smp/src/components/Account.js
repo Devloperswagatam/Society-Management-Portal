@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
+import Navbar from "./Navbar";
 
 const Account = () => {
   const [accounts, setAccounts] = useState([]);
@@ -61,6 +62,12 @@ const Account = () => {
 
   return (
     <div>
+      <Navbar
+        role={sessionStorage.getItem("role")}
+        isLoggedIn={sessionStorage.getItem("isLoggedIn")}
+        name={sessionStorage.getItem("name")}
+      />
+
       <h2>Accounts Page</h2>
 
       <div className="mb-3">
