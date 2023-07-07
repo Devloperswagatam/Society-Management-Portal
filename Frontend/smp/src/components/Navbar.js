@@ -33,7 +33,7 @@ const Navbar = (props) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-primary">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand">
           Society Portal
         </Link>
         <button
