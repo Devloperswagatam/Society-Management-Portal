@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
 import Card from 'react-bootstrap/Card';
+import Navbar from "./Navbar";
 const Bulletin=()=>{
   const api=new ApiService();
   const [bulletin, setBulletin]=useState([]);
@@ -17,7 +18,13 @@ const Bulletin=()=>{
     });
   };
   return(
-    
+    <>
+    <Navbar
+        role={sessionStorage.getItem("role")}
+        isLoggedIn={sessionStorage.getItem("isLoggedIn")}
+        name={sessionStorage.getItem("name")}
+      />
+
     <Card style={{ width: '20rem' }}>
       <Card.Body>
         <Card.Title>Bulletin Board</Card.Title>
@@ -32,6 +39,7 @@ const Bulletin=()=>{
         ))}
       </Card.Body>
     </Card>
+    </>
   )
 }
 export default Bulletin;

@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import ApiService from './services/ApiService';
+import React, { useState, useEffect } from "react";
+import ApiService from "./services/ApiService";
 import { Link } from "react-router-dom";
+import { Table, Form, Button } from "react-bootstrap";
+import Navbar from "./Navbar";
 
 const Events = () => {
   const api = new ApiService();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [newEvent, setNewEvent] = useState({
-    ename: '',
-    place: '',
-    budget: '',
-    startTime: '',
-    endTime: '',
-    description: '',
+    ename: "",
+    place: "",
+    budget: "",
+    startTime: "",
+    endTime: "",
+    description: "",
   });
 
   useEffect(() => {
@@ -28,13 +30,13 @@ const Events = () => {
         setEvents(response.data);
       })
       .catch((error) => {
-        console.log('Error fetching events:', error);
+        console.log("Error fetching events:", error);
       });
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US');
+    return date.toLocaleTimeString("en-US");
   };
 
   const toggleForm = () => {
@@ -54,130 +56,141 @@ const Events = () => {
     api
       .addEvent(newEvent)
       .then((response) => {
-        console.log('Event added successfully:', response.data);
+        console.log("Event added successfully:", response.data);
         setNewEvent({
-          ename: '',
-          place: '',
-          budget: '',
-          startTime: '',
-          endTime: '',
-          description: '',
+          ename: "",
+          place: "",
+          budget: "",
+          startTime: "",
+          endTime: "",
+          description: "",
         });
         getEvents(); // Refresh events after adding a new event
         toggleForm(); // Hide the form after adding the event
       })
       .catch((error) => {
-        console.log('Error adding event:', error);
+        console.log("Error adding event:", error);
       });
+  };
+
+  const formatDay = (dateString) => {
+    const day = new Date(dateString);
+    return day.toLocaleDateString("en-US", { day: "numeric", month: "long" });
   };
 
   return (
     <div>
+      <Navbar
+        role={sessionStorage.getItem("role")}
+        isLoggedIn={sessionStorage.getItem("isLoggedIn")}
+        name={sessionStorage.getItem("name")}
+      />
       <h2>Events Page</h2>
-      <button onClick={toggleForm}>Create Event</button>
+      <Button onClick={toggleForm}>Create Event</Button>
 
       {showForm ? (
-         <div className="container">
-         <div className="row">
-           <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-             <h2 className="text-center m-4">Create Event</h2>
-             <form onSubmit={addEvent}>
-               <div className="mb-3">
-                 <label htmlFor="eventName" className="form-label">
-                   Event Name:
-                 </label>
-                 <input
-                   type="text"
-                   className="form-control"
-                   placeholder="Enter the Event Name"
-                   name="ename"
-                   value={newEvent.ename}
-                   onChange={handleChange}
-                   required
-                 />
-               </div>
-               <div className="mb-4">
-                 <label htmlFor="Place">Place:</label>
-                 <select
-                 className="form-control"
-            name="place"
-            value={newEvent.place}
-            onChange={handleChange}
-          >
-            <option value="">Select Place</option>
-            <option value="hall">Hall</option>
-            <option value="ground">Ground</option>
-          </select>
-                
-               </div>
-               <div className="mb-3">
-                 <label htmlFor="Budget" className="form-label">
-                   Budget:
-                 </label>
-                 <input
-                   type="number"
-                   className="form-control"
-                   name="budget"
-                   placeholder="Enter the Event Budget"
-                   value={newEvent.budget}
-                   onChange={handleChange}
-                   required
-                 />
-               </div>
-               <div className="mb-3">
-                 <label htmlFor="StartTime" className="form-label">
-                   Start Time:
-                 </label>
-                 <input
-                   type="datetime-local"
-                   className="form-control"
-                   placeholder="Enter the Start Time"
-                   name="startTime"
-                   value={newEvent.startTime}
-                   onChange={handleChange}
-                   required
-                 />
-               </div>
-               <div className="mb-3">
-                 <label htmlFor="EndTime">End Time:</label>
-                 <input
-                   type="datetime-local"
-                   className="form-control"
-                   placeholder="Enter the Event End Time"
-                   name="endTime"
-                   value={newEvent.endTime}
-                   onChange={handleChange}
-                   required
-                 />
-               </div>
-               <div className="mb-3">
-                 <label htmlFor="Description">Description:</label>
-                 <textarea
-                   className="form-control"
-                   placeholder="Enter the Event Description"
-                   name="description"
-                   value={newEvent.description}
-                   onChange={handleChange}
-                   required
-                 />
-               </div>
-               <button className="btn btn-outline-primary" type="submit">
-                 Create Event
-               </button>
-               <Link className="btn btn-outline-danger mx-2" to="/home">
-                 Cancel
-               </Link>
-             </form>
-           </div>
-         </div>
-       </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+              <h2 className="text-center m-4">Create Event</h2>
+              <Form onSubmit={addEvent}>
+                <div className="mb-3">
+                  <label htmlFor="eventName" className="form-label">
+                    Event Name:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter the Event Name"
+                    name="ename"
+                    value={newEvent.ename}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="Place">Place:</label>
+                  <select
+                    className="form-control"
+                    name="place"
+                    value={newEvent.place}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Place</option>
+                    <option value="hall">Hall</option>
+                    <option value="ground">Ground</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="Budget" className="form-label">
+                    Budget:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="budget"
+                    placeholder="Enter the Event Budget"
+                    value={newEvent.budget}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="StartTime" className="form-label">
+                    Start Time:
+                  </label>
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    placeholder="Enter the Start Time"
+                    name="startTime"
+                    value={newEvent.startTime}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="EndTime">End Time:</label>
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    placeholder="Enter the Event End Time"
+                    name="endTime"
+                    value={newEvent.endTime}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="Description">Description:</label>
+                  <textarea
+                    className="form-control"
+                    placeholder="Enter the Event Description"
+                    name="description"
+                    value={newEvent.description}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <button className="btn btn-outline-primary" type="submit">
+                  Create Event
+                </button>
+                <Link className="btn btn-outline-danger mx-2" to="/home">
+                  Cancel
+                </Link>
+              </Form>
+            </div>
+          </div>
+        </div>
       ) : (
-        <table>
-          <thead>
+        <Table className="table">
+          <thead className="table-dark">
             <tr>
               <th>Event Name</th>
               <th>Start Time</th>
               <th>End Time</th>
+              <th>Day</th>
+              <th>Location</th>
               <th>Description</th>
             </tr>
           </thead>
@@ -187,11 +200,13 @@ const Events = () => {
                 <td>{event.ename}</td>
                 <td>{formatDate(event.startTime)}</td>
                 <td>{formatDate(event.endTime)}</td>
+                <td>{formatDay(event.startTime)}</td>
+                <td>{event.place}</td>
                 <td>{event.description}</td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );

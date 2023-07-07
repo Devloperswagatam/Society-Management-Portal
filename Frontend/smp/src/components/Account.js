@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
+import Navbar from "./Navbar";
 
 const Account = () => {
   const [accounts, setAccounts] = useState([]);
@@ -49,7 +50,10 @@ const Account = () => {
   const filteredAccounts = accounts.filter((account) => {
     // Apply filters based on status and month
     if (statusFilter === "all" || account.status === statusFilter) {
-      if (monthFilter === "" || new Date(account.date).getMonth().toString() === monthFilter) {
+      if (
+        monthFilter === "" ||
+        new Date(account.date).getMonth().toString() === monthFilter
+      ) {
         return true;
       }
     }
@@ -58,6 +62,12 @@ const Account = () => {
 
   return (
     <div>
+      <Navbar
+        role={sessionStorage.getItem("role")}
+        isLoggedIn={sessionStorage.getItem("isLoggedIn")}
+        name={sessionStorage.getItem("name")}
+      />
+
       <h2>Accounts Page</h2>
 
       <div className="mb-3">
@@ -99,11 +109,12 @@ const Account = () => {
               <td>{account.status}</td>
               <td>{account.amount}</td>
               <td>
-                {account.status === "pending" && (
-                  <button onClick={() => payAccount(account.billNo)}>
-                    PAY
-                  </button>
-                )}
+                <button
+                  onClick={() => payAccount(account.billNo)}
+                  disabled={account.status === "paid"}
+                >
+                  PAY
+                </button>
               </td>
             </tr>
           ))}

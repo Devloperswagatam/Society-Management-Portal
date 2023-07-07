@@ -44,6 +44,14 @@ class ApiService {
     );
   }
 
+  addOrganizer(eid) {
+    return axios.post(
+      `http://localhost:8088/events/organizer/${eid}`,
+      {},
+      this.getConfig()
+    );
+  }
+
   //voting api
   getVotingEvents() {
     return axios.get(

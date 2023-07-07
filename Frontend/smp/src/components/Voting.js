@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
+import Result from "./Result";
+import { Table, Form, Button } from "react-bootstrap";
+import Navbar from "./Navbar";
 
 const Voting = () => {
   const apiService = new ApiService();
   const [votingEvents, setVotingEvents] = useState([]);
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     getVotingEvents();
@@ -23,9 +27,11 @@ const Voting = () => {
           const eventStartTime = new Date(event.startTime);
           const eventEndTime = new Date(event.endTime);
           const isSameDayOrAfterCurrent =
-            eventStartTime >= currentDate && eventStartTime <= nextThreeDays;
+            eventStartTime.getDate() >= currentDate.getDate() &&
+            eventStartTime.getDate() <= nextThreeDays;
           const isSameDayOrBeforeNext =
-            eventEndTime >= currentDate && eventEndTime <= nextThreeDays;
+            eventEndTime.getDate() >= currentDate.getDate() &&
+            eventEndTime.getDate() <= nextThreeDays;
           return isSameDayOrAfterCurrent || isSameDayOrBeforeNext;
         });
 
@@ -37,6 +43,11 @@ const Voting = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString("en-US");
+  };
+
+  const formatDay = (dateString) => {
+    const day = new Date(dateString);
+    return day.toLocaleDateString("en-US", { day: "numeric", month: "long" });
   };
 
   const handleNominate = async (votingId, numberofcandidates) => {
@@ -75,6 +86,7 @@ const Voting = () => {
         // setVotingId(votingId);
         setSelectedCandidates(candidates);
         setShowForm(true);
+        setShowResults(false);
       } else {
         alert("No candidates available for voting");
       }
@@ -108,20 +120,41 @@ const Voting = () => {
   const handleBack = () => {
     setShowForm(false);
     setSelectedCandidates([]);
+    setShowResults(false);
+  };
+
+  const handleShowResults = async (votingId) => {
+    try {
+      const response = await apiService.getCandidatesByVotingId(votingId);
+      const candidates = response.data;
+      setSelectedCandidates(candidates);
+      setShowForm(false);
+      setShowResults(true);
+    } catch (error) {
+      alert("Something is wrong !!");
+    }
   };
 
   return (
     <div>
+      <Navbar
+        role={sessionStorage.getItem("role")}
+        isLoggedIn={sessionStorage.getItem("isLoggedIn")}
+        name={sessionStorage.getItem("name")}
+      />
       <h1>Voting Page</h1>
       {!showForm ? (
-        <table className="table">
-          <thead className="thead-dark">
+        <Table className="table">
+          <thead className="table-dark">
             <tr>
               <th>Post Name</th>
               <th>Start Time</th>
               <th>End Time</th>
+              <th>Day</th>
               <th>Description</th>
+              <th>Status</th>
               <th>Action</th>
+              <th>Result</th>
             </tr>
           </thead>
           <tbody>
@@ -130,37 +163,56 @@ const Voting = () => {
                 <td>{event.postname}</td>
                 <td>{formatDate(event.startTime)}</td>
                 <td>{formatDate(event.endTime)}</td>
+                <td>{formatDay(event.startTime)}</td>
                 <td>{event.description}</td>
+                <td>{event.status}</td>
                 <td>
-                  <button
+                  <Button
                     onClick={() =>
                       handleNominate(event.votingId, event.numberofcandidates)
                     }
+                    disabled={event.status === "closed"}
                   >
                     Nominate
-                  </button>
-                  <button onClick={() => handleVote(event.votingId)}>
+                  </Button>
+                  <Button
+                    onClick={() => handleVote(event.votingId)}
+                    disabled={event.status === "closed"}
+                  >
                     Vote
-                  </button>
+                  </Button>
+                </td>
+                <td>
+                  <Button onClick={() => handleShowResults(event.votingId)}>
+                    Show
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       ) : (
         <div>
           <h2>Vote Form</h2>
           {selectedCandidates.map((candidate) => (
             <div key={candidate.rid}>
               {candidate.resident.name}
-              <button onClick={() => handleVoteSubmit(candidate.votingEvent.votingId, candidate.resident.rid)}>
+              <Button
+                onClick={() =>
+                  handleVoteSubmit(
+                    candidate.votingEvent.votingId,
+                    candidate.resident.rid
+                  )
+                }
+              >
                 Vote
-              </button>
+              </Button>
             </div>
           ))}
-          <button onClick={handleBack}>Back</button>
+          <Button onClick={handleBack}>Back</Button>
         </div>
       )}
+      {showResults && <Result candidates={selectedCandidates} />}
     </div>
   );
 };
