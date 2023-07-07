@@ -47,7 +47,7 @@ public class ComplaintController {
 	ResidentRepository residentRepo;
 	@Autowired
 	private ObjectMapper mapper ;
-	@PostMapping
+	@PostMapping("/complaints")
 	public  ResponseEntity<?> saveComplaint(
 			@RequestParam("file") MultipartFile file,
 			@RequestParam("complaintData") String complaintData) throws IOException{

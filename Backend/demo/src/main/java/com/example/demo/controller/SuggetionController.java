@@ -43,7 +43,7 @@ public class SuggetionController {
 	public ResponseEntity<List<Suggetion>> getSuggestionByResidentId(@PathVariable("rid") Integer rid) throws SuggetionException, ResidentException{
 		return new ResponseEntity<List<Suggetion>>(service.getSuggestionByResidentId(rid),HttpStatus.OK);
 	}
-	@PutMapping("/suggetion/{id}")
+	@PutMapping("/suggetion/{sid}")
 	public ResponseEntity<Suggetion> updateStatus(@PathVariable("id") Long id) throws SuggetionException,ResidentException{
 		return new ResponseEntity<Suggetion>(service.updateStatus(id),HttpStatus.OK);
 	}

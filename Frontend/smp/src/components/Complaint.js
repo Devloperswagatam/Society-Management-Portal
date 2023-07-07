@@ -1,50 +1,63 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
-import ApiService from "./services/ApiService";
-const Complaint = () => {
-  const api = new ApiService();
-  
-  const[image, setImage]=useState("");
+
+const ComplaintForm = () => {
+  const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
-  const handelTitleChange = (e) => {
-    setTitle(e.target.value);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
   };
-  const handleFile=(complaint)=>{
-    const image = complaint.target.files[0];
-    setImage(image);
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
-  const handelStatusChange = (e) => {
-    setStatus(e.target.value);
+
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value);
   };
-  const handelAddComplaint = () => {
-    const complaint = {
-      title: title,
-      description: description,
-      status: status,
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const complaintData = {
+      title,
+      description,
+      status,
     };
-    api
-      .addComplaint(complaint)
-      .then((response) => {
-        console.log("complaint added", response.data);
-        setTitle("");
-        setDescription("");
-        setStatus("");
-      })
-      .catch((error) => {
-        console.error("Error adding the complaint :", error);
-      });
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("complaintData", JSON.stringify(complaintData));
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/complaints",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response.data); // Handle the response as needed
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
           <h2 className="text-center m-4">Add Complaint</h2>
-          <form onSubmit={handelAddComplaint}>
+          <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="title" className="form-label">
                 Title :
@@ -55,7 +68,7 @@ const Complaint = () => {
                 placeholder="Enter the Title"
                 name="title"
                 value={title}
-                onChange={handelTitleChange}
+                onChange={handleTitleChange}
               />
             </div>
             <div className="mb-3">
@@ -80,7 +93,7 @@ const Complaint = () => {
                 placeholder="Enter Your Status"
                 name="status"
                 value={status}
-                onChange={handelStatusChange}
+                onChange={handleStatusChange}
               />
             </div>
             <div className="mb-3">
@@ -90,8 +103,7 @@ const Complaint = () => {
               <input
                 type="file"
                 className="form-control"
-                value={image}
-                onChange={handleFile}
+                onChange={handleFileChange}
               />
             </div>
             <button type="submit" className="btn btn-outline-primary">
@@ -106,4 +118,5 @@ const Complaint = () => {
     </div>
   );
 };
-export default Complaint;
+
+export default ComplaintForm;

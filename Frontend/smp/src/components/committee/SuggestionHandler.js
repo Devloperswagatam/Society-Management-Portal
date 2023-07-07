@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../services/ApiService";
-
 const SuggestionHandler = () => {
   const api = new ApiService();
   const [suggestion, setSuggestion] = useState([]);
@@ -19,9 +18,28 @@ const SuggestionHandler = () => {
         console.log(`Error fetching suggestions`, error);
       });
   };
+  const updateSuggestion = (sid) => {
+    api
+      .updateSuggestion(sid)
+      .then((response) => {
+        console.log(response.data);
+        setSuggestion(response.data);
+      })
+      .catch((error) => {
+        console.log(`Error fetching suggestions`, error);
+      });
+  };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");
+  };
+  const handleStatusUpdate = () => {
+    try {
+      updateSuggestion();
+      getSuggestions();
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="container">
@@ -30,7 +48,7 @@ const SuggestionHandler = () => {
           <thead>
             <tr>
               <th scope="col">SId</th>
-              <th scope="col">Resident ID</th>
+              <th scope="col">RId</th>
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">Date</th>
@@ -43,18 +61,18 @@ const SuggestionHandler = () => {
                 <th scope="row" key={suggestion.sid}>
                   {suggestion.sid + 1}
                 </th>
-
                 <td>{suggestion.resident}</td>
                 <td>{suggestion.title}</td>
                 <td>{suggestion.description}</td>
                 <td>{formatDate(suggestion.date)}</td>
 
-                {/* <button
-                  className="btn btn-outline-success mx-2"
-                  onClick={() => updateStatus(suggestion.status)}
-                >
-                  Viewed
-                </button> */}
+                <td>
+                  {suggestion.status !== "viewed" && (
+                    <button onClick={() => handleStatusUpdate(suggestion.sid)}>
+                      Mark as Viewed
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

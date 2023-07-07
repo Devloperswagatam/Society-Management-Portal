@@ -29,10 +29,10 @@ const ComplaintHandler = () => {
           <thead>
             <tr>
               <th scope="col">CId</th>
-              <th scope="col">Resident ID</th>
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">Date</th>
+              <th scope="col">Image name</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -42,18 +42,12 @@ const ComplaintHandler = () => {
                 <th scope="row" key={complaint.cid}>
                   {complaint.cid + 1}
                 </th>
-
-                <td>{complaint.resident}</td>
                 <td>{complaint.title}</td>
                 <td>{complaint.description}</td>
                 <td>{formatDate(complaint.date)}</td>
+                <td>{complaint.image}</td>
 
-                {/* <button
-                  className="btn btn-outline-success mx-2"
-                  onClick={() => updateStatus(suggestion.status)}
-                >
-                  Viewed
-                </button> */}
+                <button className="btn btn-outline-success mx-2">Status</button>
               </tr>
             ))}
           </tbody>
