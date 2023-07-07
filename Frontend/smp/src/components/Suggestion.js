@@ -78,11 +78,7 @@ const Suggestion = () => {
                 onChange={handelStatusChange}
               />
             </div>
-            <button
-              type="submit"
-              className="btn btn-outline-primary"
-              onClick={handelAddSuggestion}
-            >
+            <button type="submit" className="btn btn-outline-primary">
               Submit
             </button>
             <Link className="btn btn-outline-danger mx-2" to="/home">

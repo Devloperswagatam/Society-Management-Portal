@@ -29,6 +29,7 @@ const ComplaintHandler = () => {
           <thead>
             <tr>
               <th scope="col">CId</th>
+              <th scope="col">Resident ID</th>
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">Date</th>
@@ -37,11 +38,12 @@ const ComplaintHandler = () => {
             </tr>
           </thead>
           <tbody>
-            {complaint.map((complaint, index) => (
+            {complaint.map((complaint) => (
               <tr key={complaint.cid}>
                 <th scope="row" key={complaint.cid}>
-                  {complaint.cid + 1}
+                  {complaint.cid}
                 </th>
+                <td>{complaint.resident.rid}</td>
                 <td>{complaint.title}</td>
                 <td>{complaint.description}</td>
                 <td>{formatDate(complaint.date)}</td>

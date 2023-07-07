@@ -18,28 +18,21 @@ const SuggestionHandler = () => {
         console.log(`Error fetching suggestions`, error);
       });
   };
-  const updateSuggestion = (sid) => {
-    api
-      .updateSuggestion(sid)
-      .then((response) => {
-        console.log(response.data);
-        setSuggestion(response.data);
-      })
-      .catch((error) => {
-        console.log(`Error fetching suggestions`, error);
-      });
+  
+  const updateSuggestion1 = async (sid)=>{
+    try{
+      const updateSuggestion={
+        status:"viewed",
+      };
+      await api.updateSuggestionStatus(sid, updateSuggestion);
+      getSuggestions();
+    }catch(error){
+      console.log("Error updating the suggestion status :", error);
+    }
   };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");
-  };
-  const handleStatusUpdate = () => {
-    try {
-      updateSuggestion();
-      getSuggestions();
-    } catch (error) {
-      console.error(error);
-    }
   };
   return (
     <div className="container">
@@ -56,19 +49,19 @@ const SuggestionHandler = () => {
             </tr>
           </thead>
           <tbody>
-            {suggestion.map((suggestion, index) => (
+            {suggestion.map((suggestion) => (
               <tr key={suggestion.sid}>
                 <th scope="row" key={suggestion.sid}>
-                  {suggestion.sid + 1}
+                  {suggestion.sid}
                 </th>
-                <td>{suggestion.resident}</td>
+                <td>{suggestion.resident.rid}</td>
                 <td>{suggestion.title}</td>
                 <td>{suggestion.description}</td>
                 <td>{formatDate(suggestion.date)}</td>
 
                 <td>
-                  {suggestion.status !== "viewed" && (
-                    <button onClick={() => handleStatusUpdate(suggestion.sid)}>
+                  {suggestion.status === "pending" && (
+                    <button onClick={() => updateSuggestion1(suggestion.sid)}>
                       Mark as Viewed
                     </button>
                   )}

@@ -27,16 +27,20 @@ public class Complaint {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long cid;
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne
 	@JoinColumn(name = "rid",referencedColumnName = "rid")
 	private Resident resident;
+	
 	@NotNull(message = "title is Mandatory")
     private String title;
+	
 	@NotNull(message = "description is Mandatory")
     private String description;
+	
 	@NotNull(message = "date is Mandatory")
     private LocalDateTime date;
+	
 	@NotNull(message = "status is Mandatory")
     private String status;
 	

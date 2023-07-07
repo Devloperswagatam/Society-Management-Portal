@@ -14,8 +14,8 @@ const Bulletin=()=>{
     })
     .catch((error)=>{
       console.log(`Error fetching bulletin`,error);
-    })
-  }
+    });
+  };
   return(
     
     <Card style={{ width: '20rem' }}>
