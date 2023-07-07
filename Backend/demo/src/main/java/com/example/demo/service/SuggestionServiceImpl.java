@@ -21,8 +21,8 @@ public class SuggestionServiceImpl implements SuggestionService{
 	@Autowired
 	ResidentRepository residentrepository;
 	@Override
-	public Suggetion updateStatus(Long id) throws ResidentException, SuggetionException {
-		Optional<Suggetion> suggestionOptional = suggestionrepository.findById(id);
+	public Suggetion updateStatus(Long sid) throws ResidentException, SuggetionException {
+		Optional<Suggetion> suggestionOptional = suggestionrepository.findById(sid);
 	    if (suggestionOptional.isPresent()) {
 	    	Suggetion suggestion = suggestionOptional.get();
 	        

@@ -85,13 +85,23 @@ class ApiService {
       this.getConfig()
     );
   }
+  updateSuggestion(sid) {
+    return axios.put(
+      `http://localhost:8088/sugg/suggetion/${sid}`,
+      this.getConfig()
+    );
+  }
   //Complaint Api
   getComplaints() {
     return axios.get("http://localhost:8088/api/complaint", this.getConfig());
   }
-  addComplaint(complaint) {
-    return axios.post("http://localhost:8088/api", complaint, this.getConfig());
-  }
+  // addComplaint(complaint) {
+  //   return axios.post(
+  //     "http://localhost:8088/api",
+  //     complaint,
+  //     this.getConfig()
+  //   );
+  // }
   //Bulletin Api
   getBulletins() {
     return axios.get("http://localhost:8088/bull/notes", this.getConfig());

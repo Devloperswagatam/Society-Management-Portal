@@ -90,7 +90,7 @@ const Events = () => {
                    type="text"
                    className="form-control"
                    placeholder="Enter the Event Name"
-                   name="eventName"
+                   name="ename"
                    value={newEvent.ename}
                    onChange={handleChange}
                    required
@@ -117,6 +117,7 @@ const Events = () => {
                  <input
                    type="number"
                    className="form-control"
+                   name="budget"
                    placeholder="Enter the Event Budget"
                    value={newEvent.budget}
                    onChange={handleChange}
@@ -131,6 +132,7 @@ const Events = () => {
                    type="datetime-local"
                    className="form-control"
                    placeholder="Enter the Start Time"
+                   name="startTime"
                    value={newEvent.startTime}
                    onChange={handleChange}
                    required
@@ -142,6 +144,7 @@ const Events = () => {
                    type="datetime-local"
                    className="form-control"
                    placeholder="Enter the Event End Time"
+                   name="endTime"
                    value={newEvent.endTime}
                    onChange={handleChange}
                    required
@@ -152,6 +155,7 @@ const Events = () => {
                  <textarea
                    className="form-control"
                    placeholder="Enter the Event Description"
+                   name="description"
                    value={newEvent.description}
                    onChange={handleChange}
                    required

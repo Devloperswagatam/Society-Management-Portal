@@ -11,5 +11,5 @@ public interface SuggestionService {
 	
 	Suggetion createSuggetion(Suggetion suggestion) throws SuggetionException, ResidentException;
 	
-	Suggetion updateStatus(Long id) throws  ResidentException, SuggetionException;
+	Suggetion updateStatus(Long sid) throws  ResidentException, SuggetionException;
 }
