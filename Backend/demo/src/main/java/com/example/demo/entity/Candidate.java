@@ -25,7 +25,7 @@ public class Candidate {
 	@Id
 	private Integer rid;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "rid",referencedColumnName = "rid")

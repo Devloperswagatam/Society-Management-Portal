@@ -4,7 +4,8 @@ import ApiService from "./services/ApiService";
 const Voting = () => {
   const apiService = new ApiService();
   const [votingEvents, setVotingEvents] = useState([]);
-  const [error, setError] = useState(null);
+  const [selectedCandidates, setSelectedCandidates] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     getVotingEvents();
@@ -15,7 +16,6 @@ const Voting = () => {
       .getVotingEvents()
       .then((response) => {
         const currentDate = new Date();
-        console.log(currentDate);
         const nextThreeDays = new Date();
         nextThreeDays.setDate(currentDate.getDate() + 3);
 
@@ -31,7 +31,7 @@ const Voting = () => {
 
         setVotingEvents(filteredEvents);
       })
-      .catch((error) => setError(error.response.data.message));
+      .catch((error) => alert(error.response.data));
   };
 
   const formatDate = (dateString) => {
@@ -39,63 +39,128 @@ const Voting = () => {
     return date.toLocaleTimeString("en-US");
   };
 
-  const handleNominate = async (votingId) => {
+  const handleNominate = async (votingId, numberofcandidates) => {
     try {
-      const candidates = await apiService.getCandidatesByVotingId(votingId)
-      .then((response)=>{
-        
-      })
-      console.log(candidates);
-      const numberOfCandidates = 5; // Set the maximum number of candidates here
-  
-      if (candidates.length < numberOfCandidates) {
+      const response = await apiService.getCandidatesByVotingId(votingId);
+      const candidates = response.data;
+
+      if (candidates.length < numberofcandidates) {
         // Allow nomination
-        await apiService.addCandidate(votingId); // Replace with the actual method to add a candidate
-        console.log("Candidate added successfully");
+        await apiService
+          .addCandidate(votingId)
+          .then((response) => {
+            alert(response.data);
+          })
+          .catch((error) => {
+            alert(error.response.data);
+            console.error("Error adding voting event:", error);
+          });
+
         // Update the UI accordingly
       } else {
-        // Show a message or disable the nominate button
-        console.log("Maximum number of candidates reached");
+        alert("Maximum number of candidates reached");
       }
     } catch (error) {
+      alert("Something went wrong!");
       console.log("Error handling nomination:", error);
+    }
+  };
+
+  const handleVote = async (votingId) => {
+    try {
+      const response = await apiService.getCandidatesByVotingId(votingId);
+      const candidates = response.data;
+
+      if (candidates.length > 0) {
+        // setVotingId(votingId);
+        setSelectedCandidates(candidates);
+        setShowForm(true);
+      } else {
+        alert("No candidates available for voting");
+      }
+    } catch (error) {
+      console.log("Error handling vote:", error);
+    }
+  };
+
+  const handleVoteSubmit = async (votingId, rid) => {
+    try {
+      const response = await apiService
+        .addVote(votingId, rid)
+        .then((response) => {
+          alert(response.data);
+          console.log("Vote added successfully");
+          // Update the UI accordingly
+          setShowForm(false);
+          setSelectedCandidates([]);
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+
+      // Show a success message or perform any other necessary action
+    } catch (error) {
+      console.log("Error submitting vote:", error);
       // Handle the error
     }
+  };
+
+  const handleBack = () => {
+    setShowForm(false);
+    setSelectedCandidates([]);
   };
 
   return (
     <div>
       <h1>Voting Page</h1>
-      <table className="table">
-        <thead className="thead-dark">
-          <tr>
-            <th>Post Name</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Description</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {votingEvents.map((event) => (
-            <tr key={event.votingId}>
-              <td>{event.postname}</td>
-              <td>{formatDate(event.startTime)}</td>
-              <td>{formatDate(event.endTime)}</td>
-              <td>{event.description}</td>
-              <td>
-                <button
-                  onClick={() => handleNominate(event.votingId)}
-                  disabled={event.count === event.numberofcandidates}
-                >
-                  Nominate
-                </button>
-                <button>Vote</button>
-              </td>
+      {!showForm ? (
+        <table className="table">
+          <thead className="thead-dark">
+            <tr>
+              <th>Post Name</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Description</th>
+              <th>Action</th>
             </tr>
+          </thead>
+          <tbody>
+            {votingEvents.map((event) => (
+              <tr key={event.votingId}>
+                <td>{event.postname}</td>
+                <td>{formatDate(event.startTime)}</td>
+                <td>{formatDate(event.endTime)}</td>
+                <td>{event.description}</td>
+                <td>
+                  <button
+                    onClick={() =>
+                      handleNominate(event.votingId, event.numberofcandidates)
+                    }
+                  >
+                    Nominate
+                  </button>
+                  <button onClick={() => handleVote(event.votingId)}>
+                    Vote
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div>
+          <h2>Vote Form</h2>
+          {selectedCandidates.map((candidate) => (
+            <div key={candidate.rid}>
+              {candidate.resident.name}
+              <button onClick={() => handleVoteSubmit(candidate.votingEvent.votingId, candidate.resident.rid)}>
+                Vote
+              </button>
+            </div>
           ))}
-        </tbody>
-      </table>
+          <button onClick={handleBack}>Back</button>
+        </div>
+      )}
     </div>
   );
 };

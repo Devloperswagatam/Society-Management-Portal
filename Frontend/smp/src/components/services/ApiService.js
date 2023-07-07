@@ -68,8 +68,17 @@ class ApiService {
   }
 
   addCandidate(votingId) {
-    return axios.add(
+    return axios.post(
       `http://localhost:8088/residents/voting/candidates/${votingId}`,
+      {},
+      this.getConfig()
+    );
+  }
+
+  addVote(votingId, rid) {
+    return axios.post(
+      `http://localhost:8088/residents/voting/votes/${votingId}/${rid}`,
+      {},
       this.getConfig()
     );
   }
