@@ -11,6 +11,8 @@ const Logout = () => {
   sessionStorage.removeItem("role");
   sessionStorage.removeItem("name");
   sessionStorage.removeItem("isLoggedIn");
+  sessionStorage.removeItem("rid");
+  // sessionStorage.removeItem("duo");
 
   toast.success("Logged out successfully",{
     position:'top-center',

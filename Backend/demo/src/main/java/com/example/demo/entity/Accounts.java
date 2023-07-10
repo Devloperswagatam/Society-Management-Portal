@@ -27,8 +27,8 @@ public class Accounts {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer billNo;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	// @JsonIgnore
+	@ManyToOne()
 	@JoinColumn(name = "rid", referencedColumnName = "rid")
 	private Resident resident;
 	

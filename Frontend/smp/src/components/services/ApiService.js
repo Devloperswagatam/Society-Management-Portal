@@ -204,6 +204,13 @@ class ApiService {
       this.getConfig()
     );
   }
+
+  getAllAccounts() {
+    return axios.get(
+      "http://localhost:8088/residents/accounts/all",
+      this.getConfig()
+    );
+  }
 }
 
 export default ApiService;

@@ -48,7 +48,7 @@ public class AccountController {
 		return new ResponseEntity<List<Accounts>>(accountService.viewLogedInResidentsAccounts(),HttpStatus.OK);
 	}
 
-	@GetMapping("/accounts")
+	@GetMapping("/all")
 	public ResponseEntity<List<Accounts>> getAllAccounts() throws AccountsException, ResidentException{
 		return new ResponseEntity<List<Accounts>>(accountService.getAllAccounts(), HttpStatus.OK);
 	}

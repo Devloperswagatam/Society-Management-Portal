@@ -54,8 +54,8 @@ const Login = () => {
   return (
     <div className="container">
       <div className="row" style={{marginTop:"10rem"}}>
-        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <form onSubmit={submitHandler}>
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'white'}}>
+          <form onSubmit={submitHandler} style={{backgroundColor:'white'}}>
             <div className="mb-3">
               <label htmlFor="userName" className="form-label">
                 User Name
