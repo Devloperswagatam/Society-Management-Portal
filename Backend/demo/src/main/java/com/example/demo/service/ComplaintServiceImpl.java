@@ -20,8 +20,6 @@ public class ComplaintServiceImpl implements ComplaintService {
 	@Autowired
 	ResidentRepository repository;
 	
-	
-	
 	@Override
 	public Complaint updateStatus(Long id) throws ResidentException, ComplaintException {
 		Optional<Complaint> complaintOptional = complaintRepository.findById(id);
@@ -74,5 +72,12 @@ public class ComplaintServiceImpl implements ComplaintService {
 		            throw new ComplaintException("Complaint has not been sent");
 		        }
 			}
-
+	@Override
+	public List<Complaint> getAllComplaints() {
+		return complaintRepository.findAll();
 	}
+
+}
+
+
+

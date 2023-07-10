@@ -19,7 +19,6 @@ public class StorageService {
 
 	        ImageData imageData = repository.save(ImageData.builder()
 	                .name(file.getOriginalFilename())
-	                .type(file.getContentType())
 	                .imageData(ImageUtils.compressImage(file.getBytes())).build());
 	        if (imageData != null) {
 	            return "file uploaded successfully : " + file.getOriginalFilename();
