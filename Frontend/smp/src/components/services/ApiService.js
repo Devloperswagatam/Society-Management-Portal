@@ -30,6 +30,20 @@ class ApiService {
       this.getConfig()
     );
   }
+  updateResident(resident) {
+    return axios.put(
+      "http://localhost:8088/residents/resident",
+      resident,
+      this.getConfig()
+    );
+  }
+  getResidentDetails(resident) {
+    return axios.get(
+      "http://localhost:8088/residents/resident/loggedin",
+      resident,
+      this.getConfig()
+    );
+  }
 
   //Events api
   getEvents() {
@@ -131,20 +145,35 @@ class ApiService {
       this.getConfig()
     );
   }
-  updateSuggestionStatus(sid ,updatedSuggestion) {
+  updateSuggestion(id, updatedSuggestion) {
     return axios.put(
-      `http://localhost:8088/sugg/suggetion/${sid}`,updatedSuggestion,
+      `http://localhost:8088/sugg/suggetion/${id}`,
+      updatedSuggestion,
       this.getConfig()
     );
   }
   //Complaint Api
   getComplaints() {
-    return axios.get("http://localhost:8088/api/complaint", this.getConfig());
+    return axios.get("http://localhost:8088/api/complaints", this.getConfig());
   }
   addComplaint(complaint) {
     return axios.post(
-      "http://localhost:8088/api",
+      "http://localhost:8088/api/complaint",
       complaint,
+      this.getConfig()
+    );
+  }
+  addComplaintWithImage(formData) {
+    return axios.post(
+      "http://localhost:8088/api/complaintwithImage",
+      formData,
+      this.getConfig()
+    );
+  }
+  updateComplaint(id, updateComplaint) {
+    return axios.put(
+      `http://localhost:8088/api/complaints/${id}`,
+      updateComplaint,
       this.getConfig()
     );
   }

@@ -1,26 +1,9 @@
 package com.example.demo;
 
-import java.io.File;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.example.demo.controller.ComplaintController;
-import com.example.demo.entity.Accounts;
-import com.example.demo.entity.Resident;
 import com.example.demo.exception.CommitteeException;
 import com.example.demo.repository.AccountsRepository;
 import com.example.demo.repository.ResidentRepository;
@@ -61,7 +44,6 @@ public class DemoApplication {
 	private EventService eventService;
 
 	public static void main(String[] args) {
-		new File(ComplaintController.uploadDirectory).mkdir();
 		SpringApplication.run(DemoApplication.class, args);
 		System.out.println("Runninggg.......");
 		
