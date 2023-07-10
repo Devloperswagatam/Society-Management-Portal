@@ -13,14 +13,12 @@ const Suggestion = () => {
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
-  const handelStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
+
   const handelAddSuggestion = () => {
     const suggestion = {
       title: title,
       description: description,
-      status: status,
+      status: "pending",
     };
 
     api
@@ -72,24 +70,7 @@ const Suggestion = () => {
                   required
                 />
               </div>
-              <div className="mb-3">
-                <label htmlFor="Status" className="form-label">
-                  Status :
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Your Status"
-                  name="status"
-                  value={status}
-                  onChange={handelStatusChange}
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn btn-outline-primary"
-                onClick={handelAddSuggestion}
-              >
+              <button type="submit" className="btn btn-outline-primary">
                 Submit
               </button>
               <Link className="btn btn-outline-danger mx-2" to="/home">

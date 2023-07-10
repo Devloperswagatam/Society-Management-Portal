@@ -16,7 +16,8 @@ import SuggestionHandler from "./committee/SuggestionHandler";
 import VotingHandler from "./committee/VotingHandler";
 import BulletinHandler from "./committee/BulletinHandler";
 import AccountHandler from "./committee/AccountHandler";
-
+import PeopleList from "./ContactPeopleList";
+import EditResidentForm from "./EditResident";
 const Menu = () => {
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -47,7 +48,9 @@ const Menu = () => {
         <Route path="/suggestionHandler" element={<SuggestionHandler />} />
         <Route path="/votingHandler" element={<VotingHandler />} />
         <Route path="/bulletinHandler" element={<BulletinHandler />} />
-        <Route path="/accountHandler" element={<AccountHandler/>}/>
+        <Route path="/accountHandler" element={<AccountHandler />} />
+        <Route path="/ContactPeopleList" element={<PeopleList />} />
+        <Route path="/EditResident" element={<EditResidentForm />} />
       </Routes>
     </Router>
   );

@@ -1,40 +1,44 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../services/ApiService";
 import Navbar from "../Navbar";
+
 const SuggestionHandler = () => {
   const api = new ApiService();
-  const [suggestion, setSuggestion] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     getSuggestions();
   }, []);
+
   const getSuggestions = () => {
     api
       .getSuggestions()
       .then((response) => {
         console.log(response.data);
-        setSuggestion(response.data);
+        setSuggestions(response.data);
       })
       .catch((error) => {
-        console.log(`Error fetching suggestions`, error);
+        console.log("Error fetching suggestions:", error);
       });
   };
-  
-  const updateSuggestion1 = async (sid)=>{
-    try{
-      const updateSuggestion={
-        status:"viewed",
-      };
-      await api.updateSuggestionStatus(sid, updateSuggestion);
-      getSuggestions();
-    }catch(error){
-      console.log("Error updating the suggestion status :", error);
-    }
+
+  const updateSuggestionStatus = (sid) => {
+    api
+      .updateSuggestion(sid)
+      .then((response) => {
+        console.log("Suggestion marked as viewed", response.data);
+        getSuggestions();
+      })
+      .catch((error) => {
+        console.log("Error marking suggestion as viewed:", error);
+      });
   };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");
   };
+
   return (
     <>
       <Navbar
@@ -44,35 +48,38 @@ const SuggestionHandler = () => {
       />
       <div className="container">
         <div className="py-4">
-          <table className="table border shadow">
-            <thead>
+          <table className="table table-hover">
+            <thead className="table-dark">
               <tr>
-                <th scope="col">SId</th>
-                <th scope="col">RId</th>
+                <th scope="col">Suggestion ID</th>
+                <th scope="col">Resident ID</th>
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
                 <th scope="col">Date</th>
+                <th scope="col">Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {suggestion.map((suggestion) => (
+              {suggestions.map((suggestion) => (
                 <tr key={suggestion.sid}>
-                  <th scope="row" key={suggestion.sid}>
-                    {suggestion.sid}
-                  </th>
-                  <td>{suggestion.resident}</td>
+                  <td>{suggestion.sid}</td>
+                  <td>{suggestion.resident.rid}</td>
                   <td>{suggestion.title}</td>
                   <td>{suggestion.description}</td>
                   <td>{formatDate(suggestion.date)}</td>
-
+                  <td>{suggestion.status}</td>
                   <td>
-                    {suggestion.status !== "viewed" && (
+                    {!suggestion.viewed ? (
                       <button
-                        onClick={() => updateSuggestion1(suggestion.sid)}
+                        className="btn btn-primary btn-sm"
+                        onClick={() => updateSuggestionStatus(suggestion.sid)}
+                        disabled={suggestion.viewed}
                       >
-                        Mark as Viewed
+                        {suggestion.viewed ? "Viewed" : "Mark as Viewed"}
                       </button>
+                    ) : (
+                      "Viewed"
                     )}
                   </td>
                 </tr>
@@ -84,4 +91,5 @@ const SuggestionHandler = () => {
     </>
   );
 };
+
 export default SuggestionHandler;
