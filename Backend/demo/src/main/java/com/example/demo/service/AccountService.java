@@ -16,4 +16,6 @@ public interface AccountService {
 	Accounts createAccount(Resident resident) throws AccountsException, ResidentException;
 	
 	Accounts updateStatus(Integer billNo) throws AccountsException, ResidentException;
+
+	List<Accounts> getAllAccounts() throws AccountsException, ResidentException;
 }

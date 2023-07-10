@@ -41,13 +41,13 @@ public class Resident {
 	private String password;
 	
 	@NotNull(message = "Wing number is mandatory")
-	private Integer wingNo;
+	private String wingNo;
 	
 	@NotNull(message = "Flat number is mandatory")
-	private Integer flatNo;
+	private String flatNo;
 	
 	@NotNull(message = "Floor number is mandatory")
-	private Integer floorNo;
+	private String floorNo;
 	
 	@NotNull(message = "Member count is mandatory")
 	private Integer memberCount;

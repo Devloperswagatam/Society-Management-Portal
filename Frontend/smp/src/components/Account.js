@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
+import { Button, Table } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const Account = () => {
   const [accounts, setAccounts] = useState([]);
@@ -43,6 +45,10 @@ const Account = () => {
       await apiService.updateAccountStatus(billNo, updatedAccount);
       fetchAccounts();
     } catch (error) {
+      toast.error("Error while paying",{
+        position:'top-center',
+        theme:'colored'
+      });
       console.log("Error updating account status:", error);
     }
   };
@@ -93,8 +99,8 @@ const Account = () => {
         />
       </div>
 
-      <table className="table">
-        <thead className="thead-dark">
+      <Table className="table">
+        <thead className="table-dark">
           <tr>
             <th>Date</th>
             <th>Status</th>
@@ -109,17 +115,17 @@ const Account = () => {
               <td>{account.status}</td>
               <td>{account.amount}</td>
               <td>
-                <button
+                <Button
                   onClick={() => payAccount(account.billNo)}
                   disabled={account.status === "paid"}
                 >
                   PAY
-                </button>
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 };

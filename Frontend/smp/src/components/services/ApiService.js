@@ -66,6 +66,21 @@ class ApiService {
     );
   }
 
+  getOrganizersByEventId(eid) {
+    return axios.get(
+      `http://localhost:8088/events/organizer/${eid}`,
+      this.getConfig()
+    );
+  }
+
+  removeOrganizer(eid) {
+    return axios.post(
+      `http://localhost:8088/events/removeorganizer/${eid}`,
+      {},
+      this.getConfig()
+    );
+  }
+
   //voting api
   getVotingEvents() {
     return axios.get(
@@ -81,6 +96,12 @@ class ApiService {
       this.getConfig()
     );
   }
+  getAllCandidates() {
+    return axios.get(
+      "http://localhost:8088/residents/voting/candidates",
+      this.getConfig()
+    );
+  }
 
   getCandidatesByVotingId(votingId) {
     return axios.get(
@@ -92,6 +113,14 @@ class ApiService {
   addCandidate(votingId) {
     return axios.post(
       `http://localhost:8088/residents/voting/candidates/${votingId}`,
+      {},
+      this.getConfig()
+    );
+  }
+
+  withdrawCandidate(votingId) {
+    return axios.post(
+      `http://localhost:8088/residents/voting/event/${votingId}`,
       {},
       this.getConfig()
     );

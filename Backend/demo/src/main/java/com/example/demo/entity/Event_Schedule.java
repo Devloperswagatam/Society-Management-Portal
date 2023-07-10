@@ -47,6 +47,9 @@ public class Event_Schedule {
 	
 	@NotNull(message = "Description is mandatory")
 	private String description;
+
+	@NotNull(message = "Status is mandatory")
+	private String status;
 	
 	@ManyToMany(targetEntity = Resident.class)
 	private List<Resident> organizerTeam = new ArrayList<>();
