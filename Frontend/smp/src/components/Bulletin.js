@@ -15,8 +15,8 @@ const Bulletin=()=>{
     })
     .catch((error)=>{
       console.log(`Error fetching bulletin`,error);
-    })
-  }
+    });
+  };
   return(
     <>
     <Navbar

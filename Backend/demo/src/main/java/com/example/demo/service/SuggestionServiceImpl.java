@@ -74,6 +74,10 @@ public class SuggestionServiceImpl implements SuggestionService{
             throw new SuggetionException("Suggestion has not been sent");
         }
 	}
+	@Override
+	public List<Suggetion> getAllSuggestions() {
+		return suggestionrepository.findAll();
 	}
+}
 
 

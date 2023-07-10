@@ -36,6 +36,56 @@ const Suggestion = () => {
       });
   };
   return (
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <h2 className="text-center m-4">Add Suggestion</h2>
+          <form onSubmit={handelAddSuggestion}>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">
+                Title :
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter the Title"
+                name="title"
+                value={title}
+                onChange={handelTitleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Description" className="form-label">
+                Description :
+              </label>
+              <textarea
+                className="form-control"
+                placeholder="Enter the Event Description"
+                value={description}
+                onChange={handleDescriptionChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Status" className="form-label">
+                Status :
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Your Status"
+                name="status"
+                value={status}
+                onChange={handelStatusChange}
+              />
+            </div>
+            <button type="submit" className="btn btn-outline-primary">
+              Submit
+            </button>
+            <Link className="btn btn-outline-danger mx-2" to="/home">
+              Cancel
+            </Link>
+          </form>
     <>
       <Navbar
         role={sessionStorage.getItem("role")}

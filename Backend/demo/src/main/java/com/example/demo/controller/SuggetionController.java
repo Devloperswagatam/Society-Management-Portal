@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +32,10 @@ public class SuggetionController {
 		return new ResponseEntity<Suggetion>(service.createSuggetion(suggetion),HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/suggestion")
-	public ResponseEntity<List<Suggetion>> getAllSuggetion()throws SuggetionException {
-		List<Suggetion> sugglist = new ArrayList<>();
-		suggestRepo.findAll().forEach(sugglist::add);
-		return new ResponseEntity<List<Suggetion>>(sugglist, HttpStatus.OK);
-	}
+	 @GetMapping("/suggestion")
+	    public List<Suggetion> getAllSuggestions() {
+	        return service.getAllSuggestions();
+	    }
 	@GetMapping("/suggetion/{rid}")
 	public ResponseEntity<List<Suggetion>> getSuggestionByResidentId(@PathVariable("rid") Integer rid) throws SuggetionException, ResidentException{
 		return new ResponseEntity<List<Suggetion>>(service.getSuggestionByResidentId(rid),HttpStatus.OK);
