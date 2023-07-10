@@ -58,4 +58,5 @@ public class EventController {
 		eventService.removeOrganizer(eid);
 		return new ResponseEntity<String>("Organizer removed successfully",HttpStatus.CREATED);
 	}
+
 }

@@ -99,4 +99,9 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
+	@Override
+	public List<Accounts> getAllAccounts() throws AccountsException, ResidentException {
+		return accountsRepository.findAll();
+	}
+
 }

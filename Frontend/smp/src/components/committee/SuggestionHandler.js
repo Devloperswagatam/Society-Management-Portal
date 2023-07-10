@@ -36,39 +36,6 @@ const SuggestionHandler = () => {
     return date.toLocaleDateString("en-US");
   };
   return (
-<<<<<<< HEAD
-    <div className="container">
-      <div className="py-4">
-        <table className="table border shadow">
-          <thead>
-            <tr>
-              <th scope="col">SId</th>
-              <th scope="col">RId</th>
-              <th scope="col">Title</th>
-              <th scope="col">Description</th>
-              <th scope="col">Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {suggestion.map((suggestion) => (
-              <tr key={suggestion.sid}>
-                <th scope="row" key={suggestion.sid}>
-                  {suggestion.sid}
-                </th>
-                <td>{suggestion.resident.rid}</td>
-                <td>{suggestion.title}</td>
-                <td>{suggestion.description}</td>
-                <td>{formatDate(suggestion.date)}</td>
-
-                <td>
-                  {suggestion.status === "pending" && (
-                    <button onClick={() => updateSuggestion1(suggestion.sid)}>
-                      Mark as Viewed
-                    </button>
-                  )}
-                </td>
-=======
     <>
       <Navbar
         role={sessionStorage.getItem("role")}
@@ -86,7 +53,6 @@ const SuggestionHandler = () => {
                 <th scope="col">Description</th>
                 <th scope="col">Date</th>
                 <th>Action</th>
->>>>>>> 37404743a592094ea67564a61c2de0e5f1bc4af2
               </tr>
             </thead>
             <tbody>
