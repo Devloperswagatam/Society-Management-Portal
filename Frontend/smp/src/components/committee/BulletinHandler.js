@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import Navbar from "../Navbar";
+import { toast } from "react-toastify";
 
 const BulletinHandler = () => {
   const api = new ApiService();
@@ -13,7 +14,8 @@ const BulletinHandler = () => {
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
-  const handelAddBulletin = () => {
+  const handelAddBulletin = (e) => {
+    e.preventDefault();
     const bulletin = {
       name: name,
       description: description,
@@ -21,11 +23,21 @@ const BulletinHandler = () => {
     api
       .addBulletin(bulletin)
       .then((response) => {
+        toast.success("Bulletin added successfully",{
+          position:'top-center',
+          theme:'colored',
+          autoClose:2000
+        });
         console.log("bulletin added", response.data);
         setName("");
         setDescription("");
       })
       .catch((error) => {
+        toast.error("Something is wrong",{
+          position:'top-center',
+          theme:'colored',
+          autoClose:2000
+        });
         console.error("Error adding the bulletin :", error);
       });
   };
@@ -69,9 +81,10 @@ const BulletinHandler = () => {
               <button type="submit" className="btn btn-outline-primary">
                 Submit
               </button>
-              <Link className="btn btn-outline-danger mx-2" to="/home">
+
+              {/* <Link className="btn btn-outline-danger mx-2" to="/home">
                 Cancel
-              </Link>
+              </Link> */}
             </form>
           </div>
         </div>

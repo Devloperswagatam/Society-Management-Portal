@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
 import Card from "react-bootstrap/Card";
 import Navbar from "./Navbar";
+import "../components/componentCSS/Bulletin.css"
 
 const Bulletin = () => {
   const api = new ApiService();
@@ -31,7 +32,8 @@ const Bulletin = () => {
         name={sessionStorage.getItem("name")}
       />
 
-      <div className="card-container">
+      {/* <div className=""> */}
+      <div className="bulletin">
         {bulletin.map((bulletin) => (
           <Card
             key={bulletin.id}
@@ -62,6 +64,7 @@ const Bulletin = () => {
           </Card>
         ))}
       </div>
+      {/* </div> */}
     </>
   );
 };
