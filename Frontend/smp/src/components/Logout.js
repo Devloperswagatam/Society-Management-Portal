@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Logout = () => {
   let navigate = useNavigate();
@@ -11,10 +12,15 @@ const Logout = () => {
   sessionStorage.removeItem("name");
   sessionStorage.removeItem("isLoggedIn");
 
+  toast.success("Logged out successfully",{
+    position:'top-center',
+    theme:'colored'
+  });
   useEffect(() => {
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+    // setTimeout(() => {
+    // }, 2000);
+    
+    navigate("/");
   }, []);
 
   return <div>Logged out</div>;

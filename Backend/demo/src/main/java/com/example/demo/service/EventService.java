@@ -12,7 +12,11 @@ public interface EventService {
 
 	List<Event_Schedule> viewEvent() throws EventsException;
 
-	public void addResidentToOrganizerTeam(Integer eid, Resident resident) throws ResidentException;
+	public void addResidentToOrganizerTeam(Integer eid) throws ResidentException, EventsException;
 
 	public List<Resident> getOrganizersByEventId(Integer eid) throws EventsException, ResidentException;
+
+	public void automaticallyCloseEvents();
+
+	public void removeOrganizer(Integer eid) throws EventsException, ResidentException;
 }

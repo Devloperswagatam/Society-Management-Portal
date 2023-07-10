@@ -16,6 +16,8 @@ import SuggestionHandler from "./committee/SuggestionHandler";
 import VotingHandler from "./committee/VotingHandler";
 import BulletinHandler from "./committee/BulletinHandler";
 import AccountHandler from "./committee/AccountHandler";
+import Register from "./Register";
+import Organizer from "./Organizer";
 
 const Menu = () => {
   useEffect(() => {
@@ -48,6 +50,8 @@ const Menu = () => {
         <Route path="/votingHandler" element={<VotingHandler />} />
         <Route path="/bulletinHandler" element={<BulletinHandler />} />
         <Route path="/accountHandler" element={<AccountHandler/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/organizer/:eventId" element={<Organizer/>}/>
       </Routes>
     </Router>
   );

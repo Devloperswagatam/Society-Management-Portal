@@ -27,6 +27,7 @@ import com.example.demo.repository.ResidentRepository;
 import com.example.demo.service.AccountService;
 import com.example.demo.service.CommitteeService;
 import com.example.demo.service.EmailSenderService;
+import com.example.demo.service.EventService;
 import com.example.demo.service.ResidentService;
 import com.example.demo.service.VotingEventService;
 
@@ -55,6 +56,9 @@ public class DemoApplication {
 	
 	@Autowired
 	private VotingEventService votingEventService;
+
+	@Autowired
+	private EventService eventService;
 
 	public static void main(String[] args) {
 		new File(ComplaintController.uploadDirectory).mkdir();
@@ -134,6 +138,10 @@ public class DemoApplication {
 		votingEventService.automaticallyCloseVotingEvents();
 	}
 	
+	// @Scheduled(fixedRate = 3000)
+	public void automaticallyCloseEvents(){
+		eventService.automaticallyCloseEvents();
+	}
 	
 //	@Scheduled(fixedRate = 60000)
 	public void addCommittee() throws CommitteeException {

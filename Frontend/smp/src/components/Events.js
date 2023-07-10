@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "./services/ApiService";
-import { Link } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import Organizer from "./Organizer";
 
 const Events = () => {
   const api = new ApiService();
+  let navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [newEvent, setNewEvent] = useState({
@@ -16,9 +19,11 @@ const Events = () => {
     endTime: "",
     description: "",
   });
+  const [filter, setFilter] = useState("future");
+  const [searchDate, setSearchDate] = useState("");
+  // const [selectedEventId,setSelectedEventId] = useState("");
 
   useEffect(() => {
-    // Fetch events when the component mounts
     getEvents();
   }, []);
 
@@ -26,10 +31,27 @@ const Events = () => {
     api
       .getEvents()
       .then((response) => {
-        console.log(response.data);
-        setEvents(response.data);
+        let filteredEvents = response.data;
+
+        if (filter === "past") {
+          const currentDate = new Date();
+          filteredEvents = filteredEvents.filter(
+            (event) => new Date(event.endTime).getDate() < currentDate.getDate()
+          );
+        } else if (filter === "future") {
+          const currentDate = new Date();
+          filteredEvents = filteredEvents.filter(
+            (event) => new Date(event.startTime).getDate() >= currentDate.getDate()
+          );
+        }
+
+        setEvents(filteredEvents);
       })
       .catch((error) => {
+        toast.error("Error fetching events",{
+          position: "top-center",
+          theme: "colored"
+        });
         console.log("Error fetching events:", error);
       });
   };
@@ -37,6 +59,11 @@ const Events = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString("en-US");
+  };
+
+  const formatDay = (dateString) => {
+    const day = new Date(dateString);
+    return day.toLocaleDateString("en-US", { day: "numeric", month: "long" });
   };
 
   const toggleForm = () => {
@@ -56,7 +83,10 @@ const Events = () => {
     api
       .addEvent(newEvent)
       .then((response) => {
-        console.log("Event added successfully:", response.data);
+        toast.success("Event created successfully",{
+          position:"top-center",
+          theme:"colored"
+        });
         setNewEvent({
           ename: "",
           place: "",
@@ -65,18 +95,76 @@ const Events = () => {
           endTime: "",
           description: "",
         });
-        getEvents(); // Refresh events after adding a new event
-        toggleForm(); // Hide the form after adding the event
+        getEvents();
+        toggleForm();
+        
       })
       .catch((error) => {
-        console.log("Error adding event:", error);
+        toast.error(error.response.data.message,{
+          position: "top-center",
+          theme: "colored"
+        });
       });
   };
 
-  const formatDay = (dateString) => {
-    const day = new Date(dateString);
-    return day.toLocaleDateString("en-US", { day: "numeric", month: "long" });
+  const handleViewOrganizers = (eventId) => {
+    // setSelectedEventId(eventId);
+    navigate(`/organizer/${eventId}`);
   };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const handleSearchDateChange = (e) => {
+    setSearchDate(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchDate.trim() === "") {
+      getEvents();
+    } else {
+      searchEventsByDate(searchDate);
+    }
+  };
+
+  const searchEventsByDate = (dateString) => {
+    const filteredDate = new Date(dateString);
+    const filteredEvents = events.filter(
+      (event) =>
+        new Date(event.startTime).toLocaleDateString() ===
+        filteredDate.toLocaleDateString()
+    );
+    setEvents(filteredEvents);
+  };
+
+  const handleInterest = async(event)=>{
+    const organizers = event.organizerTeam;
+    const maxNumberOfOrganizers = 5;
+    console.log(event.eid);
+
+    if(organizers.length < maxNumberOfOrganizers){
+      await api.addOrganizer(event.eid)
+      .then((response)=>{
+        toast.success(response.data,{
+          position:'top-center',
+          theme:'colored'
+        });
+      })
+      .catch((error)=>{
+        toast.error(error.response.data.message,{
+          position:'top-center',
+          theme:'colored'
+        })
+      })
+    }else{
+      toast.error("Organizer team is full !!",{
+        position:'top-center',
+        theme:'colored'
+      });
+    }
+  }
 
   return (
     <div>
@@ -86,7 +174,9 @@ const Events = () => {
         name={sessionStorage.getItem("name")}
       />
       <h2>Events Page</h2>
-      <Button onClick={toggleForm}>Create Event</Button>
+      <Button onClick={toggleForm} style={{ margin: "0 0 1rem 80rem" }}>
+        Create Event
+      </Button>
 
       {showForm ? (
         <div className="container">
@@ -175,38 +265,93 @@ const Events = () => {
                 <button className="btn btn-outline-primary" type="submit">
                   Create Event
                 </button>
-                <Link className="btn btn-outline-danger mx-2" to="/home">
+                <button className="btn btn-outline-danger" onClick={toggleForm}>
                   Cancel
-                </Link>
+                </button>
               </Form>
             </div>
           </div>
         </div>
       ) : (
-        <Table className="table">
-          <thead className="table-dark">
-            <tr>
-              <th>Event Name</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Day</th>
-              <th>Location</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.eid}>
-                <td>{event.ename}</td>
-                <td>{formatDate(event.startTime)}</td>
-                <td>{formatDate(event.endTime)}</td>
-                <td>{formatDay(event.startTime)}</td>
-                <td>{event.place}</td>
-                <td>{event.description}</td>
+        <>
+          <div style={{ width: "30rem", margin: "-4.5rem 0 1rem 1rem" }}>
+            <Form
+              className="mt-3"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 0.5fr 0.5fr",
+                gap: "0.5rem",
+              }}
+            >
+              <Form.Group controlId="filter">
+                {/* <Form.Label>Filter:</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  value={filter}
+                  onChange={handleFilterChange}
+                >
+                  <option value="future">Future Events</option>
+                  <option value="past">Past Events</option>
+                  <option value="all">All Events</option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="searchDate">
+                {/* <Form.Label>Search by Date:</Form.Label> */}
+                <Form.Control
+                  type="date"
+                  value={searchDate}
+                  onChange={handleSearchDateChange}
+                />
+              </Form.Group>
+              <Button onClick={getEvents} className="mr-2">
+                Apply
+              </Button>
+              <Button variant="secondary" onClick={() => setSearchDate("")}>
+                Clear
+              </Button>
+            </Form>
+          </div>
+
+          <Table className="table">
+            <thead className="table-dark">
+              <tr>
+                <th>Event Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Day</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Organizers</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.eid}>
+                  <td>{event.ename}</td>
+                  <td>{formatDate(event.startTime)}</td>
+                  <td>{formatDate(event.endTime)}</td>
+                  <td>{formatDay(event.startTime)}</td>
+                  <td>{event.place}</td>
+                  <td>{event.description}</td>
+                  <td>{event.status}</td>
+                  <td>
+                    <button
+                      className="btn btn-outline-primary"
+                      style={{ margin: "0 5px 0 0" }}
+                      disabled={event.status==="closed"}
+                      onClick={()=>handleInterest(event)}
+                    >
+                      Interested
+                    </button>
+                    <button className="btn btn-outline-primary" onClick={()=>handleViewOrganizers(event.eid)}>View</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          {/* <Organizer eventId={selectedEventId} /> */}
+        </>
       )}
     </div>
   );

@@ -5,7 +5,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 const Navbar = (props) => {
-  console.log("props = ", props);
+  // console.log("props = ", props);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const [role, setRole] = useState("");
   // const [name,setName] = useState("");

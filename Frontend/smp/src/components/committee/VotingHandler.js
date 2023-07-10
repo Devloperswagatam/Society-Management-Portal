@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import ApiService from "../services/ApiService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
+import { toast } from "react-toastify";
+import { Form } from "react-bootstrap";
 
 function VotingHandler() {
   const api = new ApiService();
+  let nevigate = useNavigate();
   const [postName, setPostName] = useState("");
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [numberofcandidates, setNumberofcandidates] = useState();
+  const [numberofcandidates, setNumberofcandidates] = useState("");
 
   const handlePostNameChange = (e) => {
     setPostName(e.target.value);
@@ -31,7 +34,8 @@ function VotingHandler() {
     setNumberofcandidates(e.target.value);
   };
 
-  const handleAddVotingEvent = () => {
+  const handleAddVotingEvent = (e) => {
+    e.preventDefault();
     const votingEvent = {
       postname: postName,
       numberofcandidates: numberofcandidates,
@@ -43,17 +47,28 @@ function VotingHandler() {
     api
       .addVotingEvent(votingEvent)
       .then((response) => {
-        // Handle the response after adding the voting event
-        console.log("Voting event added successfully:", response.data);
+        toast.success("Voting event created successfully", {
+          position: "top-center",
+          theme: "colored",
+          autoClose: 2000
+        });
         // Clear the input fields
         setPostName("");
         setDescription("");
         setStartTime("");
         setEndTime("");
+        setNumberofcandidates("");
+        // setTimeout(() => {
+        // }, 3000);
+        nevigate("/voting");
       })
       .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          theme: "colored",
+        });
         // Handle the error if adding the voting event fails
-        console.error("Error adding voting event:", error);
+        // console.error("Error adding voting event:", error);
       });
   };
 
@@ -68,7 +83,7 @@ function VotingHandler() {
         <div className="row">
           <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
             <h4 className="text-center m-4">Voting Page</h4>
-            <form>
+            <Form onSubmit={handleAddVotingEvent}>
               <div className="mb-3">
                 <label htmlFor="postName" className="form-label">
                   Post Name:
@@ -88,7 +103,7 @@ function VotingHandler() {
                 <input
                   type="number"
                   className="form-control"
-                  placeholder="Enter the Title"
+                  placeholder="Enter the number of candidates"
                   value={numberofcandidates}
                   onChange={handleCandidateNumber}
                 />
@@ -129,17 +144,13 @@ function VotingHandler() {
                   onChange={handleEndTimeChange}
                 />
               </div>
-              <button
-                type="submit"
-                className="btn btn-outline-primary"
-                onClick={handleAddVotingEvent}
-              >
+              <button type="submit" className="btn btn-outline-primary">
                 Add Voting Event
               </button>
-              <Link className="btn btn-outline-danger mx-2" to="/home">
+              {/* <Link className="btn btn-outline-danger mx-2">
                 Cancel
-              </Link>
-            </form>
+              </Link> */}
+            </Form>
           </div>
         </div>
       </div>

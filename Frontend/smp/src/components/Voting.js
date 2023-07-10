@@ -3,6 +3,7 @@ import ApiService from "./services/ApiService";
 import Result from "./Result";
 import { Table, Form, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
+import { toast } from "react-toastify";
 
 const Voting = () => {
   const apiService = new ApiService();
@@ -10,34 +11,42 @@ const Voting = () => {
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [filter, setFilter] = useState("future");
+  const [searchDate, setSearchDate] = useState("");
+  const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
     getVotingEvents();
+    getCandidates();
   }, []);
 
   const getVotingEvents = () => {
     apiService
       .getVotingEvents()
       .then((response) => {
-        const currentDate = new Date();
-        const nextThreeDays = new Date();
-        nextThreeDays.setDate(currentDate.getDate() + 3);
+        let filteredEvents = response.data;
 
-        const filteredEvents = response.data.filter((event) => {
-          const eventStartTime = new Date(event.startTime);
-          const eventEndTime = new Date(event.endTime);
-          const isSameDayOrAfterCurrent =
-            eventStartTime.getDate() >= currentDate.getDate() &&
-            eventStartTime.getDate() <= nextThreeDays;
-          const isSameDayOrBeforeNext =
-            eventEndTime.getDate() >= currentDate.getDate() &&
-            eventEndTime.getDate() <= nextThreeDays;
-          return isSameDayOrAfterCurrent || isSameDayOrBeforeNext;
-        });
+        if (filter === "past") {
+          const currentDate = new Date();
+          filteredEvents = filteredEvents.filter(
+            (event) => new Date(event.endTime).getDate() < currentDate.getDate()
+          );
+        } else if (filter === "future") {
+          const currentDate = new Date();
+          filteredEvents = filteredEvents.filter(
+            (event) =>
+              new Date(event.startTime).getDate() >= currentDate.getDate()
+          );
+        }
 
         setVotingEvents(filteredEvents);
       })
-      .catch((error) => alert(error.response.data));
+      .catch((error) =>
+        toast.error(error.response.data, {
+          position: "top-center",
+          theme: "colored",
+        })
+      );
   };
 
   const formatDate = (dateString) => {
@@ -60,21 +69,78 @@ const Voting = () => {
         await apiService
           .addCandidate(votingId)
           .then((response) => {
-            alert(response.data);
+            toast.success(response.data, {
+              position: "top-center",
+              theme: "colored",
+              autoClose: 1000,
+            });
           })
           .catch((error) => {
-            alert(error.response.data);
+            toast.error(error.response.data, {
+              position: "top-center",
+              theme: "colored",
+              autoClose: 1000,
+            });
             console.error("Error adding voting event:", error);
           });
 
         // Update the UI accordingly
       } else {
-        alert("Maximum number of candidates reached");
+        toast.warn("Maximum number of candidates reached", {
+          position: "top-center",
+          theme: "colored",
+          autoClose: 1000,
+        });
       }
     } catch (error) {
-      alert("Something went wrong!");
+      toast.error("Something went wrong!", {
+        position: "top-center",
+        theme: "colored",
+        autoClose: 1000,
+      });
       console.log("Error handling nomination:", error);
     }
+  };
+
+  const getCandidates = () => {
+    // Fetch candidates from the server
+    apiService
+      .getAllCandidates()
+      .then((response) => {
+        setCandidates(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching candidates:", error);
+      });
+  };
+
+  const isNominated = (votingId) => {
+    candidates.some(
+      (candidate) =>
+        candidate.rid === sessionStorage.getItem("rid") &&
+        candidate.votingEvent.votingId === votingId
+    );
+  };
+  // console.log(candidates);
+  // console.log(isNominated(4));
+
+  const handleWithdrawNomination = async (votingId) => {
+    const response = await apiService
+      .withdrawCandidate(votingId)
+      .then((response) => {
+        toast.success(response.data, {
+          position: "top-center",
+          theme: "colored",
+          autoClose: 1000,
+        });
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          theme: "colored",
+          autoClose: 1000,
+        });
+      });
   };
 
   const handleVote = async (votingId) => {
@@ -88,9 +154,16 @@ const Voting = () => {
         setShowForm(true);
         setShowResults(false);
       } else {
-        alert("No candidates available for voting");
+        toast.warn("No candidates available for voting", {
+          position: "top-center",
+          theme: "colored",
+        });
       }
     } catch (error) {
+      toast.error("Error handling vote", {
+        position: "top-center",
+        theme: "colored",
+      });
       console.log("Error handling vote:", error);
     }
   };
@@ -100,18 +173,28 @@ const Voting = () => {
       const response = await apiService
         .addVote(votingId, rid)
         .then((response) => {
-          alert(response.data);
+          toast.success(response.data, {
+            position: "top-center",
+            theme: "colored",
+          });
           console.log("Vote added successfully");
           // Update the UI accordingly
           setShowForm(false);
           setSelectedCandidates([]);
         })
         .catch((error) => {
-          alert(error.response.data);
+          toast.error(error.response.data, {
+            position: "top-center",
+            theme: "colored",
+          });
         });
 
       // Show a success message or perform any other necessary action
     } catch (error) {
+      toast.error("Error submitting vote", {
+        position: "top-center",
+        theme: "colored",
+      });
       console.log("Error submitting vote:", error);
       // Handle the error
     }
@@ -131,8 +214,38 @@ const Voting = () => {
       setShowForm(false);
       setShowResults(true);
     } catch (error) {
-      alert("Something is wrong !!");
+      toast.error("Something is wrong !!", {
+        position: "top-center",
+        theme: "colored",
+      });
     }
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const handleSearchDateChange = (e) => {
+    setSearchDate(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchDate.trim() === "") {
+      getVotingEvents();
+    } else {
+      searchEventsByDate(searchDate);
+    }
+  };
+
+  const searchEventsByDate = (dateString) => {
+    const filteredDate = new Date(dateString);
+    const filteredEvents = events.filter(
+      (event) =>
+        new Date(event.startTime).toLocaleDateString() ===
+        filteredDate.toLocaleDateString()
+    );
+    setEvents(filteredEvents);
   };
 
   return (
@@ -144,56 +257,111 @@ const Voting = () => {
       />
       <h1>Voting Page</h1>
       {!showForm ? (
-        <Table className="table">
-          <thead className="table-dark">
-            <tr>
-              <th>Post Name</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Day</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Action</th>
-              <th>Result</th>
-            </tr>
-          </thead>
-          <tbody>
-            {votingEvents.map((event) => (
-              <tr key={event.votingId}>
-                <td>{event.postname}</td>
-                <td>{formatDate(event.startTime)}</td>
-                <td>{formatDate(event.endTime)}</td>
-                <td>{formatDay(event.startTime)}</td>
-                <td>{event.description}</td>
-                <td>{event.status}</td>
-                <td>
-                  <Button
-                    onClick={() =>
-                      handleNominate(event.votingId, event.numberofcandidates)
-                    }
-                    disabled={event.status === "closed"}
-                  >
-                    Nominate
-                  </Button>
-                  <Button
-                    onClick={() => handleVote(event.votingId)}
-                    disabled={event.status === "closed"}
-                  >
-                    Vote
-                  </Button>
-                </td>
-                <td>
-                  <Button onClick={() => handleShowResults(event.votingId)}>
-                    Show
-                  </Button>
-                </td>
+        <>
+          <div style={{ width: "30rem", margin: "0 0 1rem 1rem" }}>
+            <Form
+              className="mt-3"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 0.5fr 0.5fr",
+                gap: "0.5rem",
+              }}
+            >
+              <Form.Group controlId="filter">
+                {/* <Form.Label>Filter:</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  value={filter}
+                  onChange={handleFilterChange}
+                >
+                  <option value="future">Future Events</option>
+                  <option value="past">Past Events</option>
+                  <option value="all">All Events</option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="searchDate">
+                {/* <Form.Label>Search by Date:</Form.Label> */}
+                <Form.Control
+                  type="date"
+                  value={searchDate}
+                  onChange={handleSearchDateChange}
+                />
+              </Form.Group>
+              <Button onClick={getVotingEvents} className="mr-2">
+                Apply
+              </Button>
+              <Button variant="secondary" onClick={() => setSearchDate("")}>
+                Clear
+              </Button>
+            </Form>
+          </div>
+
+          <Table className="table">
+            <thead className="table-dark">
+              <tr>
+                <th>Post Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Day</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Result</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {votingEvents.map((event) => (
+                <tr key={event.votingId}>
+                  <td>{event.postname}</td>
+                  <td>{formatDate(event.startTime)}</td>
+                  <td>{formatDate(event.endTime)}</td>
+                  <td>{formatDay(event.startTime)}</td>
+                  <td>{event.description}</td>
+                  <td>{event.status}</td>
+                  <td>
+                    {isNominated(event.votingId) ? (
+                      <Button
+                        className="btn btn-danger"
+                        style={{ margin: "0 5px 0 0" }}
+                        onClick={() => handleWithdrawNomination(event.votingId)}
+                        disabled={event.status === "closed"}
+                      >
+                        Withdraw
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{ margin: "0 5px 0 0" }}
+                        onClick={() =>
+                          handleNominate(
+                            event.votingId,
+                            event.numberofcandidates
+                          )
+                        }
+                        disabled={event.status === "closed"}
+                      >
+                        Nominate
+                      </Button>
+                    )}
+                    <Button
+                      onClick={() => handleVote(event.votingId)}
+                      disabled={event.status === "closed"}
+                    >
+                      Vote
+                    </Button>
+                  </td>
+                  <td>
+                    <Button onClick={() => handleShowResults(event.votingId)}>
+                      Show
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </>
       ) : (
         <div>
-          <h2>Vote Form</h2>
+          {/* <h2>Vote Form</h2> */}
           {selectedCandidates.map((candidate) => (
             <div key={candidate.rid}>
               {candidate.resident.name}

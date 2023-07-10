@@ -12,10 +12,11 @@ const Home = () => {
     try {
       const response = await apiService.getLoggedResident();
       const resident = response.data;
-      console.log(response.data);
+      // console.log(response.data);
       setIsLoggedIn(true);
       setRole(resident.role);
       setName(resident.name);
+      sessionStorage.setItem("rid",resident.rid);
       sessionStorage.setItem("role", resident.role);
       sessionStorage.setItem("name", resident.name);
       sessionStorage.setItem("isLoggedIn", true);
@@ -30,7 +31,7 @@ const Home = () => {
 
   return (
     <>
-      <Navbar role={role} isLoggedIn={isLoggedIn} name={name} />;
+      <Navbar role={role} isLoggedIn={isLoggedIn} name={name} />
       <h1>Home page</h1>
     </>
   );
