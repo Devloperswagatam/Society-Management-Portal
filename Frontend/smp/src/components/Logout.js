@@ -11,15 +11,16 @@ const Logout = () => {
   sessionStorage.removeItem("role");
   sessionStorage.removeItem("name");
   sessionStorage.removeItem("isLoggedIn");
+  sessionStorage.removeItem("rid");
 
-  toast.success("Logged out successfully",{
-    position:'top-center',
-    theme:'colored'
+  toast.success("Logged out successfully", {
+    position: "top-center",
+    theme: "colored",
   });
   useEffect(() => {
     // setTimeout(() => {
     // }, 2000);
-    
+
     navigate("/");
   }, []);
 

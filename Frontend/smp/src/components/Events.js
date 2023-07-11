@@ -41,16 +41,17 @@ const Events = () => {
         } else if (filter === "future") {
           const currentDate = new Date();
           filteredEvents = filteredEvents.filter(
-            (event) => new Date(event.startTime).getDate() >= currentDate.getDate()
+            (event) =>
+              new Date(event.startTime).getDate() >= currentDate.getDate()
           );
         }
 
         setEvents(filteredEvents);
       })
       .catch((error) => {
-        toast.error("Error fetching events",{
+        toast.error("Error fetching events", {
           position: "top-center",
-          theme: "colored"
+          theme: "colored",
         });
         console.log("Error fetching events:", error);
       });
@@ -83,9 +84,9 @@ const Events = () => {
     api
       .addEvent(newEvent)
       .then((response) => {
-        toast.success("Event created successfully",{
-          position:"top-center",
-          theme:"colored"
+        toast.success("Event created successfully", {
+          position: "top-center",
+          theme: "colored",
         });
         setNewEvent({
           ename: "",
@@ -97,12 +98,11 @@ const Events = () => {
         });
         getEvents();
         toggleForm();
-        
       })
       .catch((error) => {
-        toast.error(error.response.data.message,{
+        toast.error(error.response.data.message, {
           position: "top-center",
-          theme: "colored"
+          theme: "colored",
         });
       });
   };
@@ -139,32 +139,33 @@ const Events = () => {
     setEvents(filteredEvents);
   };
 
-  const handleInterest = async(event)=>{
+  const handleInterest = async (event) => {
     const organizers = event.organizerTeam;
     const maxNumberOfOrganizers = 5;
     console.log(event.eid);
 
-    if(organizers.length < maxNumberOfOrganizers){
-      await api.addOrganizer(event.eid)
-      .then((response)=>{
-        toast.success(response.data,{
-          position:'top-center',
-          theme:'colored'
-        });
-      })
-      .catch((error)=>{
-        toast.error(error.response.data.message,{
-          position:'top-center',
-          theme:'colored'
+    if (organizers.length < maxNumberOfOrganizers) {
+      await api
+        .addOrganizer(event.eid)
+        .then((response) => {
+          toast.success(response.data, {
+            position: "top-center",
+            theme: "colored",
+          });
         })
-      })
-    }else{
-      toast.error("Organizer team is full !!",{
-        position:'top-center',
-        theme:'colored'
+        .catch((error) => {
+          toast.error(error.response.data.message, {
+            position: "top-center",
+            theme: "colored",
+          });
+        });
+    } else {
+      toast.error("Organizer team is full !!", {
+        position: "top-center",
+        theme: "colored",
       });
     }
-  }
+  };
 
   return (
     <div>
@@ -339,12 +340,17 @@ const Events = () => {
                     <button
                       className="btn btn-outline-primary"
                       style={{ margin: "0 5px 0 0" }}
-                      disabled={event.status==="closed"}
-                      onClick={()=>handleInterest(event)}
+                      disabled={event.status === "closed"}
+                      onClick={() => handleInterest(event)}
                     >
                       Interested
                     </button>
-                    <button className="btn btn-outline-primary" onClick={()=>handleViewOrganizers(event.eid)}>View</button>
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => handleViewOrganizers(event.eid)}
+                    >
+                      View
+                    </button>
                   </td>
                 </tr>
               ))}

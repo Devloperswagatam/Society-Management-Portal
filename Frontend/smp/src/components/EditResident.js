@@ -1,67 +1,61 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
-
-const EditResidentForm = ({residentData}) => {
+import { Link } from "react-router-dom";
+import "./componentCSS/EditResident.css";
+import { toast } from "react-toastify";
+const EditResidentForm = () => {
   const api = new ApiService();
-  const [rid, setRid] = useState("");
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [wingNo, setWingNo] = useState("");
-  const [floorNo, setFloorNo] = useState("");
-  const [flatNo, setFlatNo] = useState("");
-  const [memberCount, setMemberCount] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-   
-  useEffect((resident)=>{
-    if(residentData){
-      setRid(resident.rid);
-      setName(resident.name);
-      setPhoneNumber(resident.phoneNumber);
-      setEmail(resident.email);
-      setFlatNo(resident.flatNo);
-      setFloorNo(resident.floorNo);
-      setPassword(resident.password);
-      setMemberCount(resident.memberCount);
-      setRole(resident.role);
-    }
-  },[residentData])
 
+  const [resident, setResident] = useState({
+    rid: "",
+    name: "",
+    phoneNumber: "",
+    email: "",
+    wingNo: "",
+    flatNo: "",
+    floorNo: "",
+    memberCount: "",
+    role: "",
+  });
+  useEffect(() => {
+    loadResident();
+  }, []);
+  const handleChange = (e) => {
+    setResident({ ...resident, [e.target.name]: e.target.value });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const resident = {
-      rid:rid,
-      name: name,
-      phoneNumber: phoneNumber,
-      email: email,
-      wingNo: wingNo,
-      floorNo: floorNo,
-      flatNo: flatNo,
-      memberCount: memberCount,
-      password: password,
-      role: role,
-    };
-    
+
     api
       .updateResident(resident)
-      .then((response) => {
-        console.log("Resident updated:", response.data);
-        // Clear form fields after successful update
-        setName("");
-        setPhoneNumber("");
-        setEmail("");
-        setWingNo("");
-        setFloorNo("");
-        setFlatNo("");
-        setMemberCount("");
-        setPassword("");
-        setRole("");
+      .then(() => {
+        toast.success("Resident Updated successfully", {
+          position: "top-center",
+          theme: "colored",
+          autoClose: 2000,
+        });
+        console.log("Resident updated successfully!");
       })
       .catch((error) => {
+        toast.error("Something is wrong", {
+          position: "top-center",
+          theme: "colored",
+          autoClose: 2000,
+        });
         console.error("Error updating resident:", error);
+      });
+  };
+
+  const loadResident = () => {
+    api
+      .getLoggedResident()
+      .then((result) => {
+        console.log("Resident fetched:", result.data);
+        setResident(result.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching resident:", error);
       });
   };
 
@@ -73,115 +67,119 @@ const EditResidentForm = ({residentData}) => {
         name={sessionStorage.getItem("name")}
       />
       <div className="container">
-      <div className="row">
-      <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-      <div className="d-flex justify-content-end">
-            </div>
-        <h2 className="text-center m-4">Edit Resident</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+        <div className="row">
+          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+            <h2 className="text-center m-4">Edit Resident</h2>
+            <form onSubmit={handleSubmit} className="grid-form">
+              <div className="form-group">
+                <label htmlFor="name">Name:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  value={resident.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="phoneNumber">Phone Number:</label>
+                <input
+                  type="tel"
+                  className="form-control"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={resident.phoneNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email:</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="email"
+                  value={resident.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="wingNo">Wing Number:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="wingNo"
+                  name="wingNo"
+                  value={resident.wingNo}
+                  onChange={handleChange}
+                  disabled // Add the disabled attribute
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="floorNo">Floor Number:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="floorNo"
+                  name="floorNo"
+                  value={resident.floorNo}
+                  onChange={handleChange}
+                  disabled // Add the disabled attribute
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="flatNo">Flat Number:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="flatNo"
+                  name="flatNo"
+                  value={resident.flatNo}
+                  onChange={handleChange}
+                  disabled // Add the disabled attribute
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="memberCount">Member Count:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="memberCount"
+                  name="memberCount"
+                  value={resident.memberCount}
+                  onChange={handleChange}
+                  disabled // Add the disabled attribute
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="role">Role:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="role"
+                  name="role"
+                  value={resident.role}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Save
+              </button>
+              <Link className="btn btn-danger mx-2" to="/Profile">
+                Back
+              </Link>
+            </form>
           </div>
-          <div className="form-group">
-            <label htmlFor="phoneNumber">Phone Number:</label>
-            <input
-              type="tel"
-              className="form-control"
-              id="phoneNumber"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="wingNo">Wing Number:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="wingNo"
-              value={wingNo}
-              onChange={(e) => setWingNo(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="floorNo">Floor Number:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="floorNo"
-              value={floorNo}
-              onChange={(e) => setFloorNo(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="flatNo">Flat Number:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="flatNo"
-              value={flatNo}
-              onChange={(e) => setFlatNo(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="memberCount">Member Count:</label>
-            <input
-              type="number"
-              className="form-control"
-              id="memberCount"
-              value={memberCount}
-              onChange={(e) => setMemberCount(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="role">Role:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">Save</button>
-        </form>
-      </div>
-      </div>
+        </div>
       </div>
     </>
   );

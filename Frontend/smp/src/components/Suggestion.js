@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
+import { toast } from "react-toastify";
 const Suggestion = () => {
   const api = new ApiService();
   const [title, setTitle] = useState("");
@@ -14,7 +15,8 @@ const Suggestion = () => {
     setDescription(e.target.value);
   };
 
-  const handelAddSuggestion = () => {
+  const handelAddSuggestion = (e) => {
+    e.preventDefault();
     const suggestion = {
       title: title,
       description: description,
@@ -24,12 +26,22 @@ const Suggestion = () => {
     api
       .addSuggestion(suggestion)
       .then((response) => {
+        toast.success("Suggestion added successfully",{
+          position:'top-center',
+          theme:'colored',
+          autoClose:2000
+        });
         console.log("suggestion added", response.data);
         setTitle("");
         setDescription("");
         setStatus("");
       })
       .catch((error) => {
+        toast.error("Something is wrong",{
+          position:'top-center',
+          theme:'colored',
+          autoClose:2000
+        });
         console.error("Error adding the suggestion :", error);
       });
   };

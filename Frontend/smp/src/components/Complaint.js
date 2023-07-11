@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
-
+import { toast } from "react-toastify";
 const Complaint = () => {
   const api = new ApiService();
   const [title, setTitle] = useState("");
@@ -17,7 +17,8 @@ const Complaint = () => {
     setDescription(e.target.value);
   };
 
-  const handleAddComplaint = () => {
+  const handleAddComplaint = (e) => {
+    e.preventDefault();
     const complaint = {
       title: title,
       description: description,
@@ -27,12 +28,22 @@ const Complaint = () => {
     api
       .addComplaint(complaint)
       .then((response) => {
+        toast.success("Complaint added successfully",{
+          position:'top-center',
+          theme:'colored',
+          autoClose:2000
+        });
         console.log("Complaint added", response.data);
         setTitle("");
         setDescription("");
         setStatus("");
       })
       .catch((error) => {
+        toast.error("Something is wrong",{
+          position:'top-center',
+          theme:'colored',
+          autoClose:2000
+        });
         console.error("Error adding the complaint:", error);
       });
   };
