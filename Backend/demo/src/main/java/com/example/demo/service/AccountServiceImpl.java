@@ -101,6 +101,14 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public List<Accounts> getAllAccounts() throws AccountsException, ResidentException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		Resident existResident = residentRepository.findByEmail(username);
+		
+		if(!existResident.getRole().equals("committee")) {
+			throw new ResidentException("Committee Login required");
+		}
 		return accountsRepository.findAll();
 	}
 

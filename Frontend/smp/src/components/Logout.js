@@ -12,6 +12,7 @@ const Logout = () => {
   sessionStorage.removeItem("name");
   sessionStorage.removeItem("isLoggedIn");
   sessionStorage.removeItem("rid");
+  // sessionStorage.removeItem("duo");
 
   toast.success("Logged out successfully", {
     position: "top-center",
