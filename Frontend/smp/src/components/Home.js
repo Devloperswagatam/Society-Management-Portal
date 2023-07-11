@@ -4,6 +4,9 @@ import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
 import { Card } from "react-bootstrap";
 import "./componentCSS/Home.css";
+import firstphoto from "../images/photo1.jpg";
+import secondphoto from "../images/photo2.jpg";
+import thirdphoto from "../images/photo3.jpg";
 const Home = () => {
 
 
@@ -130,14 +133,14 @@ const Home = () => {
       
       <Carousel>
       <Carousel.Item>
-      {/* <img src={secondSlide} alt="home" className="second-slide" /> */}
+      <img src={firstphoto} alt="home" className="second-slide" />
         <Carousel.Caption>
           <h3>First slide label</h3>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-      {/* <img src={thirdSlide} alt="home" className="third-slide" /> */}
+      <img src={secondphoto} alt="home" className="third-slide" />
 
         <Carousel.Caption>
           <h3>Second slide label</h3>
@@ -145,7 +148,7 @@ const Home = () => {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-      {/* <img src={fourthSlide} alt="home" className="fourth-image" /> */}
+      <img src={thirdphoto} alt="home" className="fourth-image" />
 
         <Carousel.Caption>
           <h3>Third slide label</h3>
