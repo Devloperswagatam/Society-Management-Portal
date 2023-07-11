@@ -32,8 +32,7 @@ class ApiService {
   }
   updateResident(resident) {
     return axios.put(
-      "http://localhost:8088/residents/resident",
-      resident,
+      `http://localhost:8088/residents/resident`,resident,
       this.getConfig()
     );
   }

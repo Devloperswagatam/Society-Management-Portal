@@ -14,14 +14,14 @@ const Logout = () => {
   sessionStorage.removeItem("rid");
   // sessionStorage.removeItem("duo");
 
-  toast.success("Logged out successfully",{
-    position:'top-center',
-    theme:'colored'
+  toast.success("Logged out successfully", {
+    position: "top-center",
+    theme: "colored",
   });
   useEffect(() => {
     // setTimeout(() => {
     // }, 2000);
-    
+
     navigate("/");
   }, []);
 

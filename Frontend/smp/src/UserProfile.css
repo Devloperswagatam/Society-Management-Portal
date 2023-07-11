@@ -60,8 +60,7 @@
     justify-content: center;
   }
   
-  .edit-button,
-  .back-button {
+  .edit-button {
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;
@@ -79,5 +78,28 @@
   
   .back-button {
     background-color: #f44336;
+  }
+  .resident-info {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+
+  .info-item {
+    padding: 10px;
+  }
+  
+  .resident-info-heading {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .resident-info-text {
+    font-size: 20px;
   }
   

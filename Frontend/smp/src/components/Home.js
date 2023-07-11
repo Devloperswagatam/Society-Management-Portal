@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import Carousel from 'react-bootstrap/Carousel';
 import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
 import { Card } from "react-bootstrap";
 import "./componentCSS/Home.css";
-
 const Home = () => {
-  // console.log(`Total maount is ${props.totalAmount}`);
+
+
+
   // const totalAmount = useContext(AccountContext);
 
   const apiService = new ApiService();
@@ -125,6 +127,35 @@ const Home = () => {
           </Card.Body>
         </Card>
       </div>
+      
+      <Carousel>
+      <Carousel.Item>
+      {/* <img src={secondSlide} alt="home" className="second-slide" /> */}
+        <Carousel.Caption>
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+      {/* <img src={thirdSlide} alt="home" className="third-slide" /> */}
+
+        <Carousel.Caption>
+          <h3>Second slide label</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+      {/* <img src={fourthSlide} alt="home" className="fourth-image" /> */}
+
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+     
     </>
   );
 };
