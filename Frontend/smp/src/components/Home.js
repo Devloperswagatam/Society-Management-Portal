@@ -135,25 +135,25 @@ const Home = () => {
       <Carousel.Item>
       <img src={firstphoto} alt="home" className="second-slide" />
         <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <h3>Society Building</h3>
+          <p>A voluntary organization where any one can become a part and live as one family</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
       <img src={secondphoto} alt="home" className="third-slide" />
 
         <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <h3>Garden Area</h3>
+          <p>Well-Manintained, with variety of flowers and plants to give you a soothing environment</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
       <img src={thirdphoto} alt="home" className="fourth-image" />
 
         <Carousel.Caption>
-          <h3>Third slide label</h3>
+          <h3>Pool Area</h3>
           <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+            A day will be not so hot during summer with the pool area at your residency.
           </p>
         </Carousel.Caption>
       </Carousel.Item>
