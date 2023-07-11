@@ -211,6 +211,13 @@ class ApiService {
       this.getConfig()
     );
   }
+
+  getPendingAmount() {
+    return axios.get(
+      "http://localhost:8088/residents/accounts/amount",
+      this.getConfig()
+    );
+  }
 }
 
 export default ApiService;

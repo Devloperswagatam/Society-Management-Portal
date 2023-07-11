@@ -121,7 +121,7 @@ const Voting = () => {
         candidate.votingEvent.votingId === votingId
     );
   };
-  console.log(candidates);
+  // console.log(candidates);
   // console.log(isNominated(4));
 
   const handleWithdrawNomination = async (votingId) => {

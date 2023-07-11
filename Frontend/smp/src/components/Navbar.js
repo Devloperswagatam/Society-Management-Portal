@@ -3,35 +3,13 @@ import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import "./componentCSS/Navbar.css";
 
 const Navbar = (props) => {
-  // console.log("props = ", props);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [role, setRole] = useState("");
-  // const [name,setName] = useState("");
 
-  // useEffect(() => {
-  //   const checkLoginStatus = async () => {
-  //     const apiService = new ApiService();
-  //     try {
-  //       const response = await apiService.getLoggedResident();
-  //       const resident = response.data;
-  //       // console.log(response.data);
-  //       setIsLoggedIn(true);
-  //       setRole(resident.role);
-  //       setName(resident.name);
-  //     } catch (error) {
-  //       setIsLoggedIn(false);
-  //       setRole("");
-  //       setName("");
-  //     }
-  //   };
-
-  //   checkLoginStatus();
-  // }, [isLoggedIn]);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-primary">
+    <nav className="navbar navbar-expand-lg navbar-light bg-primary nav-css">
       <div className="container">
         <Link className="navbar-brand">
           Society Portal
@@ -57,7 +35,7 @@ const Navbar = (props) => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/events">
+                  <Link className="nav-link" to="/events" >
                     Events
                   </Link>
                 </li>

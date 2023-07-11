@@ -73,7 +73,8 @@ function AccountHandler() {
           <button className=" btn btn-outline-primary" type="submit">Filter</button>
         </form>
       </div>
-      <Table striped bordered hover>
+      <div className="container">
+      <table striped bordered hover className="table mt-4 shadow">
         <thead className="table-dark">
           <tr>
             <th>ID</th>
@@ -103,7 +104,8 @@ function AccountHandler() {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </table>
+      </div>
     </div>
   );
 }

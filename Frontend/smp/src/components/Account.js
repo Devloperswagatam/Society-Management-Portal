@@ -12,6 +12,7 @@ const Account = () => {
   const [accounts, setAccounts] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [monthFilter, setMonthFilter] = useState("");
+  const [totalAmount,setTotalAmount] = useState(0);
   const apiService = new ApiService();
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Account = () => {
       (total, account) => total + account.amount,
       0
     );
-    // onPendingDuosUpdate(totalAmount); // Pass the total amount to the parent component
+    setTotalAmount(totalAmount);
   };
 
   const formatDate = (dateString) => {
@@ -91,7 +92,7 @@ const Account = () => {
         name={sessionStorage.getItem("name")}
       />
 
-      {/* <Home totalamount={updatePendingDuos(accounts)}/> */}
+      {/* <Home totalAmount={totalAmount}/> */}
 
       <h2>Accounts Page</h2>
 
