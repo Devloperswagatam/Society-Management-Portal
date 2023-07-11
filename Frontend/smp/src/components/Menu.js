@@ -20,6 +20,7 @@ import PeopleList from "./ContactPeopleList";
 import EditResidentForm from "./EditResident";
 import Register from "./Register";
 import Organizer from "./Organizer";
+import Committee from "./Committee";
 
 const Menu = () => {
   useEffect(() => {
@@ -57,6 +58,7 @@ const Menu = () => {
         <Route path="/accountHandler" element={<AccountHandler/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/organizer/:eventId" element={<Organizer/>}/>
+        <Route path="/committee" element={<Committee/>}/>
       </Routes>
     </Router>
   );

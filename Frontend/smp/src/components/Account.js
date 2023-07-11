@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
 import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import Home from "./Home";
 
 const Account = () => {
 
@@ -12,7 +11,7 @@ const Account = () => {
   const [accounts, setAccounts] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [monthFilter, setMonthFilter] = useState("");
-  const [totalAmount,setTotalAmount] = useState(0);
+  // const [totalAmount,setTotalAmount] = useState(0);
   const apiService = new ApiService();
 
   useEffect(() => {
@@ -24,22 +23,11 @@ const Account = () => {
       const response = await apiService.getLoggedResidentsAccounts();
       const accountsData = response.data;
       setAccounts(accountsData);
-      updatePendingDuos(accountsData);
     } catch (error) {
       console.log("Error fetching accounts:", error);
     }
   };
 
-  const updatePendingDuos = (accountsData) => {
-    const pendingDuos = accountsData.filter(
-      (account) => account.status === "pending"
-    );
-    const totalAmount = pendingDuos.reduce(
-      (total, account) => total + account.amount,
-      0
-    );
-    setTotalAmount(totalAmount);
-  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -61,6 +49,11 @@ const Account = () => {
         status: "paid",
       };
       await apiService.updateAccountStatus(billNo, updatedAccount);
+      toast.success("Payment Successfull",{
+        position:'top-center',
+        theme:'colored',
+        autoClose:2000
+      });
       fetchAccounts();
     } catch (error) {
       toast.error("Error while paying",{

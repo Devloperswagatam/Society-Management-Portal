@@ -32,7 +32,8 @@ class ApiService {
   }
   updateResident(resident) {
     return axios.put(
-      `http://localhost:8088/residents/resident`,resident,
+      `http://localhost:8088/residents/resident`,
+      resident,
       this.getConfig()
     );
   }
@@ -214,6 +215,15 @@ class ApiService {
   getPendingAmount() {
     return axios.get(
       "http://localhost:8088/residents/accounts/amount",
+      this.getConfig()
+    );
+  }
+
+  //Committee api
+
+  getAllCommittee() {
+    return axios.get(
+      "http://localhost:8088/committee/member",
       this.getConfig()
     );
   }

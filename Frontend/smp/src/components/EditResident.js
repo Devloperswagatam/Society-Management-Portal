@@ -84,18 +84,6 @@ const EditResidentForm = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="phoneNumber">Phone Number:</label>
-                <input
-                  type="tel"
-                  className="form-control"
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={resident.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
                 <label htmlFor="email">Email:</label>
                 <input
                   type="email"
@@ -108,6 +96,20 @@ const EditResidentForm = () => {
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="phoneNumber">Phone Number:</label>
+                <input
+                  type="tel"
+                  className="form-control"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={resident.phoneNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              
+              
+              <div className="form-group">
                 <label htmlFor="wingNo">Wing Number:</label>
                 <input
                   type="text"
@@ -116,7 +118,7 @@ const EditResidentForm = () => {
                   name="wingNo"
                   value={resident.wingNo}
                   onChange={handleChange}
-                  disabled // Add the disabled attribute
+                  disabled={sessionStorage.getItem("role")!=="committee"}
                   required
                 />
               </div>
@@ -129,7 +131,7 @@ const EditResidentForm = () => {
                   name="floorNo"
                   value={resident.floorNo}
                   onChange={handleChange}
-                  disabled // Add the disabled attribute
+                  disabled={sessionStorage.getItem("role")!=="committee"}
                   required
                 />
               </div>
@@ -142,7 +144,7 @@ const EditResidentForm = () => {
                   name="flatNo"
                   value={resident.flatNo}
                   onChange={handleChange}
-                  disabled // Add the disabled attribute
+                  disabled={sessionStorage.getItem("role")!=="committee"}
                   required
                 />
               </div>
@@ -155,7 +157,7 @@ const EditResidentForm = () => {
                   name="memberCount"
                   value={resident.memberCount}
                   onChange={handleChange}
-                  disabled // Add the disabled attribute
+                  disabled={sessionStorage.getItem("role")!=="committee"}
                   required
                 />
               </div>
@@ -168,6 +170,7 @@ const EditResidentForm = () => {
                   name="role"
                   value={resident.role}
                   onChange={handleChange}
+                  disabled
                   required
                 />
               </div>

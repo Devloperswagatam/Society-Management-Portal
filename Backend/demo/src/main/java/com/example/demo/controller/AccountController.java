@@ -53,15 +53,16 @@ public class AccountController {
 		return new ResponseEntity<List<Accounts>>(accountService.getAllAccounts(), HttpStatus.OK);
 	}
 
-	// @GetMapping("/amount")
-	// public ResponseEntity<?> getTotalPendingAmount() throws AccountsException, ResidentException{
-	// 	List<Accounts> allAccounts = accountService.viewLogedInResidentsAccounts();
-	// 	Double totalAmount = 0.00;
-	// 	for(Accounts account : allAccounts){
-	// 		if(account.getStatus().equals("pending")){
-	// 			totalAmount += account.getAmount();
-	// 		}
-	// 	}
-	// 	return new ResponseEntity<String>("Total amount", null, (Double)totalAmount);
-	// }
+	@GetMapping("/amount")
+	public ResponseEntity<Double> getTotalPendingAmount() throws AccountsException, ResidentException {
+	    List<Accounts> allAccounts = accountService.viewLogedInResidentsAccounts();
+	    double totalAmount = 0.00;
+	    for (Accounts account : allAccounts) {
+	        if (account.getStatus().equals("pending")) {
+	            totalAmount += account.getAmount();
+	        }
+	    }
+	    return ResponseEntity.ok(totalAmount);
+	}
+
 }

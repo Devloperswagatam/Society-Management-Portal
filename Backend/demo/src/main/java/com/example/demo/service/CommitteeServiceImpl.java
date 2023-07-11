@@ -37,14 +37,6 @@ public class CommitteeServiceImpl implements CommitteeService {
 	@Override
 	public List<Committee> viewAllCommittee() throws CommitteeException {
 		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		
-		Resident existresident = residentRepository.findByEmail(username);
-		if(!existresident.getRole().equals("committee")) {
-			throw new CommitteeException("Committee login required !!");
-		}
-		
 		List<Committee> list = committeeRepository.findAll();
 
 		if (list.size() == 0) {
