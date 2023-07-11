@@ -50,7 +50,7 @@ public class ResidentServiceImpl implements ResidentService{
 		existResident.setPhoneNumber(resident.getPhoneNumber());
 		existResident.setName(resident.getName());
 		existResident.setEmail(resident.getEmail());
-		existResident.setPassword(passwordEncoder.encode(resident.getPassword()));
+//		existResident.setPassword(passwordEncoder.encode(resident.getPassword()));
 		
 		if(existResident.getRole().equals("committee")) {
 			
