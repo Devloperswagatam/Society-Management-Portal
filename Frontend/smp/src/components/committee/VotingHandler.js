@@ -79,11 +79,11 @@ function VotingHandler() {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
-      <div className="container">
+      <div className="container" >
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'#f5f6fa'}}>
             <h4 className="text-center m-4">Voting Page</h4>
-            <Form onSubmit={handleAddVotingEvent}>
+            <Form onSubmit={handleAddVotingEvent} >
               <div className="mb-3">
                 <label htmlFor="postName" className="form-label">
                   Post Name:

@@ -1,3 +1,56 @@
 .nav-css{
     padding: 1rem;
+    background-color: #1e3799;
 }
+
+nav li{
+    margin: 0 1rem 0 0;
+}
+
+.dropdown{
+    position: absolute;
+    left: 85%;
+    border-radius: 3em;
+    background-color: #dcdde1;
+    transition: all 300ms ease;
+}
+
+.dropdown-committee{
+    position: relative;
+    border-radius: 3em;
+    background-color: #dcdde1;
+    transition: all 300ms ease;
+}
+
+
+.nav-link{
+    position: relative;
+    font-style: italic;
+    transition: all 300ms ease;
+    font-weight: 700;
+    color: #dcdde1;
+}
+.nav-link:hover{
+    color:#dcdde1;
+}
+.nav-link::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    background-color: #dcdde1;
+    transform-origin: bottom center;
+    transition: all 0.2s ease-out;
+}
+.nav-link:hover::after{
+    transform: scaleX(1);
+    transform-origin: bottom center;
+}
+
+
+/* .dropdown-basic-button{
+    background-color: #dcdde1;
+} */

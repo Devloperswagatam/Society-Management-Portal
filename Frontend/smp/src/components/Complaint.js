@@ -57,7 +57,7 @@ const Complaint = () => {
       />
       <div className="container">
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'#f5f6fa'}}>
             <div className="d-flex justify-content-end">
             </div>
             <h2 className="text-center m-4">Add Complaint</h2>
