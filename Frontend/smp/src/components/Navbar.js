@@ -9,9 +9,9 @@ const Navbar = (props) => {
 
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-primary nav-css">
+    <nav className="navbar navbar-expand-lg navbar-light nav-css">
       <div className="container">
-        <Link className="navbar-brand">
+        <Link className="navbar-brand" style={{fontWeight:'700',color:'#dcdde1'}}>
           Society Portal
         </Link>
         <button
@@ -49,10 +49,10 @@ const Navbar = (props) => {
                     Bulletin
                   </Link>
                 </li>
-                <li>
+                <li className="dropdown-resident">
                   <DropdownButton
-                    id="dropdown-basic-button"
-                    variant="success"
+                    // className="btn btn-primary"
+                    variant="light-dark"
                     title={`Hi ${props.name}`}
                   >
                     <Dropdown.Item href="/profile">Profile</Dropdown.Item>
@@ -63,10 +63,10 @@ const Navbar = (props) => {
                   </DropdownButton>
                 </li>
                 {props.role === "committee" && (
-                  <li>
+                  <li className="dropdown-committee">
                     <DropdownButton
-                      id="dropdown-basic-button"
-                      variant="success"
+                      // id="dropdown-committee"
+                      variant="light-dark"
                       title="Committee"
                     >
                       <Dropdown.Item href="/complaintHandler">

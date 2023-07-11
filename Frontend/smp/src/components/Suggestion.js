@@ -54,7 +54,7 @@ const Suggestion = () => {
       />
       <div className="container">
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'#f5f6fa'}}>
             <h2 className="text-center m-4">Add Suggestion</h2>
             <form onSubmit={handelAddSuggestion}>
               <div className="mb-3">
