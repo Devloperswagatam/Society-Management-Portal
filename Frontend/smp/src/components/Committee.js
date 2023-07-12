@@ -44,6 +44,7 @@ const Committee = () => {
           <tr>
             <th>Post Name</th>
             <th>Name</th>
+            <th>Wing No</th>
             <th>Flat No</th>
           </tr>
         </thead>
@@ -52,6 +53,7 @@ const Committee = () => {
             <tr key={committee.rid}>
               <td>{committee.postName}</td>
               <td>{committee.resident.name}</td>
+              <td>{committee.resident.wingNo}</td>
               <td>{committee.resident.flatNo}</td>
             </tr>
           ))}
