@@ -94,11 +94,11 @@ const Register = () => {
         name={sessionStorage.getItem("name")}
       />
       
-      <div className="container">
+      <div className="container mt-5">
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-            <h4 className="text-center m-4">Register Resident</h4>
-            <form>
+          <div className="col-md-6 offset-md-3 border rounded p-4 shadow" style={{backgroundColor: "#dfe6e9"}}>
+            <h2 className="text-center mt-4">Register Resident</h2>
+            <form style={{display:'grid',gridTemplateColumns:'1fr 1fr', gap:'0.5rem',marginTop:'1rem'}}>
               <div className="mb-3">
                 <label htmlFor="postName" className="form-label">
                   Name:

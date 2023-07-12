@@ -66,13 +66,13 @@ public class ResidentServiceImpl implements ResidentService{
 
 	@Override
 	public List<Resident> viewAllResidents() throws ResidentException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
+		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// String username = authentication.getName();
 		
-		Resident existresident = residentRepository.findByEmail(username);
-		if(!existresident.getRole().equals("committee")) {
-			throw new ResidentException("Committee member login required !!");
-		}
+		// Resident existresident = residentRepository.findByEmail(username);
+		// if(!existresident.getRole().equals("committee")) {
+		// 	throw new ResidentException("Committee member login required !!");
+		// }
 		
 		List<Resident> residents = residentRepository.findAll();
 		if(residents.size()==0) {

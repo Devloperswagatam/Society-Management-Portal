@@ -115,34 +115,7 @@ const Home = () => {
             </Card.Text>
           </Card.Body>
         </Card>
-        <Card
-          // key={sessionStorage.getItem("rid")}
-          style={{
-            color:'#2f3640',
-            width: "40rem",
-            marginBottom: "20vh",
-            padding: "1rem",
-            borderRadius:'3em',
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-            backgroundColor:'#CAD3C8'
-          }}
-        >
-          <Card.Body>
-            <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
-              Upcoming
-            </Card.Title>
-            {/* <Card.Subtitle
-              className="mb-2 text-muted"
-              style={{ fontSize: "2rem" }}
-            >
-              {}
-            </Card.Subtitle> */}
-            <Card.Text style={{ fontSize: "1.5rem" }}>Events</Card.Text>
-            <Card.Link href="/events" style={{ fontSize: "1.2rem" }}>
-              View
-            </Card.Link>
-          </Card.Body>
-        </Card>
+        
         <Card
           // key={sessionStorage.getItem("rid")}
           style={{
@@ -171,6 +144,35 @@ const Home = () => {
             </Card.Link>
           </Card.Body>
         </Card>
+
+        <Card
+          // key={sessionStorage.getItem("rid")}
+          style={{
+            color:'#2f3640',
+            width: "40rem",
+            marginBottom: "20vh",
+            padding: "1rem",
+            borderRadius:'3em',
+            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+            backgroundColor:'#CAD3C8'
+          }}
+        >
+          <Card.Body>
+            <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
+              Meet Your
+            </Card.Title>
+            {/* <Card.Subtitle
+              className="mb-2 text-muted"
+              style={{ fontSize: "2rem" }}
+            >
+              {}
+            </Card.Subtitle> */}
+            <Card.Text style={{ fontSize: "1.5rem" }}>Neighbour's</Card.Text>
+            <Card.Link href="/residents" style={{ fontSize: "1.2rem" }}>
+              Meet
+            </Card.Link>
+          </Card.Body>
+        </Card>
         <Card
           style={{
             color:'#2f3640',
@@ -193,6 +195,12 @@ const Home = () => {
           </Card.Body>
         </Card>
       </div>
+
+      <footer style={{ backgroundColor: '#f8f9fa', padding: '1rem', textAlign: 'center' }}>
+      <p style={{ margin: 0 }}>
+        &copy; {new Date().getFullYear()} Society Management Portal. All rights reserved.
+      </p>
+    </footer>
     </>
   );
 };

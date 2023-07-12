@@ -21,6 +21,7 @@ import EditResidentForm from "./EditResident";
 import Register from "./Register";
 import Organizer from "./Organizer";
 import Committee from "./Committee";
+import Resident from "./Resident";
 
 const Menu = () => {
   useEffect(() => {
@@ -59,6 +60,7 @@ const Menu = () => {
         <Route path="/register" element={<Register/>}/>
         <Route path="/organizer/:eventId" element={<Organizer/>}/>
         <Route path="/committee" element={<Committee/>}/>
+        <Route path="/residents" element={<Resident/>}/>
       </Routes>
     </Router>
   );
