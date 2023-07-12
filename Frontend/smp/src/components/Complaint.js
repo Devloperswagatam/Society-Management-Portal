@@ -62,18 +62,30 @@ const Complaint = () => {
             </div>
             <h2 className="text-center m-4">Add Complaint</h2>
             <form onSubmit={handleAddComplaint}>
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">
+              <div className="mb-3" >
+                <label htmlFor="title" className="form-label-sel"  >
                   Title:
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter the Title"
-                  name="title"
-                  value={title}
-                  onChange={handleTitleChange}
-                />
+                <select
+              id="title"
+              className="form-control"
+             required
+              value={title}
+              onChange={handleTitleChange}
+            >
+              <option value="">Select the Complaint</option>
+              <option>Plumber</option>
+              <option>Electricity</option>
+              <option >Roofer</option>
+              <option >Hvac Technical issues</option>
+              <option >Landscaper</option>
+              <option >Pest Control</option>
+              <option >Waste Management</option>
+              <option >Plastere</option>
+              <option >Locksmith</option>
+              <option >Parking</option>
+              <option >Others</option>
+            </select>
               </div>
               <div className="mb-3">
                 <label htmlFor="Description" className="form-label">
@@ -81,7 +93,7 @@ const Complaint = () => {
                 </label>
                 <textarea
                   className="form-control"
-                  placeholder="Enter the Event Description"
+                  placeholder="Enter the Complaint Description"
                   value={description}
                   onChange={handleDescriptionChange}
                   required

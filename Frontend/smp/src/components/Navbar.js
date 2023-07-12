@@ -67,7 +67,7 @@ const Navbar = (props) => {
                     <DropdownButton
                       // id="dropdown-committee"
                       variant="light-dark"
-                      title="Committee"
+                      title="Society"
                     >
                       <Dropdown.Item href="/complaintHandler">
                         Complaint

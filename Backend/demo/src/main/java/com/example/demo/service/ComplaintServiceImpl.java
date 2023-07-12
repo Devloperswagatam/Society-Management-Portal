@@ -27,7 +27,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	    	Complaint complaint = complaintOptional.get();
 	        
 	        // Update the status
-	    	complaint.setStatus("viewed");
+	    	complaint.setStatus("resolved");
 	        
 	        // Save the updated complaint to the database
 	    	Complaint updatedComplaint = complaintRepository.save(complaint);

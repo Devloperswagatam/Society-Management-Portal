@@ -80,9 +80,9 @@ const Home = () => {
     </Carousel>
 
       <h1
-        style={{ fontWeight: "700", paddingTop: "1rem", fontStyle: "italic" }}
+        style={{ fontWeight: "700", paddingTop: "1rem", fontStyle: "bold" }}
       >
-        KEWAT RESIDENCY
+        STAR RESIDENCY
       </h1>
       <div className="cardContainer">
         <Card

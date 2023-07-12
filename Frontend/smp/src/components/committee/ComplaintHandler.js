@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const ComplaintHandler = () => {
   const api = new ApiService();
   const [complaints, setComplaints] = useState([]);
+  const [filter, setFilter] = useState("all"); // Default filter value
 
   useEffect(() => {
     getComplaints();
@@ -35,10 +36,26 @@ const ComplaintHandler = () => {
       });
   };
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  const filterComplaints = (complaints) => {
+    switch (filter) {
+      case "pending":
+        return complaints.filter((complaint) => complaint.status === "pending");
+      case "resolved":
+        return complaints.filter((complaint) => complaint.status === "resolved");
+      default:
+        return complaints;
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");
   };
+
   return (
     <>
       <Navbar
@@ -48,11 +65,26 @@ const ComplaintHandler = () => {
       />
       <div className="container">
         <div className="d-flex justify-content-end mb-3">
-          <Link className="btn btn-outline-success" to="/ContactPeopleList">
+        </div>
+        <Link className="btn btn-success" to="/ContactPeopleList" >
             Contact
           </Link>
-        </div>
         <div className="py-4">
+          <div className="mb-3">
+            <label htmlFor="filter" className="mr-2">
+              Filter:
+            </label>
+            <select
+              id="filter"
+              className="form-control-inline"
+              value={filter}
+              onChange={handleFilterChange}
+            >
+              <option value="all">All Complaints</option>
+              <option value="pending">Pending Complaints</option>
+              <option value="resolved">Resolved Complaints</option>
+            </select>
+          </div>
           <table className="table mt-4 shadow">
             <thead className="table-dark">
               <tr>
@@ -66,7 +98,7 @@ const ComplaintHandler = () => {
               </tr>
             </thead>
             <tbody>
-              {complaints.map((complaint) => (
+              {filterComplaints(complaints).map((complaint) => (
                 <tr key={complaint.cid}>
                   <th scope="row">{complaint.cid}</th>
                   <td>{complaint.resident.rid}</td>
@@ -79,12 +111,12 @@ const ComplaintHandler = () => {
                       <button
                         className="btn btn-primary btn-sm"
                         onClick={() => updateComplaintStatus(complaint.cid)}
-                        disabled={complaint.viewed}
+                        disabled={complaint.resolved}
                       >
-                        {complaint.viewed ? "Viewed" : "Mark as Viewed"}
+                        {complaint.viewed ? "Resolved" : "Mark as Resolved"}
                       </button>
                     ) : (
-                      "Viewed"
+                      "Resolved"
                     )}
                   </td>
                 </tr>

@@ -5,7 +5,7 @@ import Navbar from "../Navbar";
 const SuggestionHandler = () => {
   const api = new ApiService();
   const [suggestions, setSuggestions] = useState([]);
-
+  const [filter, setFilter] = useState("all"); // Default filter value
   useEffect(() => {
     getSuggestions();
   }, []);
@@ -33,7 +33,19 @@ const SuggestionHandler = () => {
         console.log("Error marking suggestion as viewed:", error);
       });
   };
-
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+  const filterSuggestions = (suggestions) => {
+    switch (filter) {
+      case "pending":
+        return suggestions.filter((suggestion) => suggestion.status === "pending");
+      case "viewed":
+        return suggestions.filter((suggestion) => suggestion.status === "viewed");
+      default:
+        return suggestions;
+    }
+  };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");
@@ -47,6 +59,21 @@ const SuggestionHandler = () => {
       />
       <div className="container">
         <div className="py-4">
+        <div className="mb-3">
+            <label htmlFor="filter" className="mr-2">
+              Filter:
+            </label>
+            <select
+              id="filter"
+              className="form-control-inline"
+              value={filter}
+              onChange={handleFilterChange}
+            >
+              <option value="all">All Suggestions</option>
+              <option value="pending">Pending Suggestion</option>
+              <option value="viewed">Viewed Suggestion</option>
+            </select>
+          </div>
           <table className="table table-hover">
             <thead className="table-dark">
               <tr>
@@ -60,7 +87,7 @@ const SuggestionHandler = () => {
               </tr>
             </thead>
             <tbody>
-              {suggestions.map((suggestion) => (
+              {filterSuggestions (suggestions).map((suggestion) => (
                 <tr key={suggestion.sid}>
                   <td>{suggestion.sid}</td>
                   <td>{suggestion.resident.rid}</td>

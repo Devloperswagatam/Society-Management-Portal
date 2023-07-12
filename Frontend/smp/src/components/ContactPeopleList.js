@@ -71,7 +71,7 @@ const PeopleList = () => {
         name={sessionStorage.getItem("name")}
       />
       <div className="container">
-      <Link className="btn btn-outline-success" to="/complaintHandler">
+      <Link className="btn btn-success" to="/complaintHandler" >
               Back to Complaint
             </Link>
         <h1 className="mt-4">People Connected with Society-Related Issues</h1>
@@ -110,7 +110,7 @@ const PeopleList = () => {
             <p><strong>Position:</strong> {contactedPerson.position}</p>
             <p><strong>Phone:</strong> {contactedPerson.phone}</p>
             <p><strong>Message:</strong> Contacted</p>
-            <Link className="btn btn-outline-primary" to="/complaintHandler">
+            <Link className="btn btn-dark" to="/complaintHandler">
               Back to Complaint
             </Link>
           </div>
