@@ -14,10 +14,12 @@ const Voting = () => {
   const [filter, setFilter] = useState("future");
   const [searchDate, setSearchDate] = useState("");
   const [candidates, setCandidates] = useState([]);
+  // const [nominated, setIsNominated] = useState(false);
 
   useEffect(() => {
     getVotingEvents();
     getCandidates();
+    // isNominated();
   }, []);
 
   const getVotingEvents = () => {
@@ -69,6 +71,9 @@ const Voting = () => {
         await apiService
           .addCandidate(votingId)
           .then((response) => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
             toast.success(response.data, {
               position: "top-center",
               theme: "colored",
@@ -115,11 +120,13 @@ const Voting = () => {
   };
 
   const isNominated = (votingId) => {
-    candidates.some(
-      (candidate) =>
-        candidate.rid === sessionStorage.getItem("rid") &&
-        candidate.votingEvent.votingId === votingId
-    );
+    const matchingCandidate = candidates.find((candidate) => {
+      return (
+        candidate.votingEvent.votingId === votingId &&
+        candidate.rid == sessionStorage.getItem("rid")
+      );
+    });
+    return !!matchingCandidate;
   };
   // console.log(candidates);
   // console.log(isNominated(4));
@@ -128,6 +135,10 @@ const Voting = () => {
     const response = await apiService
       .withdrawCandidate(votingId)
       .then((response) => {
+        setTimeout(()=>{
+          window.location.reload();
+
+        },1000);
         toast.success(response.data, {
           position: "top-center",
           theme: "colored",

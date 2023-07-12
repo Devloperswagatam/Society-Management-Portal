@@ -11,7 +11,7 @@ public interface VotingEventService {
 	
 	public void createVotingEvent(VotingEvent votingEvent) throws EventsException, ResidentException;
 	
-	public void nominateCandidate(Integer votingId);
+	public void nominateCandidate(Integer votingId) throws EventsException;
 	
 	public void giveVote(Integer votingId, Integer rid);
 	

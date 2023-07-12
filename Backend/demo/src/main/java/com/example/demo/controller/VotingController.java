@@ -42,7 +42,7 @@ public class VotingController {
 			votingEventService.nominateCandidate(votingId);
 			return ResponseEntity.ok("Candidate nominated successfully.");
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body("Already a candidate !!");
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
