@@ -90,7 +90,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 	}
 
 	@Override
-	public void nominateCandidate(Integer votingId) {
+	public void nominateCandidate(Integer votingId) throws EventsException{
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -111,7 +111,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 		// Check if resident is already nominated for another post in the same voting
 		// event
 		if (candidateRepository.existsByridAndVotingEventVotingId(existResident.getRid(), votingId)) {
-			throw new IllegalStateException("Resident is already nominated for this post in this voting event.");
+			throw new IllegalStateException("Resident has already nominated for this post.");
 		}
 
 		// check if there already a candidate from your flat no
@@ -119,6 +119,13 @@ public class VotingEventServiceImpl implements VotingEventService {
 		for (Candidate candidate : allCandidates) {
 			if (existResident.getFlatNo().equals(candidate.getResident().getFlatNo())) {
 				throw new IllegalStateException("A member from your flat is already nominated !!");
+			}
+		}
+
+		List<Candidate> candidates = getAllCandidates();
+		for(Candidate candidate : candidates){
+			if(existResident.getRid().equals(candidate.getRid())){
+				throw new EventsException("Already a candidate or committee member");
 			}
 		}
 
@@ -132,9 +139,9 @@ public class VotingEventServiceImpl implements VotingEventService {
 
 		// sending confirmation to the candidates
 
-		emailSenderService.sendEmail(candidate.getResident().getEmail(), "Candidate Confirmation",
-				"Dear " + candidate.getResident().getName() + ", you have nominated youself for the "
-						+ candidate.getPostName() + " post");
+		// emailSenderService.sendEmail(candidate.getResident().getEmail(), "Candidate Confirmation",
+		// 		"Dear " + candidate.getResident().getName() + ", you have nominated youself for the "
+		// 				+ candidate.getPostName() + " post");
 
 	}
 

@@ -55,24 +55,24 @@ const Home = () => {
       <Carousel.Item>
       <img src={firstphoto} alt="home" className="second-slide" />
         <Carousel.Caption>
-          <h3>Society Building</h3>
-          <p>A voluntary organization where any one can become a part and live as one family</p>
+          <h3 style={{fontWeight:'700'}}>Society Building</h3>
+          <p style={{fontWeight:'700'}}>A voluntary organization where any one can become a part and live as one family</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
       <img src={secondphoto} alt="home" className="third-slide" />
 
         <Carousel.Caption>
-          <h3>Garden Area</h3>
-          <p>Well-Manintained, with variety of flowers and plants to give you a soothing environment</p>
+          <h3 style={{fontWeight:'700'}}>Garden Area</h3>
+          <p style={{fontWeight:'700'}}>Well-Manintained, with variety of flowers and plants to give you a soothing environment</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
       <img src={thirdphoto} alt="home" className="fourth-image" />
 
         <Carousel.Caption>
-          <h3>Pool Area</h3>
-          <p>
+          <h3 style={{fontWeight:'700'}}>Pool Area</h3>
+          <p style={{fontWeight:'700'}}>
             A day will be not so hot during summer with the pool area at your residency.
           </p>
         </Carousel.Caption>
@@ -157,7 +157,7 @@ const Home = () => {
         >
           <Card.Body>
             <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
-              Check for
+              Have any
             </Card.Title>
             {/* <Card.Subtitle
               className="mb-2 text-muted"
@@ -165,9 +165,9 @@ const Home = () => {
             >
               {}
             </Card.Subtitle> */}
-            <Card.Text style={{ fontSize: "1.5rem" }}>Voting Event</Card.Text>
-            <Card.Link href="/voting" style={{ fontSize: "1.2rem" }}>
-              View
+            <Card.Text style={{ fontSize: "1.5rem" }}>complaints</Card.Text>
+            <Card.Link href="/complaint" style={{ fontSize: "1.2rem" }}>
+              Give
             </Card.Link>
           </Card.Body>
         </Card>
