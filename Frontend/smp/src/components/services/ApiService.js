@@ -111,6 +111,15 @@ class ApiService {
       this.getConfig()
     );
   }
+
+  updateVotingEvent(event) {
+    return axios.put(
+      "http://localhost:8088/residents/voting/event",
+      event,
+      this.getConfig()
+    );
+  }
+
   getAllCandidates() {
     return axios.get(
       "http://localhost:8088/residents/voting/candidates",
