@@ -17,7 +17,6 @@ import com.example.demo.exception.ComplaintException;
 import com.example.demo.exception.ResidentException;
 import com.example.demo.repository.ComplaintRepository;
 import com.example.demo.repository.ResidentRepository;
-import com.example.demo.repository.StorageRepository;
 import com.example.demo.service.ComplaintService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -30,8 +29,6 @@ public class ComplaintController {
 	ComplaintService complaintService;
 	@Autowired
 	ResidentRepository residentRepo;
-	@Autowired
-	StorageRepository repository;
 	@GetMapping("/complaints/{rid}")
 	public ResponseEntity<List<Complaint>> getComplaintsByResidentId(@PathVariable("rid") Integer rid) throws ComplaintException, ResidentException{
 		return new ResponseEntity<List<Complaint>>(complaintService.getComplaintsByResidentId(rid),HttpStatus.OK);

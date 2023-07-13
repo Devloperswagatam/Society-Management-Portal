@@ -37,9 +37,9 @@ public class BulletinController {
 		repository.save(bulletin);
 		return "Object is saved";
 	}
-	@PutMapping("/bulletin/{id}")
-	public String updateBulletin(@PathVariable("id") Long id, @RequestBody Bulletin updatedBulletin) {
-	    Optional<Bulletin> optionalBulletin = repository.findById(id);
+	@PutMapping("/bulletin")
+	public String updateBulletin( @RequestBody Bulletin updatedBulletin) {
+	    Optional<Bulletin> optionalBulletin = repository.findById(updatedBulletin.getId());
 	    
 	    if (optionalBulletin.isPresent()) {
 	        Bulletin bulletin = optionalBulletin.get();

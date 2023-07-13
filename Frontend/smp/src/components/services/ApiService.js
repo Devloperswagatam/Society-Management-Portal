@@ -188,6 +188,9 @@ class ApiService {
   getBulletins() {
     return axios.get("http://localhost:8088/bull/notes", this.getConfig());
   }
+  getBulletinById(id){
+    return axios.get(`http://localhost:8088/bull/bulletin/${id}`,this.getConfig());
+  }
   addBulletin(bulletin) {
     return axios.post(
       "http://localhost:8088/bull/bulletin",
@@ -198,8 +201,8 @@ class ApiService {
   deleteBulletin(id){
     return axios.delete(`http://localhost:8088/bull/bulletin/${id}`, this.getConfig());
   }
-  updateBulletin(id){
-    return axios.put(`http://localhost:8088/bulletin/${id}`, this.getConfig());
+  updateBulletin(bulletin){
+    return axios.put(`http://localhost:8088/bull/bulletin`,bulletin,this.getConfig());
   }
   //Accounts api
   getLoggedResidentsAccounts() {
