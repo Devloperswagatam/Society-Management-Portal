@@ -4,16 +4,20 @@ import ApiService from "./services/ApiService";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import "./componentCSS/Navbar.css";
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaPowerOff } from "react-icons/fa";
+import { BsLightbulbFill, BsPersonFill } from "react-icons/bs";
+import { MdFeedback } from "react-icons/md";
+import { IoMdWallet } from "react-icons/io";
 
 const Navbar = (props) => {
-
-
   return (
     <nav className="navbar navbar-expand-lg navbar-light nav-css">
       <div className="container">
-        <Link className="navbar-brand" style={{fontWeight:'700',color:'#dcdde1'}}>
-          <FaHome style={{margin:'0 1rem 0.5rem 0', fontSize:'30px'}}/>
+        <Link
+          className="navbar-brand"
+          style={{ fontWeight: "700", color: "#dcdde1" }}
+        >
+          <FaHome style={{ margin: "0 1rem 0.5rem 0", fontSize: "30px" }} />
           Society Portal
         </Link>
         <button
@@ -37,7 +41,7 @@ const Navbar = (props) => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/events" >
+                  <Link className="nav-link" to="/events">
                     Events
                   </Link>
                 </li>
@@ -57,11 +61,36 @@ const Navbar = (props) => {
                     variant="light-dark"
                     title={`Hi ${props.name}`}
                   >
-                    <Dropdown.Item href="/profile">Profile</Dropdown.Item>
-                    <Dropdown.Item href="/complaint">Complaint</Dropdown.Item>
-                    <Dropdown.Item href="/suggestion">Suggestion</Dropdown.Item>
-                    <Dropdown.Item href="/account">Account</Dropdown.Item>
-                    <Dropdown.Item href="/logout">Logout</Dropdown.Item>
+                    <Dropdown.Item href="/profile">
+                      <BsPersonFill
+                        style={{ fontSize: "25px", marginRight: "5px",color:'#2d3436' }}
+                      />
+                      Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/complaint">
+                      <MdFeedback
+                        style={{ fontSize: "25px", marginRight: "5px",color:'#2d3436' }}
+                      />
+                      Complaint
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/suggestion">
+                      <BsLightbulbFill
+                        style={{ fontSize: "25px", marginRight: "5px",color:'#2d3436' }}
+                      />
+                      Suggestion
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/account">
+                      <IoMdWallet
+                        style={{ fontSize: "25px", marginRight: "5px",color:'#2d3436' }}
+                      />
+                      Account
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/logout">
+                      <FaPowerOff
+                        style={{ fontSize: "25px", marginRight: "5px",color:'#2d3436' }}
+                      />
+                      Logout
+                    </Dropdown.Item>
                   </DropdownButton>
                 </li>
                 {props.role === "committee" && (

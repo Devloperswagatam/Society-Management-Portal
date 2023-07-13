@@ -161,4 +161,41 @@ public class EventServiceImpl implements EventService {
 		eventsRepository.save(eventSchedule);
 	}
 
+	@Override
+	public Event_Schedule updateEvent(Event_Schedule event) throws EventsException, ResidentException {
+		Event_Schedule eventSchedule = eventsRepository.findById(event.getEid())
+				.orElseThrow(() -> new EventsException("Invalid event ID"));
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		Resident existResident = residentRepo.findByEmail(username);
+		List<Resident> organizers = getOrganizersByEventId(event.getEid());
+
+		boolean isExistResidentOrganizer = false;
+
+		for (Resident organizer : organizers) {
+			if (existResident.equals(organizer)) {
+				isExistResidentOrganizer = true;
+				break;
+			}
+		}
+
+		if (!isExistResidentOrganizer) {
+			throw new ResidentException("Only the organizer can edit");
+		}
+
+		if(eventSchedule.getStatus().equals("closed")){
+			throw new EventsException("Event is already closed");
+		}
+
+		eventSchedule.setEName(event.getEName());
+		eventSchedule.setBudget(event.getBudget());
+		eventSchedule.setDescription(event.getDescription());
+		eventSchedule.setEndTime(event.getEndTime());
+		eventSchedule.setStartTime(event.getStartTime());
+
+		return eventsRepository.save(eventSchedule);
+	}
+
 }

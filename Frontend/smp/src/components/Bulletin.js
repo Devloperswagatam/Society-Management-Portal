@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 import Card from "react-bootstrap/Card";
 import Navbar from "./Navbar";
-import { BsTrash, BsPencil } from "react-icons/bs";
+import { BsTrash, BsPencil, BsPencilFill, BsTrashFill, BsPencilSquare } from "react-icons/bs";
 import "../components/componentCSS/Bulletin.css";
 import { toast } from "react-toastify";
 
@@ -79,12 +79,12 @@ const Bulletin = () => {
                 }}
               >
                 <BsTrash
-                  size={20}
+                  size={25}
                   style={{ cursor: "pointer", marginRight: "10px" ,color:"red"}}
                   onClick={() => handleDeleteBulletin(bulletin.id)}
                 />
                 <Link to={`/EditBulletin/${bulletin.id}`}>
-                  <BsPencil size={20} style={{ cursor: "pointer" }} />
+                  <BsPencilSquare size={25} style={{ cursor: "pointer" }} />
                 </Link>
               </div>
             )}
