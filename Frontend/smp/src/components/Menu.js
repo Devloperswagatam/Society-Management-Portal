@@ -21,7 +21,7 @@ import EditResidentForm from "./EditResident";
 import Register from "./Register";
 import Organizer from "./Organizer";
 import Committee from "./Committee";
-
+import EditBulletin from "./committee/EditBulletin";
 const Menu = () => {
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -59,6 +59,7 @@ const Menu = () => {
         <Route path="/register" element={<Register/>}/>
         <Route path="/organizer/:eventId" element={<Organizer/>}/>
         <Route path="/committee" element={<Committee/>}/>
+        <Route path="/EditBulletin" element={<EditBulletin/>}/>
       </Routes>
     </Router>
   );

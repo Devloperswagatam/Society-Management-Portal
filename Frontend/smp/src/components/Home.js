@@ -129,7 +129,7 @@ const Home = () => {
         >
           <Card.Body>
             <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
-              Upcoming
+              Have any
             </Card.Title>
             {/* <Card.Subtitle
               className="mb-2 text-muted"
@@ -137,9 +137,9 @@ const Home = () => {
             >
               {}
             </Card.Subtitle> */}
-            <Card.Text style={{ fontSize: "1.5rem" }}>Events</Card.Text>
-            <Card.Link href="/events" style={{ fontSize: "1.2rem" }}>
-              View
+            <Card.Text style={{ fontSize: "1.5rem" }}>complaints</Card.Text>
+            <Card.Link href="/complaint" style={{ fontSize: "1.2rem" }}>
+              Give
             </Card.Link>
           </Card.Body>
         </Card>
@@ -157,7 +157,7 @@ const Home = () => {
         >
           <Card.Body>
             <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
-              Have any
+              Upcoming
             </Card.Title>
             {/* <Card.Subtitle
               className="mb-2 text-muted"
@@ -165,12 +165,13 @@ const Home = () => {
             >
               {}
             </Card.Subtitle> */}
-            <Card.Text style={{ fontSize: "1.5rem" }}>complaints</Card.Text>
-            <Card.Link href="/complaint" style={{ fontSize: "1.2rem" }}>
-              Give
+            <Card.Text style={{ fontSize: "1.5rem" }}>Events</Card.Text>
+            <Card.Link href="/events" style={{ fontSize: "1.2rem" }}>
+              View
             </Card.Link>
           </Card.Body>
         </Card>
+        
         <Card
           style={{
             color:'#2f3640',

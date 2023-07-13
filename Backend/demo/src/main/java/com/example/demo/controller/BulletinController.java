@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,17 +37,21 @@ public class BulletinController {
 		repository.save(bulletin);
 		return "Object is saved";
 	}
-	@PutMapping("/bulletin")
-	public String updateBulletin(@RequestBody Bulletin bulletin ) {
-		Bulletin bulletin1=(Bulletin)repository.findById(bulletin.getId()).get();
-		if(bulletin.getId()==bulletin.getId())
-		{
-			bulletin1.setId(bulletin.getId());
-			bulletin1.setResident(bulletin.getResident());
-			bulletin1.setDescription(bulletin.getDescription());
-			bulletin1.setName(bulletin.getName());
-		}
-		return "Record Updated";
+	@PutMapping("/bulletin/{id}")
+	public String updateBulletin(@PathVariable("id") Long id, @RequestBody Bulletin updatedBulletin) {
+	    Optional<Bulletin> optionalBulletin = repository.findById(id);
+	    
+	    if (optionalBulletin.isPresent()) {
+	        Bulletin bulletin = optionalBulletin.get();
+	        bulletin.setName(updatedBulletin.getName());
+	        bulletin.setDescription(updatedBulletin.getDescription());
+	        
+	        repository.save(bulletin);
+	        
+	        return "Record Updated";
+	    }
+	    
+	    return "Record not found";
 	}
 	@DeleteMapping("/bulletin/{id}")
 	public String deleteBulletinById(@PathVariable("id")Long id) {

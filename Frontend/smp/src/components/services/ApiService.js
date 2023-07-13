@@ -188,7 +188,12 @@ class ApiService {
       this.getConfig()
     );
   }
-
+  deleteBulletin(id){
+    return axios.delete(`http://localhost:8088/bull/bulletin/${id}`, this.getConfig());
+  }
+  updateBulletin(id){
+    return axios.put(`http://localhost:8088/bulletin/${id}`, this.getConfig());
+  }
   //Accounts api
   getLoggedResidentsAccounts() {
     return axios.get(

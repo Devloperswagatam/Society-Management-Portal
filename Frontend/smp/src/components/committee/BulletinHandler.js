@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ApiService from "../services/ApiService";
 import Navbar from "../Navbar";
 import { toast } from "react-toastify";
-
+import { Link } from "react-router-dom";
 const BulletinHandler = () => {
   const api = new ApiService();
   const [name, setName] = useState("");
@@ -81,9 +81,9 @@ const BulletinHandler = () => {
                 Submit
               </button>
 
-              {/* <Link className="btn btn-outline-danger mx-2" to="/home">
-                Cancel
-              </Link> */}
+              <Link className="btn btn-outline-secondary mx-2" to="/bulletin">
+              View Bulletin
+            </Link>
             </form>
           </div>
         </div>
