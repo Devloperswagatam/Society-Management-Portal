@@ -4,6 +4,7 @@ import ApiService from "./services/ApiService";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import "./componentCSS/Navbar.css";
+import { FaHome } from 'react-icons/fa';
 
 const Navbar = (props) => {
 
@@ -12,6 +13,7 @@ const Navbar = (props) => {
     <nav className="navbar navbar-expand-lg navbar-light nav-css">
       <div className="container">
         <Link className="navbar-brand" style={{fontWeight:'700',color:'#dcdde1'}}>
+          <FaHome style={{margin:'0 1rem 0.5rem 0', fontSize:'30px'}}/>
           Society Portal
         </Link>
         <button

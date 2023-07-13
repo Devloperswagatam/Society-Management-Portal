@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +39,7 @@ public class Accounts {
 	@NotNull(message = "Date is must")
 	private LocalDateTime date;
 	
+	@Column(length = 10)
 	@NotNull(message = "Status is must")
 	private String status;
 }

@@ -18,9 +18,11 @@ const EditResidentForm = () => {
     memberCount: "",
     role: "",
   });
+
   useEffect(() => {
     loadResident();
   }, []);
+  
   const handleChange = (e) => {
     setResident({ ...resident, [e.target.name]: e.target.value });
   };

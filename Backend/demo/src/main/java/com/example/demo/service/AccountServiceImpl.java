@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.example.demo.exception.ResidentException;
 import com.example.demo.repository.AccountsRepository;
 import com.example.demo.repository.ResidentRepository;
 
+// @Scope(value = )
 @Service
 public class AccountServiceImpl implements AccountService {
 

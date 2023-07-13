@@ -36,15 +36,19 @@ public class ResidentServiceImpl implements ResidentService{
 
 	@Override
 	public Resident updateResident(Resident resident) throws ResidentException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
+		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// String username = authentication.getName();
 		
-		Resident existResident = residentRepository.findByEmail(username);
+		// Resident existResident = residentRepository.findByEmail(username);
 		
 		
-		if(!existResident.getEmail().equals(resident.getEmail())) {
-			throw new ResidentException("This is not you !!");
-		}
+		// if(!existResident.getEmail().equals(resident.getEmail())) {
+		// 	throw new ResidentException("This is not you !!");
+		// }
+
+		// List<Resident> allResidents = viewAllResidents();
+
+		Resident existResident = residentRepository.findByEmail(resident.getEmail());
 		
 		
 		existResident.setPhoneNumber(resident.getPhoneNumber());
