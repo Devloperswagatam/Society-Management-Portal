@@ -4,7 +4,7 @@ import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
 import { Card } from "react-bootstrap";
 import "./componentCSS/Home.css";
-import firstphoto from "../images/photo1.jpg";
+import firstphoto from "../images/newbldg.webp";
 import secondphoto from "../images/photo2.jpg";
 import thirdphoto from "../images/photo3.jpg";
 
