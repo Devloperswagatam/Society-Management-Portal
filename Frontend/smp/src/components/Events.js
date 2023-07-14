@@ -5,6 +5,8 @@ import Navbar from "./Navbar";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Organizer from "./Organizer";
+import { BsFillClipboardCheckFill, BsPencilSquare } from "react-icons/bs";
+import { MdCancel } from "react-icons/md";
 
 const Events = () => {
   const api = new ApiService();
@@ -21,7 +23,7 @@ const Events = () => {
   });
   const [filter, setFilter] = useState("future");
   const [searchDate, setSearchDate] = useState("");
-  // const [selectedEventId,setSelectedEventId] = useState("");
+  const [editingEventId, setEditingEventId] = useState("");
 
   useEffect(() => {
     getEvents();
@@ -79,6 +81,48 @@ const Events = () => {
     }));
   };
 
+  const cancelEditing = () => {
+    setEditingEventId("");
+  };
+
+  const startEditing = (event) => {
+    setNewEvent(event);
+    setEditingEventId(event.eid);
+  };
+
+  const saveChanges = async () => {
+    await api
+      .updateEvent(newEvent)
+      .then(() => {
+        toast.success("Event Updated", {
+          position: "top-center",
+          theme: "colored",
+          autoClose:1000
+        });
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.eid === newEvent.eid ? newEvent : event
+          )
+        );
+        setNewEvent({
+          ename: "",
+          place: "",
+          budget: "",
+          startTime: "",
+          endTime: "",
+          description: "",
+        });
+        setEditingEventId("");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          theme: "colored",
+          autoClose:1000
+        });
+      });
+  };
+
   const addEvent = (e) => {
     e.preventDefault();
     api
@@ -108,7 +152,6 @@ const Events = () => {
   };
 
   const handleViewOrganizers = (eventId) => {
-    // setSelectedEventId(eventId);
     navigate(`/organizer/${eventId}`);
   };
 
@@ -142,7 +185,6 @@ const Events = () => {
   const handleInterest = async (event) => {
     const organizers = event.organizerTeam;
     const maxNumberOfOrganizers = 5;
-    console.log(event.eid);
 
     if (organizers.length < maxNumberOfOrganizers) {
       await api
@@ -160,7 +202,7 @@ const Events = () => {
           });
         });
     } else {
-      toast.error("Organizer team is full !!", {
+      toast.error("Organizer team is full!", {
         position: "top-center",
         theme: "colored",
       });
@@ -313,7 +355,7 @@ const Events = () => {
             </Form>
           </div>
 
-          <Table className="table">
+          <Table className="table mt-4 shadow">
             <thead className="table-dark">
               <tr>
                 <th>Event Name</th>
@@ -324,17 +366,78 @@ const Events = () => {
                 <th>Description</th>
                 <th>Status</th>
                 <th>Organizers</th>
+                <th>Edit</th>
               </tr>
             </thead>
             <tbody>
               {events.map((event) => (
                 <tr key={event.eid}>
-                  <td>{event.ename}</td>
-                  <td>{formatDate(event.startTime)}</td>
-                  <td>{formatDate(event.endTime)}</td>
+                  <td>
+                    {editingEventId === event.eid ? (
+                      <input
+                      style={{width:'5rem'}}
+                        type="text"
+                        name="ename"
+                        value={newEvent.ename}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      event.ename
+                    )}
+                  </td>
+                  <td>
+                    {editingEventId === event.eid ? (
+                      <input
+                      style={{width:'5rem'}}
+                        type="datetime-local"
+                        name="startTime"
+                        value={newEvent.startTime}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      formatDate(event.startTime)
+                    )}
+                  </td>
+                  <td>
+                    {editingEventId === event.eid ? (
+                      <input
+                      style={{width:'5rem'}}
+                        type="datetime-local"
+                        name="endTime"
+                        value={newEvent.endTime}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      formatDate(event.endTime)
+                    )}
+                  </td>
                   <td>{formatDay(event.startTime)}</td>
-                  <td>{event.place}</td>
-                  <td>{event.description}</td>
+                  <td>
+                    {editingEventId === event.eid ? (
+                      <input
+                      style={{width:'5rem'}}
+                        type="text"
+                        name="place"
+                        value={newEvent.place}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      event.place
+                    )}
+                  </td>
+                  <td>
+                    {editingEventId === event.eid ? (
+                      <input
+                      // style={{width:'5rem'}}
+                        type="text"
+                        name="description"
+                        value={newEvent.description}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      event.description
+                    )}
+                  </td>
                   <td>{event.status}</td>
                   <td>
                     <button
@@ -351,6 +454,35 @@ const Events = () => {
                     >
                       View
                     </button>
+                  </td>
+                  <td>
+                    {editingEventId === event.eid ? (
+                      <>
+                        <BsFillClipboardCheckFill
+                          size={25}
+                          style={{
+                            cursor: "pointer",
+                            color: "green",
+                            marginRight: "1rem",
+                          }}
+                          onClick={saveChanges}
+                        />
+                        <MdCancel
+                          size={30}
+                          style={{
+                            cursor: "pointer",
+                            color: "red",
+                            marginLeft: "1rem",
+                          }}
+                          onClick={cancelEditing}
+                        />
+                      </>
+                    ) : (
+                      <BsPencilSquare
+                        style={{ fontSize: "20px", color: "blue", cursor:'pointer' }}
+                        onClick={() => startEditing(event)}
+                      />
+                    )}
                   </td>
                 </tr>
               ))}

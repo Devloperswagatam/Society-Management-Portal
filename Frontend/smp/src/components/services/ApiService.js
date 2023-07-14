@@ -65,6 +65,14 @@ class ApiService {
     );
   }
 
+  updateEvent(event) {
+    return axios.put(
+      "http://localhost:8088/events/event",
+      event,
+      this.getConfig()
+    );
+  }
+
   addOrganizer(eid) {
     return axios.post(
       `http://localhost:8088/events/organizer/${eid}`,
@@ -103,6 +111,15 @@ class ApiService {
       this.getConfig()
     );
   }
+
+  updateVotingEvent(event) {
+    return axios.put(
+      "http://localhost:8088/residents/voting/event",
+      event,
+      this.getConfig()
+    );
+  }
+
   getAllCandidates() {
     return axios.get(
       "http://localhost:8088/residents/voting/candidates",
@@ -188,8 +205,11 @@ class ApiService {
   getBulletins() {
     return axios.get("http://localhost:8088/bull/notes", this.getConfig());
   }
-  getBulletinById(id){
-    return axios.get(`http://localhost:8088/bull/bulletin/${id}`,this.getConfig());
+  getBulletinById(id) {
+    return axios.get(
+      `http://localhost:8088/bull/bulletin/${id}`,
+      this.getConfig()
+    );
   }
   addBulletin(bulletin) {
     return axios.post(
@@ -198,11 +218,18 @@ class ApiService {
       this.getConfig()
     );
   }
-  deleteBulletin(id){
-    return axios.delete(`http://localhost:8088/bull/bulletin/${id}`, this.getConfig());
+  deleteBulletin(id) {
+    return axios.delete(
+      `http://localhost:8088/bull/bulletin/${id}`,
+      this.getConfig()
+    );
   }
-  updateBulletin(bulletin){
-    return axios.put(`http://localhost:8088/bull/bulletin`,bulletin,this.getConfig());
+  updateBulletin(bulletin) {
+    return axios.put(
+      `http://localhost:8088/bull/bulletin`,
+      bulletin,
+      this.getConfig()
+    );
   }
   //Accounts api
   getLoggedResidentsAccounts() {

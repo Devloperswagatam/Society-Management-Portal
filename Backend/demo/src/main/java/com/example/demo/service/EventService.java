@@ -19,4 +19,6 @@ public interface EventService {
 	public void automaticallyCloseEvents();
 
 	public void removeOrganizer(Integer eid) throws EventsException, ResidentException;
+
+	public Event_Schedule updateEvent(Event_Schedule event) throws EventsException, ResidentException;
 }

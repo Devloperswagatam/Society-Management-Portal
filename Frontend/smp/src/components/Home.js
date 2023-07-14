@@ -7,6 +7,8 @@ import "./componentCSS/Home.css";
 import firstphoto from "../images/newbldg.webp";
 import secondphoto from "../images/photo2.jpg";
 import thirdphoto from "../images/photo3.jpg";
+import { FaPeopleRoof, FaPeopleGroup, FaPiggyBank } from "react-icons/fa6";
+import { MdCelebration } from "react-icons/md";
 
 const Home = () => {
   const apiService = new ApiService();
@@ -38,7 +40,7 @@ const Home = () => {
   const checkPendingAmount = async () => {
     const response = await apiService.getPendingAmount();
     const totalAmount = response.data;
-      setTotalAmount(totalAmount);
+    setTotalAmount(totalAmount);
   };
 
   // checkLoginStatus();
@@ -52,49 +54,54 @@ const Home = () => {
       <Navbar role={role} isLoggedIn={isLoggedIn} name={name} />
 
       <Carousel>
-      <Carousel.Item>
-      <img src={firstphoto} alt="home" className="second-slide" />
-        <Carousel.Caption>
-          <h3 style={{fontWeight:'700'}}>Society Building</h3>
-          <p style={{fontWeight:'700'}}>A voluntary organization where any one can become a part and live as one family</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-      <img src={secondphoto} alt="home" className="third-slide" />
+        <Carousel.Item>
+          <img src={firstphoto} alt="home" className="second-slide" />
+          <Carousel.Caption>
+            <h3 style={{ fontWeight: "700" }}>Society Building</h3>
+            <p style={{ fontWeight: "700" }}>
+              A voluntary organization where any one can become a part and live
+              as one family
+            </p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img src={secondphoto} alt="home" className="third-slide" />
 
-        <Carousel.Caption>
-          <h3 style={{fontWeight:'700'}}>Garden Area</h3>
-          <p style={{fontWeight:'700'}}>Well-Manintained, with variety of flowers and plants to give you a soothing environment</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-      <img src={thirdphoto} alt="home" className="fourth-image" />
+          <Carousel.Caption>
+            <h3 style={{ fontWeight: "700" }}>Garden Area</h3>
+            <p style={{ fontWeight: "700" }}>
+              Well-Manintained, with variety of flowers and plants to give you a
+              soothing environment
+            </p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img src={thirdphoto} alt="home" className="fourth-image" />
 
-        <Carousel.Caption>
-          <h3 style={{fontWeight:'700'}}>Pool Area</h3>
-          <p style={{fontWeight:'700'}}>
-            A day will be not so hot during summer with the pool area at your residency.
-          </p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+          <Carousel.Caption>
+            <h3 style={{ fontWeight: "700" }}>Pool Area</h3>
+            <p style={{ fontWeight: "700" }}>
+              A day will be not so hot during summer with the pool area at your
+              residency.
+            </p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
 
-      <h1
-        style={{ fontWeight: "700", paddingTop: "1rem", fontStyle: "bold" }}
-      >
+      <h1 style={{ fontWeight: "700", paddingTop: "1rem", fontStyle: "bold" }}>
         STAR RESIDENCY
       </h1>
       <div className="cardContainer">
         <Card
           key={sessionStorage.getItem("rid")}
           style={{
-            color:'#2f3640',
+            color: "#2f3640",
             width: "40rem",
             marginBottom: "20vh",
             padding: "1rem",
-            borderRadius:'3em',
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-            backgroundColor:'#CAD3C8'
+            borderRadius: "3em",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            backgroundColor: "#CAD3C8",
           }}
         >
           <Card.Body>
@@ -107,25 +114,33 @@ const Home = () => {
             >
               {totalAmount}₹
             </Card.Subtitle>
-            <Card.Text style={{ fontSize: "1.2rem" }}>
-              PLEASE&nbsp;&nbsp;
-              <Card.Link href="/account" style={{ fontSize: "1.2rem" }}>
-                PAY
-              </Card.Link>
-            </Card.Text>
+            {/* <Card.Text style={{ fontSize: "1.2rem" }}></Card.Text> */}
+            PLEASE&nbsp;&nbsp;
+            <Card.Link href="/account" style={{ fontSize: "1.2rem" }}>
+              PAY
+            </Card.Link>
+            <FaPiggyBank
+              style={{
+                fontSize: "40px",
+                position: "relative",
+                left: "25%",
+                top: "12%",
+                color: "#20bf6b",
+              }}
+            />
           </Card.Body>
         </Card>
-        
+
         <Card
           // key={sessionStorage.getItem("rid")}
           style={{
-            color:'#2f3640',
+            color: "#2f3640",
             width: "40rem",
             marginBottom: "20vh",
             padding: "1rem",
-            borderRadius:'3em',
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-            backgroundColor:'#CAD3C8'
+            borderRadius: "3em",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            backgroundColor: "#CAD3C8",
           }}
         >
           <Card.Body>
@@ -139,22 +154,31 @@ const Home = () => {
               {}
             </Card.Subtitle> */}
             <Card.Text style={{ fontSize: "1.5rem" }}>Events</Card.Text>
-            <Card.Link href="/events" style={{ fontSize: "1.2rem" }}>
+            <Card.Link href="/events" style={{ fontSize: "1.2rem", marginLeft:'2rem' }}>
               View
             </Card.Link>
+            <MdCelebration
+              style={{
+                fontSize: "40px",
+                position: "relative",
+                left: "32%",
+                top: "10%",
+                color: "#e1b12c",
+              }}
+            />
           </Card.Body>
         </Card>
 
         <Card
           // key={sessionStorage.getItem("rid")}
           style={{
-            color:'#2f3640',
+            color: "#2f3640",
             width: "40rem",
             marginBottom: "20vh",
             padding: "1rem",
-            borderRadius:'3em',
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-            backgroundColor:'#CAD3C8'
+            borderRadius: "3em",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            backgroundColor: "#CAD3C8",
           }}
         >
           <Card.Body>
@@ -168,39 +192,66 @@ const Home = () => {
               {}
             </Card.Subtitle> */}
             <Card.Text style={{ fontSize: "1.5rem" }}>Neighbour's</Card.Text>
-            <Card.Link href="/residents" style={{ fontSize: "1.2rem" }}>
+            <Card.Link href="/residents" style={{ fontSize: "1.2rem", marginLeft:'2rem' }}>
               Meet
             </Card.Link>
+            <FaPeopleRoof
+              style={{
+                fontSize: "40px",
+                position: "relative",
+                left: "32%",
+                top: "10%",
+                color: "#be2edd",
+              }}
+            />
           </Card.Body>
         </Card>
         <Card
           style={{
-            color:'#2f3640',
+            color: "#2f3640",
             width: "40rem",
             marginBottom: "20vh",
             padding: "1rem",
-            borderRadius:'3em',
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-            backgroundColor:'#CAD3C8'
+            borderRadius: "3em",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            backgroundColor: "#CAD3C8",
           }}
         >
           <Card.Body>
             <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
               New here
             </Card.Title>
-            <Card.Text style={{ fontSize: "1.5rem" }}>View committee members</Card.Text>
-            <Card.Link href="/committee" style={{ fontSize: "1.2rem" }}>
-              View
+            <Card.Text style={{ fontSize: "1.5rem" }}>
+              View committee members
+            </Card.Text>
+            <Card.Link href="/committee" style={{ fontSize: "1.2rem", marginLeft:'2rem' }}>
+                View
             </Card.Link>
+            <FaPeopleGroup
+              style={{
+                fontSize: "40px",
+                position: "relative",
+                left: "32%",
+                top: "10%",
+                color: "#1B9CFC",
+              }}
+            />
           </Card.Body>
         </Card>
       </div>
 
-      <footer style={{ backgroundColor: '#f8f9fa', padding: '1rem', textAlign: 'center' }}>
-      <p style={{ margin: 0 }}>
-        &copy; {new Date().getFullYear()} Society Management Portal. All rights reserved.
-      </p>
-    </footer>
+      <footer
+        style={{
+          backgroundColor: "#f8f9fa",
+          padding: "1rem",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ margin: 0 }}>
+          &copy; {new Date().getFullYear()} Society Management Portal. All
+          rights reserved.
+        </p>
+      </footer>
     </>
   );
 };

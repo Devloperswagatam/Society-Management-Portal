@@ -326,4 +326,30 @@ public class VotingEventServiceImpl implements VotingEventService {
 		return candidateRepository.findAll();
 	}
 
+	@Override
+	public VotingEvent updateVotingEvent(VotingEvent event) throws EventsException, ResidentException {
+		VotingEvent existEvent = votingEventRepository.findById(event.getVotingId())
+				.orElseThrow(() -> new EventsException("Invalid voting event ID."));
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		Resident existResident = residentRepository.findByEmail(username);
+		if(!existResident.getRole().equals("committee")){
+			throw new ResidentException("Your not a committee member");
+		}
+
+		if(existEvent.getStatus().equals("closed")){
+			throw new EventsException("Event is already closed");
+		}
+
+		existEvent.setPostname(event.getPostname());
+		existEvent.setDescription(event.getDescription());
+		existEvent.setStartTime(event.getStartTime());
+		existEvent.setEndTime(event.getEndTime());
+		existEvent.setNumberofcandidates(event.getNumberofcandidates());
+		
+		return votingEventRepository.save(existEvent);
+	}
+
 }

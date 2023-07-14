@@ -43,7 +43,7 @@ public class VotingEvent {
 	@NotNull(message = "Description is required")
 	private String description;
 
-	@NotNull(message = "Status is required")
+	// @NotNull(message = "Status is required")
 	private String status;
 	
 	@NotNull(message = "Number of candidates is required")

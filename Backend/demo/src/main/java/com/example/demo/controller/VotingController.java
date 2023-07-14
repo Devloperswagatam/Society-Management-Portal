@@ -86,4 +86,9 @@ public class VotingController {
 	public ResponseEntity<List<Candidate>> getAllCandidates() throws EventsException{
 		return new ResponseEntity<List<Candidate>>(votingEventService.getAllCandidates(), HttpStatus.OK);
 	}
+
+	@PutMapping("/event")
+	public ResponseEntity<VotingEvent> updateVotingEvent(@RequestBody VotingEvent event) throws EventsException, ResidentException{
+		return new ResponseEntity<VotingEvent>(votingEventService.updateVotingEvent(event), HttpStatus.OK);
+	}
 }

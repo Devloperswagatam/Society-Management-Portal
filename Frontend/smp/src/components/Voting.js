@@ -4,6 +4,8 @@ import Result from "./Result";
 import { Table, Form, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { toast } from "react-toastify";
+import { BsPencilSquare, BsFillClipboardCheckFill } from "react-icons/bs";
+import { MdCancel, MdEditOff } from "react-icons/md";
 
 const Voting = () => {
   const apiService = new ApiService();
@@ -14,7 +16,14 @@ const Voting = () => {
   const [filter, setFilter] = useState("future");
   const [searchDate, setSearchDate] = useState("");
   const [candidates, setCandidates] = useState([]);
-  // const [nominated, setIsNominated] = useState(false);
+  const [editingEventId, setEditingEventId] = useState(null);
+  const [newEvent, setNewEvent] = useState({
+    postname: "",
+    startTime: "",
+    endTime: "",
+    numberofcandidates: "",
+    description: "",
+  });
 
   useEffect(() => {
     getVotingEvents();
@@ -49,6 +58,63 @@ const Voting = () => {
           theme: "colored",
         })
       );
+  };
+
+  const startEditing = (event) => {
+    setEditingEventId(event.votingId);
+    setNewEvent({
+      votingId: event.votingId,
+      postname: event.postname,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      numberofcandidates: event.numberofcandidates,
+      description: event.description,
+    });
+  };
+
+  const cancelEditing = () => {
+    setEditingEventId(null);
+    setNewEvent({
+      votingId: null,
+      postname: "",
+      startTime: "",
+      endTime: "",
+      numberofcandidates: "",
+      description: "",
+    });
+  };
+
+  const saveChanges = () => {
+    // Call the API to update the event using the updateVotingEvent() method
+    apiService
+      .updateVotingEvent(newEvent)
+      .then((response) => {
+        // Update the events list in the state with the updated event
+        const updatedEvents = votingEvents.map((event) =>
+          event.votingId === newEvent.votingId ? newEvent : event
+        );
+        setVotingEvents(updatedEvents);
+        setEditingEventId(null);
+        setNewEvent({
+          postname: "",
+          startTime: "",
+          endTime: "",
+          numberofcandidates: "",
+          description: "",
+        });
+        toast.success("Voting event edited", {
+          position: "top-center",
+          theme: "colored",
+          autoClose:1000
+        });
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          theme: "colored",
+          autoClose:2000
+        });
+      });
   };
 
   const formatDate = (dateString) => {
@@ -128,17 +194,14 @@ const Voting = () => {
     });
     return !!matchingCandidate;
   };
-  // console.log(candidates);
-  // console.log(isNominated(4));
 
   const handleWithdrawNomination = async (votingId) => {
     const response = await apiService
       .withdrawCandidate(votingId)
       .then((response) => {
-        setTimeout(()=>{
+        setTimeout(() => {
           window.location.reload();
-
-        },1000);
+        }, 1000);
         toast.success(response.data, {
           position: "top-center",
           theme: "colored",
@@ -307,27 +370,111 @@ const Voting = () => {
             </Form>
           </div>
 
-          <Table className="table">
+          <Table className="table mt-4 shadow">
             <thead className="table-dark">
               <tr>
                 <th>Post Name</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Day</th>
+                <th>Candidates</th>
                 <th>Description</th>
                 <th>Status</th>
                 <th>Action</th>
                 <th>Result</th>
+                {sessionStorage.getItem("role") === "committee" && (
+                  <th>Edit</th>
+                )}
               </tr>
             </thead>
             <tbody>
               {votingEvents.map((event) => (
                 <tr key={event.votingId}>
-                  <td>{event.postname}</td>
-                  <td>{formatDate(event.startTime)}</td>
-                  <td>{formatDate(event.endTime)}</td>
+                  <td>
+                    {editingEventId === event.votingId ? (
+                      <input
+                        style={{ width: "5rem" }}
+                        type="text"
+                        name="postname"
+                        value={newEvent.postname}
+                        onChange={(e) =>
+                          setNewEvent({ ...newEvent, postname: e.target.value })
+                        }
+                      />
+                    ) : (
+                      event.postname
+                    )}
+                  </td>
+                  <td>
+                    {editingEventId === event.votingId ? (
+                      <input
+                        style={{ width: "5rem" }}
+                        type="datetime-local"
+                        name="startTime"
+                        value={newEvent.startTime}
+                        onChange={(e) =>
+                          setNewEvent({
+                            ...newEvent,
+                            startTime: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      formatDate(event.startTime)
+                    )}
+                  </td>
+                  <td>
+                    {editingEventId === event.votingId ? (
+                      <input
+                        style={{ width: "5rem" }}
+                        type="datetime-local"
+                        name="endTime"
+                        value={newEvent.endTime}
+                        onChange={(e) =>
+                          setNewEvent({ ...newEvent, endTime: e.target.value })
+                        }
+                      />
+                    ) : (
+                      formatDate(event.endTime)
+                    )}
+                  </td>
                   <td>{formatDay(event.startTime)}</td>
-                  <td>{event.description}</td>
+                  <td>
+                    {editingEventId === event.votingId ? (
+                      <input
+                        style={{ width: "5rem" }}
+                        type="number"
+                        name="candidates"
+                        value={newEvent.numberofcandidates}
+                        onChange={(e) =>
+                          setNewEvent({
+                            ...newEvent,
+                            numberofcandidates: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      event.numberofcandidates
+                    )}
+                  </td>
+                  <td>
+                    {editingEventId === event.votingId ? (
+                      <input
+                        // style={{width:'5rem'}}
+                        type="text"
+                        name="description"
+                        value={newEvent.description}
+                        onChange={(e) =>
+                          setNewEvent({
+                            ...newEvent,
+                            description: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      event.description
+                    )}
+                  </td>
                   <td>{event.status}</td>
                   <td>
                     {isNominated(event.votingId) ? (
@@ -365,6 +512,37 @@ const Voting = () => {
                       Show
                     </Button>
                   </td>
+                  {sessionStorage.getItem("role") === "committee" && (
+                    <td>
+                      {editingEventId === event.votingId ? (
+                        <>
+                          <BsFillClipboardCheckFill
+                            size={25}
+                            style={{
+                              cursor: "pointer",
+                              color: "green",
+                              marginRight: "1rem",
+                            }}
+                            onClick={saveChanges}
+                          />
+                          <MdCancel
+                            size={30}
+                            style={{
+                              cursor: "pointer",
+                              color: "red",
+                              marginLeft: "1rem",
+                            }}
+                            onClick={cancelEditing}
+                          />
+                        </>
+                      ) : (
+                        <BsPencilSquare
+                          style={{ fontSize: "20px", color: "blue" }}
+                          onClick={() => startEditing(event)}
+                        />
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

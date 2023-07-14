@@ -28,4 +28,6 @@ public interface VotingEventService {
 	public List<Candidate> getAllCandidatesByVotingId(Integer votingId);
 
 	public List<Candidate> getAllCandidates() throws EventsException;
+
+	public VotingEvent updateVotingEvent(VotingEvent event) throws EventsException, ResidentException;
 }

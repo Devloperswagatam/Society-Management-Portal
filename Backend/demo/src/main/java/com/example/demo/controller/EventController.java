@@ -59,4 +59,8 @@ public class EventController {
 		return new ResponseEntity<String>("Organizer removed successfully",HttpStatus.CREATED);
 	}
 
+	@PutMapping("/event")
+	public ResponseEntity<Event_Schedule> updateEvent(@RequestBody Event_Schedule event) throws EventsException, ResidentException{
+		return new ResponseEntity<Event_Schedule>(eventService.updateEvent(event), HttpStatus.OK);
+	}
 }
