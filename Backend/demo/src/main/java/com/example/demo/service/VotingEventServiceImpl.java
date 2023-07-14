@@ -61,6 +61,8 @@ public class VotingEventServiceImpl implements VotingEventService {
 				throw new EventsException("The new voting event clashes with an existing event.");
 			}
 
+			
+
 			votingEvent.setYear(Year.now());
 			votingEvent.setStatus("open");
 			votingEventRepository.save(votingEvent);

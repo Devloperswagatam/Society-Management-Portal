@@ -11,9 +11,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [wingNo, setWingNo] = useState("");
-  const [flatNo,setFlatNo] = useState("");
-  const [floorNo,setFloorNo] = useState("");
-  const [memberCount,setMemberCount] = useState("");
+  const [flatNo, setFlatNo] = useState("");
+  const [floorNo, setFloorNo] = useState("");
+  const [memberCount, setMemberCount] = useState("");
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -54,17 +54,17 @@ const Register = () => {
       email: email,
       password: password,
       wingNo: wingNo,
-      floorNo:floorNo,
-      flatNo:flatNo,
-      memberCount:memberCount
+      floorNo: floorNo,
+      flatNo: flatNo,
+      memberCount: memberCount,
     };
 
     api
       .addResident(resident)
       .then((response) => {
-        toast.success("Registration successfull",{
-          position:'top-center',
-          theme:'colored'
+        toast.success("Registration successfull", {
+          position: "top-center",
+          theme: "colored",
         });
         // Clear the input fields
         setName("");
@@ -77,9 +77,9 @@ const Register = () => {
         setMemberCount("");
       })
       .catch((error) => {
-        toast.error(error.response.data.message,{
-          position:"top-center",
-          theme:'colored'
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          theme: "colored",
         });
         // Handle the error if adding the voting event fails
         // console.error("Error adding voting event:", error);
@@ -93,12 +93,22 @@ const Register = () => {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
-      
+
       <div className="container mt-5">
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 shadow" style={{backgroundColor: "#dfe6e9"}}>
+          <div
+            className="col-md-6 offset-md-3 border rounded p-4 shadow"
+            style={{ backgroundColor: "#dfe6e9" }}
+          >
             <h2 className="text-center mt-4">Register Resident</h2>
-            <form style={{display:'grid',gridTemplateColumns:'1fr 1fr', gap:'0.5rem',marginTop:'1rem'}}>
+            <form
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "0.5rem",
+                marginTop: "1rem",
+              }}
+            >
               <div className="mb-3">
                 <label htmlFor="postName" className="form-label">
                   Name:
@@ -107,6 +117,7 @@ const Register = () => {
                   type="text"
                   className="form-control"
                   placeholder="Enter full name"
+                  pattern="[A-Za-z\s]+"
                   value={name}
                   onChange={handleNameChange}
                   required
@@ -120,6 +131,7 @@ const Register = () => {
                   type="tel"
                   className="form-control"
                   placeholder="Enter phone number"
+                  pattern="[0-9]{10}"
                   value={phoneNumber}
                   onChange={handlePhoneNumber}
                   required
@@ -133,6 +145,7 @@ const Register = () => {
                   type="email"
                   className="form-control"
                   placeholder="Enter Your email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   value={email}
                   onChange={handleEmail}
                   required
@@ -146,6 +159,7 @@ const Register = () => {
                   type="password"
                   className="form-control"
                   placeholder="Enter your password"
+                  minLength="8"
                   value={password}
                   onChange={handlePassword}
                   required
@@ -159,6 +173,7 @@ const Register = () => {
                   type="text"
                   className="form-control"
                   placeholder="Enter wing no"
+                  pattern="[A-Za-z0-9]+"
                   value={wingNo}
                   onChange={handleWingNo}
                   required
@@ -172,6 +187,7 @@ const Register = () => {
                   type="text"
                   className="form-control"
                   placeholder="Enter floor no"
+                  pattern="[0-9]+"
                   value={floorNo}
                   onChange={handleFloorNO}
                   required
@@ -185,6 +201,7 @@ const Register = () => {
                   type="text"
                   className="form-control"
                   placeholder="Enter flat no"
+                  pattern="[A-Za-z0-9]+"
                   value={flatNo}
                   onChange={handleFlatNo}
                   required
@@ -198,6 +215,7 @@ const Register = () => {
                   type="number"
                   className="form-control"
                   placeholder="Enter member count"
+                  min="1"
                   value={memberCount}
                   onChange={handleMemberCount}
                   required
