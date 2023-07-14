@@ -53,6 +53,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 		String username = authentication.getName();
 
 		Resident existResident = residentRepository.findByEmail(username);
+		List<VotingEvent> allEvents = getAllVotingEvents();
 
 		if (!existResident.getRole().equals("committee")) {
 			throw new EventsException("Committee login required!!");
@@ -61,7 +62,11 @@ public class VotingEventServiceImpl implements VotingEventService {
 				throw new EventsException("The new voting event clashes with an existing event.");
 			}
 
-			
+			for(VotingEvent event : allEvents){
+				if(event.getPostname().equals(votingEvent.getPostname())){
+					throw new EventsException("Event name is already taken");
+				}
+			}
 
 			votingEvent.setYear(Year.now());
 			votingEvent.setStatus("open");

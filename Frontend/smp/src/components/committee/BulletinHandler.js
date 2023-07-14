@@ -61,8 +61,10 @@ const BulletinHandler = () => {
                   className="form-control"
                   placeholder="Enter the Title"
                   name="name"
+                  pattern="[A-Za-z\s]+"
                   value={name}
                   onChange={handelNameChange}
+                  required
                 />
               </div>
               <div className="mb-3">

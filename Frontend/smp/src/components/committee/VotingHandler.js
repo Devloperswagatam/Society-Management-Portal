@@ -94,6 +94,8 @@ function VotingHandler() {
                   placeholder="Enter the Title"
                   value={postName}
                   onChange={handlePostNameChange}
+                  pattern="[A-Za-z\s]+"
+                  required
                 />
               </div>
               <div className="mb-3">
@@ -105,7 +107,9 @@ function VotingHandler() {
                   className="form-control"
                   placeholder="Enter the number of candidates"
                   value={numberofcandidates}
+                  min="1"
                   onChange={handleCandidateNumber}
+                  required
                 />
               </div>
               <div className="mb-3">

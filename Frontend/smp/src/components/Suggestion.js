@@ -68,6 +68,7 @@ const Suggestion = () => {
                   name="title"
                   value={title}
                   onChange={handelTitleChange}
+                  required
                 />
               </div>
               <div className="mb-3">

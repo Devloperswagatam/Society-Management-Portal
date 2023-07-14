@@ -235,6 +235,7 @@ const Events = () => {
                     type="text"
                     className="form-control"
                     placeholder="Enter the Event Name"
+                    pattern="[A-Za-z\s]+"
                     name="ename"
                     value={newEvent.ename}
                     onChange={handleChange}
@@ -248,6 +249,7 @@ const Events = () => {
                     name="place"
                     value={newEvent.place}
                     onChange={handleChange}
+                    required
                   >
                     <option value="">Select Place</option>
                     <option value="hall">Hall</option>
