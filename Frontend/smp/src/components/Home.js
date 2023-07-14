@@ -4,6 +4,7 @@ import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
 import { Card } from "react-bootstrap";
 import "./componentCSS/Home.css";
+// import "../App.css";
 import firstphoto from "../images/newbldg.webp";
 import secondphoto from "../images/photo2.jpg";
 import thirdphoto from "../images/photo3.jpg";
@@ -89,7 +90,7 @@ const Home = () => {
       </Carousel>
 
       <h1 style={{ fontWeight: "700", paddingTop: "1rem", fontStyle: "bold" }}>
-        STAR RESIDENCY
+      NEIGHBOR NET
       </h1>
       <div className="cardContainer">
         <Card
@@ -100,7 +101,7 @@ const Home = () => {
             marginBottom: "20vh",
             padding: "1rem",
             borderRadius: "3em",
-            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
             backgroundColor: "#CAD3C8",
           }}
         >
@@ -109,8 +110,8 @@ const Home = () => {
               Monthly Due
             </Card.Title>
             <Card.Subtitle
-              className="mb-2 text-muted"
-              style={{ fontSize: "2rem" }}
+              className="mb-2"
+              style={{ fontSize: "2rem",color:'#2f3640' }}
             >
               {totalAmount}₹
             </Card.Subtitle>
@@ -139,7 +140,7 @@ const Home = () => {
             marginBottom: "20vh",
             padding: "1rem",
             borderRadius: "3em",
-            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
             backgroundColor: "#CAD3C8",
           }}
         >
@@ -153,7 +154,7 @@ const Home = () => {
             >
               {}
             </Card.Subtitle> */}
-            <Card.Text style={{ fontSize: "1.5rem" }}>Events</Card.Text>
+            <Card.Text style={{ fontSize: "1.5rem",color:'#2f3640' }}>Events</Card.Text>
             <Card.Link href="/events" style={{ fontSize: "1.2rem", marginLeft:'2rem' }}>
               View
             </Card.Link>
@@ -177,7 +178,7 @@ const Home = () => {
             marginBottom: "20vh",
             padding: "1rem",
             borderRadius: "3em",
-            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
             backgroundColor: "#CAD3C8",
           }}
         >
@@ -191,7 +192,7 @@ const Home = () => {
             >
               {}
             </Card.Subtitle> */}
-            <Card.Text style={{ fontSize: "1.5rem" }}>Neighbour's</Card.Text>
+            <Card.Text style={{ fontSize: "1.5rem",color:'#2f3640' }}>Neighbour's</Card.Text>
             <Card.Link href="/residents" style={{ fontSize: "1.2rem", marginLeft:'2rem' }}>
               Meet
             </Card.Link>
@@ -213,7 +214,7 @@ const Home = () => {
             marginBottom: "20vh",
             padding: "1rem",
             borderRadius: "3em",
-            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
             backgroundColor: "#CAD3C8",
           }}
         >
@@ -221,7 +222,7 @@ const Home = () => {
             <Card.Title style={{ textAlign: "center", fontSize: "3rem" }}>
               New here
             </Card.Title>
-            <Card.Text style={{ fontSize: "1.5rem" }}>
+            <Card.Text style={{ fontSize: "1.5rem",color:'#2f3640' }}>
               View committee members
             </Card.Text>
             <Card.Link href="/committee" style={{ fontSize: "1.2rem", marginLeft:'2rem' }}>
@@ -247,7 +248,7 @@ const Home = () => {
           textAlign: "center",
         }}
       >
-        <p style={{ margin: 0 }}>
+        <p style={{ margin: 0,color:'#2f3640' }}>
           &copy; {new Date().getFullYear()} Society Management Portal. All
           rights reserved.
         </p>

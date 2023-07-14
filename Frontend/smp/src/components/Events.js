@@ -4,7 +4,6 @@ import { Table, Form, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Organizer from "./Organizer";
 import { BsFillClipboardCheckFill, BsPencilSquare } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
 

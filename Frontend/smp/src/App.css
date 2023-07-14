@@ -1,10 +1,61 @@
-body{
+.light-theme{
   background-color: #dfe6e9;
+  /* --main-h:#dcdde1;
+  --main-p:#dcdde1; */
+  --main-thead:#2f3640;
+  /* --main-text:#2f3640; */
+  --card-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+.dark-theme{
+  background-color: #353b48;
+  --main-h:#dcdde1;
+  --main-p:#dcdde1;
+  --main-thead:#0984e3;
+  --main-text:#2f3640;
+  --card-shadow:rgba(252, 251, 251, 0.247) 0px 5px 15px;
+}
+
+
+h1{
+  color: var(--main-h);
+}
+h2{
+  color: var(--main-h);
+}
+h3{
+  color: var(--main-h);
+}
+h4{
+  color: var(--main-h);
+}
+p{
+  color: var(--main-p);
+}
+
+.dark-table{
+  background-color: var(--main-thead);
+}
+
+text{
+  color: var(--main-text);
+}
+
+.card{
+  /* box-shadow: rgba(252, 251, 251, 0.845) 0px 5px 15px; */
+  box-shadow: var(--card-shadow);
+}
+
+
+
+
+
+
 
 .App {
   text-align: center;
 }
+
 
 .App-logo {
   height: 40vmin;

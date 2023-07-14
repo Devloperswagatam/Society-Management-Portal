@@ -8,8 +8,11 @@ import { FaHome, FaPowerOff } from "react-icons/fa";
 import { BsLightbulbFill, BsPersonFill } from "react-icons/bs";
 import { MdFeedback } from "react-icons/md";
 import { IoMdWallet } from "react-icons/io";
+import { Button } from "react-bootstrap";
+import DarkMode from "./DarkMode";
 
 const Navbar = (props) => {
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light nav-css">
       <div className="container">
@@ -18,7 +21,7 @@ const Navbar = (props) => {
           style={{ fontWeight: "700", color: "#dcdde1" }}
         >
           <FaHome style={{ margin: "0 1rem 0.5rem 0", fontSize: "30px" }} />
-          Society Portal
+          NeiGhborNet
         </Link>
         <button
           className="navbar-toggler"
@@ -118,6 +121,9 @@ const Navbar = (props) => {
                     </DropdownButton>
                   </li>
                 )}
+                <li>
+                  <DarkMode/>
+                </li>
               </>
             )}
           </ul>

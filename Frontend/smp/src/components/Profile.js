@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import profileImage from "../images/logo.png";
-import "../UserProfile.css";
+import "./componentCSS/UserProfile.css";
 import ApiService from "./services/ApiService";
 
 const Profile = () => {

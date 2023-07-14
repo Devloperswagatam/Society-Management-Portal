@@ -51,6 +51,7 @@ nav li{
 }
 
 
-/* .dropdown-basic-button{
-    background-color: #dcdde1;
-} */
+.toggle{
+    position: absolute;
+    left: 80%;
+}

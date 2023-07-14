@@ -36,7 +36,7 @@ const Menu = () => {
       <Routes>
         <Route index path="/" element={<Login />} />
       </Routes>
-
+      
       {/* <Navbar /> */}
 
       <Routes>
