@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import ApiService from "./services/ApiService";
 import { Table } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { BsPersonCircle } from "react-icons/bs";
 
 const Committee = () => {
   const api = new ApiService();
@@ -42,6 +43,7 @@ const Committee = () => {
       <Table className="table mt-4 shadow">
         <thead className="table-dark">
           <tr>
+            <th></th>
             <th>Post Name</th>
             <th>Name</th>
             <th>Wing No</th>
@@ -51,6 +53,7 @@ const Committee = () => {
         <tbody>
           {committee.map((committee) => (
             <tr key={committee.rid}>
+              <td><BsPersonCircle  size={30} style={{color:"#2d98da"}}/></td>
               <td>{committee.postName}</td>
               <td>{committee.resident.name}</td>
               <td>{committee.resident.wingNo}</td>
