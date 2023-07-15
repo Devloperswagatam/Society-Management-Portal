@@ -121,9 +121,9 @@ const Navbar = (props) => {
                     </DropdownButton>
                   </li>
                 )}
-                <li>
+                {/* <li>
                   <DarkMode/>
-                </li>
+                </li> */}
               </>
             )}
           </ul>

@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 import Card from "react-bootstrap/Card";
 import Navbar from "./Navbar";
-import { BsTrash, BsPencil, BsPencilFill, BsTrashFill, BsPencilSquare } from "react-icons/bs";
+import {
+  BsTrash,
+  BsPencil,
+  BsPencilFill,
+  BsTrashFill,
+  BsPencilSquare,
+} from "react-icons/bs";
 import "../components/componentCSS/Bulletin.css";
 import { toast } from "react-toastify";
 
@@ -38,7 +44,7 @@ const Bulletin = () => {
           autoClose: 2000,
         });
         console.log(`Bulletin deleted successfully with id: ${id}`);
-       
+
         getBulletins();
       })
       .catch((error) => {
@@ -60,11 +66,13 @@ const Bulletin = () => {
             key={bulletin.id}
             className="bulletin-card"
             style={{
-              width: "40rem",
+              maxWidth: "30rem",
+              height: "30rem",
               margin: "0 auto",
               marginTop: "20vh",
-              padding: "2rem",
+              padding: "1rem",
               position: "relative",
+              overflow: "hidden",
             }}
           >
             {role === "committee" && (
@@ -80,7 +88,11 @@ const Bulletin = () => {
               >
                 <BsTrash
                   size={25}
-                  style={{ cursor: "pointer", marginRight: "10px" ,color:"red"}}
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "10px",
+                    color: "red",
+                  }}
                   onClick={() => handleDeleteBulletin(bulletin.id)}
                 />
                 <Link to={`/EditBulletin/${bulletin.id}`}>
@@ -99,7 +111,10 @@ const Bulletin = () => {
               >
                 {bulletin.name}
               </Card.Subtitle>
-              <Card.Text style={{ fontSize: "1.5rem" }}>
+              <Card.Text
+                className="card-description"
+                style={{ fontSize: "1.5rem" }}
+              >
                 {bulletin.description}
               </Card.Text>
             </Card.Body>

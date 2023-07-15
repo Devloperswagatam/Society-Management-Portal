@@ -314,12 +314,12 @@ const Voting = () => {
 
   const searchEventsByDate = (dateString) => {
     const filteredDate = new Date(dateString);
-    const filteredEvents = events.filter(
+    const filteredEvents = votingEvents.filter(
       (event) =>
         new Date(event.startTime).toLocaleDateString() ===
         filteredDate.toLocaleDateString()
     );
-    setEvents(filteredEvents);
+    setVotingEvents(filteredEvents);
   };
 
   return (
@@ -337,7 +337,7 @@ const Voting = () => {
               className="mt-3"
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr 0.5fr 0.5fr",
+                gridTemplateColumns: "1fr 0.5fr 0.5fr",
                 gap: "0.5rem",
               }}
             >
@@ -353,15 +353,14 @@ const Voting = () => {
                   <option value="all">All Events</option>
                 </Form.Control>
               </Form.Group>
-              <Form.Group controlId="searchDate">
-                {/* <Form.Label>Search by Date:</Form.Label> */}
+              {/* <Form.Group controlId="searchDate">
                 <Form.Control
                   type="date"
                   value={searchDate}
                   onChange={handleSearchDateChange}
                 />
-              </Form.Group>
-              <Button onClick={getVotingEvents} className="mr-2">
+              </Form.Group> */}
+              <Button onClick={handleSearch} className="mr-2">
                 Apply
               </Button>
               <Button variant="secondary" onClick={() => setSearchDate("")}>

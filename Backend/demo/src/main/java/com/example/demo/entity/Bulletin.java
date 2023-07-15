@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,12 +29,16 @@ public class Bulletin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "rid", referencedColumnName = "rid")
 	private Resident resident;
+
 	@NotNull(message = "title is Mandatory")
 	private String name;
+
+	@Column(length=1000)
 	@NotNull(message = "description is Mandatory")
 	private String description;
 }

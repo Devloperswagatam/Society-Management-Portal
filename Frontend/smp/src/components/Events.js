@@ -96,7 +96,7 @@ const Events = () => {
         toast.success("Event Updated", {
           position: "top-center",
           theme: "colored",
-          autoClose:1000
+          autoClose: 1000,
         });
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
@@ -117,7 +117,7 @@ const Events = () => {
         toast.error(error.response.data.message, {
           position: "top-center",
           theme: "colored",
-          autoClose:1000
+          autoClose: 1000,
         });
       });
   };
@@ -174,12 +174,14 @@ const Events = () => {
   const searchEventsByDate = (dateString) => {
     const filteredDate = new Date(dateString);
     const filteredEvents = events.filter(
-      (event) =>
-        new Date(event.startTime).toLocaleDateString() ===
-        filteredDate.toLocaleDateString()
+      (event) => {
+        const eventDate = new Date(event.startTime);
+        return eventDate.getDate() === filteredDate.getDate();
+      }
     );
     setEvents(filteredEvents);
   };
+  
 
   const handleInterest = async (event) => {
     const organizers = event.organizerTeam;
@@ -323,7 +325,7 @@ const Events = () => {
               className="mt-3"
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr 0.5fr 0.5fr",
+                gridTemplateColumns: "1fr 0.5fr 0.5fr",
                 gap: "0.5rem",
               }}
             >
@@ -339,18 +341,23 @@ const Events = () => {
                   <option value="all">All Events</option>
                 </Form.Control>
               </Form.Group>
-              <Form.Group controlId="searchDate">
-                {/* <Form.Label>Search by Date:</Form.Label> */}
+              {/* <Form.Group controlId="searchDate">
                 <Form.Control
                   type="date"
                   value={searchDate}
                   onChange={handleSearchDateChange}
                 />
-              </Form.Group>
-              <Button onClick={getEvents} className="mr-2">
+              </Form.Group> */}
+              <Button onClick={handleSearch} className="mr-2">
                 Apply
               </Button>
-              <Button variant="secondary" onClick={() => setSearchDate("")}>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setSearchDate("");
+                  getEvents();
+                }}
+              >
                 Clear
               </Button>
             </Form>
@@ -376,7 +383,7 @@ const Events = () => {
                   <td>
                     {editingEventId === event.eid ? (
                       <input
-                      style={{width:'5rem'}}
+                        style={{ width: "5rem" }}
                         type="text"
                         name="ename"
                         value={newEvent.ename}
@@ -389,7 +396,7 @@ const Events = () => {
                   <td>
                     {editingEventId === event.eid ? (
                       <input
-                      style={{width:'5rem'}}
+                        style={{ width: "5rem" }}
                         type="datetime-local"
                         name="startTime"
                         value={newEvent.startTime}
@@ -402,7 +409,7 @@ const Events = () => {
                   <td>
                     {editingEventId === event.eid ? (
                       <input
-                      style={{width:'5rem'}}
+                        style={{ width: "5rem" }}
                         type="datetime-local"
                         name="endTime"
                         value={newEvent.endTime}
@@ -416,7 +423,7 @@ const Events = () => {
                   <td>
                     {editingEventId === event.eid ? (
                       <input
-                      style={{width:'5rem'}}
+                        style={{ width: "5rem" }}
                         type="text"
                         name="place"
                         value={newEvent.place}
@@ -429,7 +436,7 @@ const Events = () => {
                   <td>
                     {editingEventId === event.eid ? (
                       <input
-                      // style={{width:'5rem'}}
+                        // style={{width:'5rem'}}
                         type="text"
                         name="description"
                         value={newEvent.description}
@@ -480,7 +487,11 @@ const Events = () => {
                       </>
                     ) : (
                       <BsPencilSquare
-                        style={{ fontSize: "20px", color: "blue", cursor:'pointer' }}
+                        style={{
+                          fontSize: "20px",
+                          color: "blue",
+                          cursor: "pointer",
+                        }}
                         onClick={() => startEditing(event)}
                       />
                     )}

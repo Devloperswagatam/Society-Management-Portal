@@ -137,6 +137,10 @@ public class EventServiceImpl implements EventService {
 		Event_Schedule eventSchedule = eventsRepository.findById(eid)
 				.orElseThrow(() -> new EventsException("Invalid event ID"));
 
+		if(eventSchedule.getStatus().equals("closed")){
+			throw new EventsException("Event is already closed");
+		}		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 

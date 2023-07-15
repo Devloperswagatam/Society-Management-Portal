@@ -95,6 +95,7 @@ const Organizer = () => {
                     <button
                       className="btn btn-outline-danger"
                       onClick={handleRemoveOrganizer}
+                      disabled={organizer.rid != sessionStorage.getItem("rid")}
                     >
                       Remove
                     </button>
