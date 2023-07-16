@@ -88,13 +88,20 @@ public class VotingEventServiceImpl implements VotingEventService {
 		for (VotingEvent existingEvent : existingEvents) {
 			LocalDateTime existingStartTime = existingEvent.getStartTime();
 			LocalDateTime existingEndTime = existingEvent.getEndTime();
-
+	
+			// Check if events occur on different days
+			if (!newStartTime.toLocalDate().isEqual(existingStartTime.toLocalDate())) {
+				continue; // Skip to the next event, no overlap possible
+			}
+	
+			// Compare start and end times
 			if (newStartTime.isBefore(existingEndTime) && newEndTime.isAfter(existingStartTime)) {
 				return true; // Time overlap found
 			}
 		}
 		return false; // No time overlap found
 	}
+	
 
 	@Override
 	public void nominateCandidate(Integer votingId) throws EventsException{

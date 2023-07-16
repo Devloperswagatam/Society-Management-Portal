@@ -488,7 +488,7 @@ const Events = () => {
                     ) : (
                       <BsPencilSquare
                         style={{
-                          fontSize: "20px",
+                          fontSize: "25px",
                           color: "blue",
                           cursor: "pointer",
                         }}

@@ -64,15 +64,21 @@ public class EventServiceImpl implements EventService {
 	}
 
 	private boolean hasTimeCollision(Event_Schedule newEvent, Event_Schedule oldEvent) {
+		// Compare the dates of the events
+		if (!newEvent.getStartTime().toLocalDate().isEqual(oldEvent.getStartTime().toLocalDate())) {
+			return false; // Events occur on different days, no collision
+		}
+	
 		// Compare start and end times
 		if (newEvent.getStartTime().isBefore(oldEvent.getEndTime()) &&
 				newEvent.getEndTime().isAfter(oldEvent.getStartTime())) {
 			return true; // Collision detected
 		}
-
+	
 		// No collision
 		return false;
 	}
+	
 
 	@Override
 	public List<Event_Schedule> viewEvent() throws EventsException {
