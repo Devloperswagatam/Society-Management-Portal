@@ -66,13 +66,12 @@ const Bulletin = () => {
             key={bulletin.id}
             className="bulletin-card"
             style={{
-              maxWidth: "30rem",
+              Width: "30rem",
               height: "30rem",
               margin: "0 auto",
               marginTop: "20vh",
               padding: "1rem",
               position: "relative",
-              overflow: "hidden",
             }}
           >
             {role === "committee" && (

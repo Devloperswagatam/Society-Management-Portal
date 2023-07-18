@@ -41,4 +41,6 @@ public class Bulletin {
 	@Column(length=1000)
 	@NotNull(message = "description is Mandatory")
 	private String description;
+	
+	
 }
