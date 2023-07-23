@@ -1,5 +1,4 @@
 .bulletin{
-    padding: 0 2rem 2rem 2rem;
     width: 100%;
     height: 100%;
     display: flex;
@@ -12,11 +11,6 @@
 
 .card-description {
     max-width: 30rem;
-    max-height: 30rem; /* Set a fixed height for the description */
-    overflow: scroll; /* Enable overflow hiding */
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limit the number of lines to display */
-    -webkit-box-orient: vertical;
+    max-height: 30rem; 
   }
   
