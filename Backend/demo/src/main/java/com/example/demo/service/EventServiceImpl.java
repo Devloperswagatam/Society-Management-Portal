@@ -41,6 +41,12 @@ public class EventServiceImpl implements EventService {
 			throw new EventsException("Event is null");
 		}
 
+		// Check if the event date is in the future
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		if (event.getStartTime().isBefore(currentDateTime.toLocalDate().atStartOfDay())) {
+			throw new EventsException("Cannot book events on past days");
+		}
+
 		List<Event_Schedule> events = eventsRepository.findAll();
 		for (Event_Schedule oldEvent : events) {
 			if (hasTimeCollision(event, oldEvent)) {

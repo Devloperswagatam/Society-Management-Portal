@@ -265,6 +265,7 @@ const Events = () => {
                     type="number"
                     className="form-control"
                     name="budget"
+                    pattern="[0-9]{10}"
                     placeholder="Enter the Event Budget"
                     value={newEvent.budget}
                     onChange={handleChange}

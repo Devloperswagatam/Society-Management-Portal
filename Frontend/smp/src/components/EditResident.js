@@ -82,6 +82,7 @@ const EditResidentForm = () => {
                   name="name"
                   value={resident.name}
                   onChange={handleChange}
+                  pattern="[A-Za-z\s]+"
                   required
                 />
               </div>
@@ -91,6 +92,7 @@ const EditResidentForm = () => {
                   type="email"
                   className="form-control"
                   id="email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   name="email"
                   value={resident.email}
                   onChange={handleChange}
@@ -103,6 +105,7 @@ const EditResidentForm = () => {
                   type="tel"
                   className="form-control"
                   id="phoneNumber"
+                  pattern="[0-9]{10}"
                   name="phoneNumber"
                   value={resident.phoneNumber}
                   onChange={handleChange}
@@ -118,6 +121,7 @@ const EditResidentForm = () => {
                   className="form-control"
                   id="wingNo"
                   name="wingNo"
+                  pattern="[A-Za-z0-9]+"
                   value={resident.wingNo}
                   onChange={handleChange}
                   disabled={sessionStorage.getItem("role")!=="committee"}
@@ -131,6 +135,7 @@ const EditResidentForm = () => {
                   className="form-control"
                   id="floorNo"
                   name="floorNo"
+                  pattern="[0-9]+"
                   value={resident.floorNo}
                   onChange={handleChange}
                   disabled={sessionStorage.getItem("role")!=="committee"}
@@ -144,6 +149,7 @@ const EditResidentForm = () => {
                   className="form-control"
                   id="flatNo"
                   name="flatNo"
+                  pattern="[A-Za-z0-9]+"
                   value={resident.flatNo}
                   onChange={handleChange}
                   disabled={sessionStorage.getItem("role")!=="committee"}

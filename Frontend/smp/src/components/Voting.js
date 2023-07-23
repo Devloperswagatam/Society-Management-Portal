@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import { toast } from "react-toastify";
 import { BsPencilSquare, BsFillClipboardCheckFill } from "react-icons/bs";
 import { MdCancel, MdEditOff } from "react-icons/md";
+import Swal from 'sweetalert2';
 
 const Voting = () => {
   const apiService = new ApiService();
@@ -195,27 +196,53 @@ const Voting = () => {
     return !!matchingCandidate;
   };
 
+
   const handleWithdrawNomination = async (votingId) => {
-    const response = await apiService
-      .withdrawCandidate(votingId)
-      .then((response) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-        toast.success(response.data, {
-          position: "top-center",
-          theme: "colored",
-          autoClose: 1000,
-        });
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message, {
-          position: "top-center",
-          theme: "colored",
-          autoClose: 1000,
-        });
+    try {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, withdraw it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await apiService.withdrawCandidate(votingId);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+            toast.success(response.data, {
+              position: "top-center",
+              theme: "colored",
+              autoClose: 1000,
+            });
+          } catch (error) {
+            toast.error(error.response.data.message, {
+              position: "top-center",
+              theme: "colored",
+              autoClose: 1000,
+            });
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Your nomination is safe :)',
+            'error'
+          );
+        }
       });
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-center",
+        theme: "colored",
+        autoClose: 1000,
+      });
+    }
   };
+  
 
   const handleVote = async (votingId) => {
     try {

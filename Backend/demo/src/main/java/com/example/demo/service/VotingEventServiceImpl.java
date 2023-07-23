@@ -58,6 +58,13 @@ public class VotingEventServiceImpl implements VotingEventService {
 		if (!existResident.getRole().equals("committee")) {
 			throw new EventsException("Committee login required!!");
 		} else {
+
+			// Check if the event date is in the future
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		if (votingEvent.getStartTime().isBefore(currentDateTime.toLocalDate().atStartOfDay())) {
+			throw new EventsException("Cannot book events on past days");
+		}
+
 			if (hasTimeOverlap(votingEvent.getStartTime(), votingEvent.getEndTime())) {
 				throw new EventsException("The new voting event clashes with an existing event.");
 			}
@@ -248,8 +255,7 @@ public class VotingEventServiceImpl implements VotingEventService {
 		LocalDateTime currentTime = LocalDateTime.now();
 
 		for (VotingEvent event : openEvents) {
-			if (currentTime.isAfter(event.getEndTime())
-					&& currentTime.toLocalDate().equals(event.getEndTime().toLocalDate())) {
+			if (currentTime.isAfter(event.getEndTime())) {
 				event.setStatus("closed");
 				votingEventRepository.save(event);
 				System.out.println("Voting event closed successfully !!");

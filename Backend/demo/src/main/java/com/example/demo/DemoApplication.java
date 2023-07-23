@@ -57,7 +57,8 @@ public class DemoApplication {
 	
 
 
-//	@Scheduled(fixedRate = 300000) //cron expression for every month's 1st day at 1:00 AM ("0 0 1 1 * ?")
+	//cron expression for every month's 1st day at 1:00 AM ("0 0 1 1 * ?")
+	// @Scheduled(fixedRate = 180000) 
 //	@EventListener(ApplicationReadyEvent.class)
 	public void sendMail() {
 		try {
@@ -94,7 +95,8 @@ public class DemoApplication {
 	}
 	
 	
-//	@Scheduled(fixedRate = 30000) // (cron = "0 0 0 1 * ?") for every months 1st day at 12:00 AM
+	// (cron = "0 0 0 1 * ?") for every months 1st day at 12:00 AM
+	// @Scheduled(fixedRate = 60000)
     public void createAccountScheduled() {
         try {
             // Retrieve all residents
@@ -111,24 +113,24 @@ public class DemoApplication {
     }
 	
 
-//	@Scheduled(fixedRate = 30000)
+	@Scheduled(fixedRate = 5000)
 	public void automaticallyCloseVotingEvents() {
 		votingEventService.automaticallyCloseVotingEvents();
 	}
 	
-	// @Scheduled(fixedRate = 3000)
+	@Scheduled(fixedRate = 5000)
 	public void automaticallyCloseEvents(){
 		eventService.automaticallyCloseEvents();
 	}
 	
-//	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 30000)
 	public void addCommittee() throws CommitteeException {
 
 		committeeService.addCommittee();
 
 	}
 	
-//	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 30000)
 	public void removeCandidate() {
 		votingEventService.removeCandidate();
 	}
