@@ -52,6 +52,14 @@ class ApiService {
     );
   }
 
+  forgetPassword(resident) {
+    return axios.put(
+      `http://localhost:8088/residents/resident/forgetpassword`,
+      resident,
+      this.getConfig()
+    );
+  }
+
   //Events api
   getEvents() {
     return axios.get("http://localhost:8088/events/event", this.getConfig());

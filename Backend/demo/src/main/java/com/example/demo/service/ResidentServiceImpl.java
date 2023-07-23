@@ -94,4 +94,20 @@ public class ResidentServiceImpl implements ResidentService{
 		return loggedResident;
 	}
 
+	@Override
+	public Resident forgetPassword(Resident resident) throws ResidentException {
+		Resident existResident = residentRepository.findByEmail(resident.getEmail());
+		if(existResident == null){
+			throw new ResidentException("Your not a resident");
+		}
+
+		if(passwordEncoder.matches(resident.getPassword(),existResident.getPassword())){
+			throw new ResidentException("New password can't be same");
+		}
+
+		existResident.setPassword(passwordEncoder.encode(resident.getPassword()));
+
+		return residentRepository.save(existResident);
+	}
+
 }

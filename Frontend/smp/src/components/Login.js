@@ -57,13 +57,6 @@ const Login = () => {
 
   return (
     <>
-      {/* <div class="ripple-background">
-        <div class="circle xxlarge shade1"></div>
-        <div class="circle xlarge shade2"></div>
-        <div class="circle large shade3"></div>
-        <div class="circle mediun shade4"></div>
-        <div class="circle small shade5"></div>
-      </div> */}
 
       <div className="container">
         <div className="row" style={{ marginTop: "10rem" }}>
@@ -100,11 +93,14 @@ const Login = () => {
                   onChange={passwordHandler}
                 />
               </div>
+              <div className="mb-3">
+                <Link to="/forgetpassword">Forget password?</Link>
+              </div>
               <button type="submit" className="btn btn-outline-success">
                 Login
               </button>{" "}
               &nbsp;
-              <button style={{ border: "none", backgroundColor: "#dfe6e9" }}>
+              <button  style={{ border: "none", backgroundColor: "#dfe6e9" }}>
                 <Link className="btn btn-outline-primary mx-2" to="/register">
                   Register
                 </Link>

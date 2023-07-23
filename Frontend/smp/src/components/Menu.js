@@ -23,6 +23,7 @@ import Organizer from "./Organizer";
 import Committee from "./Committee";
 import Resident from "./Resident";
 import EditBulletin from "./committee/EditBulletin";
+import Forgetpassword from "./Forgetpassword";
 
 const Menu = () => {
   useEffect(() => {
@@ -63,6 +64,7 @@ const Menu = () => {
         <Route path="/committee" element={<Committee/>}/>
         <Route path="/residents" element={<Resident/>}/>
         <Route path="/EditBulletin/:id" element={<EditBulletin/>}/>
+        <Route path="/forgetpassword" element={<Forgetpassword/>}/>
       </Routes>
     </Router>
   );

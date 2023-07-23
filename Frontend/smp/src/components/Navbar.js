@@ -8,8 +8,6 @@ import { FaHome, FaPowerOff } from "react-icons/fa";
 import { BsLightbulbFill, BsPersonFill } from "react-icons/bs";
 import { MdFeedback } from "react-icons/md";
 import { IoMdWallet } from "react-icons/io";
-import { Button } from "react-bootstrap";
-import DarkMode from "./DarkMode";
 
 const Navbar = (props) => {
 
@@ -121,9 +119,6 @@ const Navbar = (props) => {
                     </DropdownButton>
                   </li>
                 )}
-                {/* <li>
-                  <DarkMode/>
-                </li> */}
               </>
             )}
           </ul>

@@ -113,24 +113,24 @@ public class DemoApplication {
     }
 	
 
-	@Scheduled(fixedRate = 5000)
+	// @Scheduled(fixedRate = 5000)
 	public void automaticallyCloseVotingEvents() {
 		votingEventService.automaticallyCloseVotingEvents();
 	}
 	
-	@Scheduled(fixedRate = 5000)
+	// @Scheduled(fixedRate = 5000)
 	public void automaticallyCloseEvents(){
 		eventService.automaticallyCloseEvents();
 	}
 	
-	@Scheduled(fixedRate = 30000)
+	// @Scheduled(fixedRate = 30000)
 	public void addCommittee() throws CommitteeException {
 
 		committeeService.addCommittee();
 
 	}
 	
-	@Scheduled(fixedRate = 30000)
+	// @Scheduled(fixedRate = 30000)
 	public void removeCandidate() {
 		votingEventService.removeCandidate();
 	}

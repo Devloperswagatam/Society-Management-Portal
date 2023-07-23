@@ -19,8 +19,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.example.demo.appSecurity.security.JwtAuthenticationEntryPoint;
 import com.example.demo.appSecurity.security.JwtAuthenticationFilter;
 
-
-
 @Configuration
 public class SecurityConfig {
 	@Autowired
@@ -39,7 +37,9 @@ public class SecurityConfig {
 
 		http.cors().and().csrf().disable()
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login").permitAll()
-						.requestMatchers("/residents/resident").permitAll().anyRequest().authenticated())
+						.requestMatchers("/residents/resident").permitAll()
+						.requestMatchers("/residents/resident/forgetpassword").permitAll()
+						.anyRequest().authenticated())
 				.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -55,17 +55,5 @@ public class SecurityConfig {
 		authenticationProvider.setPasswordEncoder(passwordEncoder);
 		return authenticationProvider;
 	}
-	
-//	@Bean   
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("*")); //or add * to allow all origins
-//        configuration.setAllowCredentials(true);
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); //to set allowed http methods
-//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-//        configuration.setExposedHeaders(Arrays.asList("custom-header1", "custom-header2"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration); 
-//        return source; 
-//    }
+
 }

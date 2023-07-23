@@ -48,4 +48,9 @@ public class ResidentController {
 	public ResponseEntity<Resident> viewLoggedInResident() throws ResidentException{
 		return new ResponseEntity<Resident>(residentService.viewLoggedInResident(),HttpStatus.OK);
 	}
+
+	@PutMapping("/resident/forgetpassword")
+	public ResponseEntity<Resident> forgetPassword(@RequestBody Resident resident) throws ResidentException{
+		return new ResponseEntity<Resident>(residentService.forgetPassword(resident), HttpStatus.OK);
+	}
 }

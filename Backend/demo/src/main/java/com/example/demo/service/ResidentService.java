@@ -10,4 +10,5 @@ public interface ResidentService {
 	public Resident updateResident(Resident resident)throws ResidentException;
 	public List<Resident> viewAllResidents()throws ResidentException;
 	public Resident viewLoggedInResident() throws ResidentException;
+	public Resident forgetPassword(Resident resident) throws ResidentException;
 }
