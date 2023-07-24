@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import ApiService from "./services/ApiService";
 import Card from "react-bootstrap/Card";
 import Navbar from "./Navbar";
+import Swal from 'sweetalert2';
+
 import {
   BsTrash,
-  BsPencil,
-  BsPencilFill,
-  BsTrashFill,
   BsPencilSquare,
 } from "react-icons/bs";
 import "../components/componentCSS/Bulletin.css";
@@ -35,22 +34,36 @@ const Bulletin = () => {
   };
 
   const handleDeleteBulletin = (id) => {
-    api
-      .deleteBulletin(id)
-      .then(() => {
-        toast.success("Bulletin deleted successfully", {
-          position: "top-center",
-          theme: "colored",
-          autoClose: 2000,
-        });
-        console.log(`Bulletin deleted successfully with id: ${id}`);
-
-        getBulletins();
-      })
-      .catch((error) => {
-        console.error(`Error deleting bulletin with id ${id}:`, error);
-      });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this bulletin!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api
+          .deleteBulletin(id)
+          .then(() => {
+            toast.success('Bulletin deleted successfully', {
+              position: 'top-center',
+              theme: 'colored',
+              autoClose: 2000,
+            });
+            console.log(`Bulletin deleted successfully with id: ${id}`);
+  
+            getBulletins();
+          })
+          .catch((error) => {
+            console.error(`Error deleting bulletin with id ${id}:`, error);
+          });
+      }
+    });
   };
+  
 
   return (
     <>
