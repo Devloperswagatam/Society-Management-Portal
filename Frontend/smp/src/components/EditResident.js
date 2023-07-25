@@ -70,7 +70,7 @@ const EditResidentForm = () => {
       />
       <div className="container">
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'#f5f6fa'}}>
             <h2 className="text-center m-4">Edit Resident</h2>
             <form onSubmit={handleSubmit} className="grid-form">
               <div className="form-group">
