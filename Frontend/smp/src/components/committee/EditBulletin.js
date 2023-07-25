@@ -8,7 +8,6 @@ const EditBulletin = () => {
   const api = new ApiService();
   const { id } = useParams();
   const [bulletin, setBulletin] = useState({
-
     name: "",
     description: "",
   });
@@ -18,7 +17,7 @@ const EditBulletin = () => {
   }, []);
 
   const handleChange = (e) => {
-    setBulletin({ ...bulletin, [e.target.name]: e.target.value});
+    setBulletin({ ...bulletin, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -46,7 +45,7 @@ const EditBulletin = () => {
 
   const loadBulletin = () => {
     api
-    .getBulletinById(id)
+      .getBulletinById(id)
       .then((result) => {
         console.log(result.data);
         setBulletin(result.data);
@@ -65,7 +64,10 @@ const EditBulletin = () => {
       />
       <div className="container">
         <div className="row">
-          <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <div
+            className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow"
+            style={{ backgroundColor: "#f5f6fa" }}
+          >
             <h2 className="text-center m-4">Edit Bulletin</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">

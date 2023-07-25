@@ -217,7 +217,7 @@ const Events = () => {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
-      <h2>Events Page</h2>
+      {/* <h2>Events Page</h2> */}
       <Button onClick={toggleForm} style={{ margin: "0 0 1rem 80rem" }}>
         Create Event
       </Button>
@@ -225,7 +225,7 @@ const Events = () => {
       {showForm ? (
         <div className="container">
           <div className="row">
-            <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+            <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'#f5f6fa'}}>
               <h2 className="text-center m-4">Create Event</h2>
               <Form onSubmit={addEvent}>
                 <div className="mb-3">
