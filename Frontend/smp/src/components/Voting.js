@@ -206,6 +206,8 @@ const Voting = () => {
         showCancelButton: true,
         confirmButtonText: 'Yes, withdraw it!',
         cancelButtonText: 'No, cancel!',
+        cancelButtonColor: '#d33',
+        confirmButtonColor: '#3085d6',
         reverseButtons: true
       }).then(async (result) => {
         if (result.isConfirmed) {
