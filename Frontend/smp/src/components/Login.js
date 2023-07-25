@@ -94,7 +94,7 @@ const Login = () => {
                 />
               </div>
               <div className="mb-3">
-                <Link to="/forgetpassword">Forget password?</Link>
+                <Link to="/forgetpassword">Forgot password?</Link>
               </div>
               <button type="submit" className="btn btn-outline-success">
                 Login

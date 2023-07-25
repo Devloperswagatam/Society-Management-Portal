@@ -80,6 +80,12 @@ public class EventServiceImpl implements EventService {
 				newEvent.getEndTime().isAfter(oldEvent.getStartTime())) {
 			return true; // Collision detected
 		}
+
+		// Check for hour clashes
+		if ((newEvent.getStartTime().getHour() == oldEvent.getEndTime().getHour()) ||
+        (newEvent.getEndTime().getHour() == oldEvent.getStartTime().getHour())) {
+        return true; // Collision detected
+   		}
 	
 		// No collision
 		return false;
@@ -210,6 +216,7 @@ public class EventServiceImpl implements EventService {
 		eventSchedule.setDescription(event.getDescription());
 		eventSchedule.setEndTime(event.getEndTime());
 		eventSchedule.setStartTime(event.getStartTime());
+		eventSchedule.setWantorganizer(event.getWantorganizer());
 
 		return eventsRepository.save(eventSchedule);
 	}

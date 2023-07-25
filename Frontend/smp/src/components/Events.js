@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { BsFillClipboardCheckFill, BsPencilSquare } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
+import CustomCalendar from "./CustomCalendar";
+import { formatDateTimeToUTC, formatDateTimeToIndianTime } from "./Utils";
 
 const Events = () => {
   const api = new ApiService();
@@ -19,6 +21,7 @@ const Events = () => {
     startTime: "",
     endTime: "",
     description: "",
+    wantorganizer: false,
   });
   const [filter, setFilter] = useState("future");
   const [searchDate, setSearchDate] = useState("");
@@ -35,17 +38,23 @@ const Events = () => {
         let filteredEvents = response.data;
 
         if (filter === "past") {
-          const currentDate = new Date();
+          const currentDate = new Date(); // Current date in UTC timezone
           filteredEvents = filteredEvents.filter(
-            (event) => new Date(event.endTime).getDate() < currentDate.getDate()
+            (event) => new Date(event.endTime) < currentDate
           );
         } else if (filter === "future") {
-          const currentDate = new Date();
+          const currentDate = new Date(); // Current date in UTC timezone
           filteredEvents = filteredEvents.filter(
-            (event) =>
-              new Date(event.startTime).getDate() >= currentDate.getDate()
+            (event) => new Date(event.startTime) >= currentDate
           );
         }
+
+        // Convert UTC start and end times to Indian Standard Time (IST) for display
+        filteredEvents = filteredEvents.map((event) => ({
+          ...event,
+          startTime: formatDateTimeToIndianTime(event.startTime),
+          endTime: formatDateTimeToIndianTime(event.endTime),
+        }));
 
         setEvents(filteredEvents);
       })
@@ -60,7 +69,11 @@ const Events = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US");
+    let hours = date.getHours();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours %= 12;
+    hours = hours || 12;
+    return `${hours} ${ampm}`;
   };
 
   const formatDay = (dateString) => {
@@ -72,12 +85,47 @@ const Events = () => {
     setShowForm(!showForm);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewEvent((prevEvent) => ({
-      ...prevEvent,
-      [name]: value,
-    }));
+  // Helper function to calculate event duration in hours
+  const calculateDurationInHours = (start, end) => {
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+    const durationInMilliseconds = endTime - startTime;
+    const durationInHours = durationInMilliseconds / (1000 * 60 * 60);
+    return durationInHours;
+  };
+
+  // Updated handleChange function to recalculate the budget
+  const handleChange = (name, value) => {
+    if (name === "place" || name === "startTime" || name === "endTime") {
+      // If the place or event duration changes, calculate the new budget
+      const durationInHours = calculateDurationInHours(
+        name === "startTime" ? value : newEvent.startTime,
+        name === "endTime" ? value : newEvent.endTime
+      );
+      let budget = 0;
+      if (name === "place") {
+        // Set budget based on the selected place
+        budget =
+          value === "hall" ? durationInHours * 1000 : durationInHours * 2000;
+      } else {
+        // Set budget based on the current place value (already selected)
+        const currentPlace = newEvent.place;
+        budget =
+          currentPlace === "hall"
+            ? durationInHours * 1000
+            : durationInHours * 2000;
+      }
+      setNewEvent((prevEvent) => ({
+        ...prevEvent,
+        [name]: value,
+        budget: budget.toFixed(2), // Keep budget with 2 decimal places
+      }));
+    } else {
+      setNewEvent((prevEvent) => ({
+        ...prevEvent,
+        [name]: value,
+      }));
+    }
   };
 
   const cancelEditing = () => {
@@ -90,8 +138,15 @@ const Events = () => {
   };
 
   const saveChanges = async () => {
+    const eventData = {
+      ...newEvent,
+      startTime: formatDateTimeToUTC(newEvent.startTime), // Convert to UTC before saving
+      endTime: formatDateTimeToUTC(newEvent.endTime), // Convert to UTC before saving
+      // wantorganizer: newEvent.wantorganizer,
+    };
+
     await api
-      .updateEvent(newEvent)
+      .updateEvent(eventData)
       .then(() => {
         toast.success("Event Updated", {
           position: "top-center",
@@ -100,7 +155,7 @@ const Events = () => {
         });
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
-            event.eid === newEvent.eid ? newEvent : event
+            event.eid === eventData.eid ? eventData : event
           )
         );
         setNewEvent({
@@ -124,8 +179,16 @@ const Events = () => {
 
   const addEvent = (e) => {
     e.preventDefault();
+
+    const eventData = {
+      ...newEvent,
+      startTime: formatDateTimeToUTC(newEvent.startTime), // Convert to UTC before saving
+      endTime: formatDateTimeToUTC(newEvent.endTime), // Convert to UTC before saving
+      wantorganizer: newEvent.wantorganizer,
+    };
+
     api
-      .addEvent(newEvent)
+      .addEvent(eventData)
       .then((response) => {
         toast.success("Event created successfully", {
           position: "top-center",
@@ -138,6 +201,7 @@ const Events = () => {
           startTime: "",
           endTime: "",
           description: "",
+          wantorganizer: false,
         });
         getEvents();
         toggleForm();
@@ -173,15 +237,12 @@ const Events = () => {
 
   const searchEventsByDate = (dateString) => {
     const filteredDate = new Date(dateString);
-    const filteredEvents = events.filter(
-      (event) => {
-        const eventDate = new Date(event.startTime);
-        return eventDate.getDate() === filteredDate.getDate();
-      }
-    );
+    const filteredEvents = events.filter((event) => {
+      const eventDate = new Date(event.startTime);
+      return eventDate.getDate() === filteredDate.getDate();
+    });
     setEvents(filteredEvents);
   };
-  
 
   const handleInterest = async (event) => {
     const organizers = event.organizerTeam;
@@ -210,6 +271,13 @@ const Events = () => {
     }
   };
 
+  const toggleOrganizer = () => {
+    setNewEvent((prevEvent) => ({
+      ...prevEvent,
+      wantorganizer: !prevEvent.wantorganizer,
+    }));
+  };
+
   return (
     <div>
       <Navbar
@@ -228,6 +296,23 @@ const Events = () => {
             <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
               <h2 className="text-center m-4">Create Event</h2>
               <Form onSubmit={addEvent}>
+                <div
+                  className="mb-3"
+                  style={{ marginLeft: "-25rem", marginTop: "-3rem" }}
+                >
+                  <div>
+                    Want Organizer ?&nbsp;&nbsp;
+                    <Button
+                      name="wantorganizer"
+                      value={newEvent.wantorganizer.toString()}
+                      variant={newEvent.wantorganizer ? "success" : "danger"}
+                      onClick={toggleOrganizer}
+                      style={{ marginRight: "1rem" }}
+                    >
+                      {newEvent.wantorganizer ? "Yes" : "No"}
+                    </Button>
+                  </div>
+                </div>
                 <div className="mb-3">
                   <label htmlFor="eventName" className="form-label">
                     Event Name:
@@ -239,7 +324,9 @@ const Events = () => {
                     pattern="[A-Za-z\s]+"
                     name="ename"
                     value={newEvent.ename}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -249,7 +336,9 @@ const Events = () => {
                     className="form-control"
                     name="place"
                     value={newEvent.place}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
                     required
                   >
                     <option value="">Select Place</option>
@@ -257,6 +346,7 @@ const Events = () => {
                     <option value="ground">Ground</option>
                   </select>
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="Budget" className="form-label">
                     Budget:
@@ -268,34 +358,27 @@ const Events = () => {
                     pattern="[0-9]{10}"
                     placeholder="Enter the Event Budget"
                     value={newEvent.budget}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
                     required
+                    disabled
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="StartTime" className="form-label">
-                    Start Time:
+                  <label htmlFor="StartDateTime" className="form-label">
+                    Start Date and Time:
                   </label>
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    placeholder="Enter the Start Time"
-                    name="startTime"
-                    value={newEvent.startTime}
-                    onChange={handleChange}
-                    required
+                  <CustomCalendar
+                    selected={newEvent.startTime}
+                    onChange={(date) => handleChange("startTime", date)} // Pass selected and onChange props
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="EndTime">End Time:</label>
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    placeholder="Enter the Event End Time"
-                    name="endTime"
-                    value={newEvent.endTime}
-                    onChange={handleChange}
-                    required
+                  <label htmlFor="EndDateTime">End Date and Time:</label>
+                  <CustomCalendar
+                    selected={newEvent.endTime}
+                    onChange={(date) => handleChange("endTime", date)} // Pass selected and onChange props
                   />
                 </div>
                 <div className="mb-3">
@@ -305,11 +388,17 @@ const Events = () => {
                     placeholder="Enter the Event Description"
                     name="description"
                     value={newEvent.description}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
                     required
                   />
                 </div>
-                <button className="btn btn-outline-primary" type="submit">
+                <button
+                  className="btn btn-outline-primary"
+                  type="submit"
+                  style={{ marginRight: "1rem" }}
+                >
                   Create Event
                 </button>
                 <button className="btn btn-outline-danger" onClick={toggleForm}>
@@ -374,6 +463,7 @@ const Events = () => {
                 <th>Location</th>
                 <th>Description</th>
                 <th>Status</th>
+                <th>Organizer</th>
                 <th>Organizers</th>
                 <th>Edit</th>
               </tr>
@@ -388,7 +478,9 @@ const Events = () => {
                         type="text"
                         name="ename"
                         value={newEvent.ename}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          handleChange(e.target.name, e.target.value)
+                        }
                       />
                     ) : (
                       event.ename
@@ -396,12 +488,9 @@ const Events = () => {
                   </td>
                   <td>
                     {editingEventId === event.eid ? (
-                      <input
-                        style={{ width: "5rem" }}
-                        type="datetime-local"
-                        name="startTime"
-                        value={newEvent.startTime}
-                        onChange={handleChange}
+                      <CustomCalendar
+                        selected={newEvent.startTime}
+                        onChange={(date) => handleChange("startTime", date)} // Pass selected and onChange props
                       />
                     ) : (
                       formatDate(event.startTime)
@@ -409,12 +498,9 @@ const Events = () => {
                   </td>
                   <td>
                     {editingEventId === event.eid ? (
-                      <input
-                        style={{ width: "5rem" }}
-                        type="datetime-local"
-                        name="endTime"
-                        value={newEvent.endTime}
-                        onChange={handleChange}
+                      <CustomCalendar
+                        selected={newEvent.endTime}
+                        onChange={(date) => handleChange("endTime", date)} // Pass selected and onChange props
                       />
                     ) : (
                       formatDate(event.endTime)
@@ -428,7 +514,9 @@ const Events = () => {
                         type="text"
                         name="place"
                         value={newEvent.place}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          handleChange(e.target.name, e.target.value)
+                        }
                       />
                     ) : (
                       event.place
@@ -441,7 +529,9 @@ const Events = () => {
                         type="text"
                         name="description"
                         value={newEvent.description}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          handleChange(e.target.name, e.target.value)
+                        }
                       />
                     ) : (
                       event.description
@@ -449,10 +539,30 @@ const Events = () => {
                   </td>
                   <td>{event.status}</td>
                   <td>
+                    {editingEventId === event.eid ? (
+                      <Form.Select
+                        name="wantorganizer"
+                        value={newEvent.wantorganizer.toString()}
+                        onChange={(e) =>
+                          handleChange(e.target.name, e.target.value)
+                        }
+                      >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </Form.Select>
+                    ) : event.wantorganizer ? (
+                      "Yes"
+                    ) : (
+                      "No"
+                    )}
+                  </td>
+                  <td>
                     <button
                       className="btn btn-outline-primary"
                       style={{ margin: "0 5px 0 0" }}
-                      disabled={event.status === "closed"}
+                      disabled={
+                        !event.wantorganizer || event.status === "closed"
+                      }
                       onClick={() => handleInterest(event)}
                     >
                       Interested

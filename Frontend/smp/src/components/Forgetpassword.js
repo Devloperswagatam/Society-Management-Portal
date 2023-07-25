@@ -68,7 +68,7 @@ function Forgetpassword() {
           marginTop: "0",
         }}
       >
-        <h2>Forget Password</h2>
+        <h2>Forgot Password</h2>
         <div>
           <label>Email:</label>
           <br />
