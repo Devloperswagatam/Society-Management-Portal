@@ -142,12 +142,15 @@ const Events = () => {
       ...newEvent,
       startTime: formatDateTimeToUTC(newEvent.startTime), // Convert to UTC before saving
       endTime: formatDateTimeToUTC(newEvent.endTime), // Convert to UTC before saving
-      // wantorganizer: newEvent.wantorganizer,
+      wantorganizer: newEvent.wantorganizer,
     };
 
     await api
       .updateEvent(eventData)
       .then(() => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         toast.success("Event Updated", {
           position: "top-center",
           theme: "colored",
@@ -158,9 +161,7 @@ const Events = () => {
             event.eid === eventData.eid ? eventData : event
           )
         );
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+
         setNewEvent({
           ename: "",
           place: "",
@@ -296,7 +297,10 @@ const Events = () => {
       {showForm ? (
         <div className="container">
           <div className="row">
-            <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow" style={{backgroundColor:'#f5f6fa'}}>
+            <div
+              className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow"
+              style={{ backgroundColor: "#f5f6fa" }}
+            >
               <h2 className="text-center m-4">Create Event</h2>
               <Form onSubmit={addEvent}>
                 <div
@@ -345,8 +349,12 @@ const Events = () => {
                     required
                   >
                     <option value="">Select Place</option>
-                    <option value="hall">Hall (1000₹/hour, including GSt)</option>
-                    <option value="ground">Ground (2000₹/hour, including GSt)</option>
+                    <option value="hall">
+                      Hall (1000₹/hour, including GSt)
+                    </option>
+                    <option value="ground">
+                      Ground (2000₹/hour, including GSt)
+                    </option>
                   </select>
                 </div>
 
