@@ -158,6 +158,9 @@ const Events = () => {
             event.eid === eventData.eid ? eventData : event
           )
         );
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         setNewEvent({
           ename: "",
           place: "",
@@ -285,7 +288,7 @@ const Events = () => {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
-      {/* <h2>Events Page</h2> */}
+      <h2>Events Page</h2>
       <Button onClick={toggleForm} style={{ margin: "0 0 1rem 80rem" }}>
         Create Event
       </Button>
@@ -342,8 +345,8 @@ const Events = () => {
                     required
                   >
                     <option value="">Select Place</option>
-                    <option value="hall">Hall</option>
-                    <option value="ground">Ground</option>
+                    <option value="hall">Hall (1000₹/hour, including GSt)</option>
+                    <option value="ground">Ground (2000₹/hour, including GSt)</option>
                   </select>
                 </div>
 
@@ -356,7 +359,7 @@ const Events = () => {
                     className="form-control"
                     name="budget"
                     pattern="[0-9]{10}"
-                    placeholder="Enter the Event Budget"
+                    placeholder="Calculated budget will show here"
                     value={newEvent.budget}
                     onChange={(e) =>
                       handleChange(e.target.name, e.target.value)

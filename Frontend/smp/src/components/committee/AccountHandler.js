@@ -4,12 +4,27 @@ import Navbar from "../Navbar";
 import ApiService from "../services/ApiService";
 import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { Modal } from "react-bootstrap";
 
 function AccountHandler() {
   const apiService = new ApiService();
   // const history = useHistory(); 
   const [accounts, setAccounts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showBreakdown, setShowBreakdown] = useState(false);
+  const maintenanceBill = {
+    totalAmount: 5000,
+    laborCosts: 1100,
+    partsAndMaterials: 1000,
+    routineMaintenance: 800,
+    repairs: 500,
+    hvac: 600,
+    electricalSystems: 300,
+    plumbing: 200,
+    safetyAndSecuritySystems: 150,
+    exteriorMaintenance: 250,
+    pestControl: 100,
+  };
 
   useEffect(() => {
     fetchAccounts();
@@ -66,6 +81,14 @@ function AccountHandler() {
     fetchAccounts(); // Reset the accounts list to show all accounts
   };
 
+  const handleShowBreakdown = () => {
+    setShowBreakdown(true);
+  };
+
+  const handleCloseBreakdown = () => {
+    setShowBreakdown(false);
+  };
+
   return (
     <div>
       <Navbar
@@ -91,6 +114,55 @@ function AccountHandler() {
           </button>
         </form>
       </div>
+
+      <div
+        style={{
+          marginLeft: "70rem",
+          marginTop: "-3.3rem",
+          marginBottom: "1rem",
+        }}
+      >
+        {/* <button className="btn btn-outline-primary" style={{marginRight:'1rem'}}>Events</button> */}
+        <button
+          className="btn btn-outline-primary"
+          onClick={handleShowBreakdown}
+        >
+          Breakdown
+        </button>
+      </div>
+
+      <Modal show={showBreakdown} onHide={handleCloseBreakdown}>
+        <Modal.Header closeButton>
+          <Modal.Title>Maintenance Bill Breakdown</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Total Amount: {maintenanceBill.totalAmount} rupees</p>
+          <p>Labor Costs: {maintenanceBill.laborCosts} rupees</p>
+          <p>Parts and Materials: {maintenanceBill.partsAndMaterials} rupees</p>
+          <p>
+            Routine Maintenance: {maintenanceBill.routineMaintenance} rupees
+          </p>
+          <p>Repairs: {maintenanceBill.repairs} rupees</p>
+          <p>HVAC: {maintenanceBill.hvac} rupees</p>
+          <p>Electrical Systems: {maintenanceBill.electricalSystems} rupees</p>
+          <p>Plumbing: {maintenanceBill.plumbing} rupees</p>
+          <p>
+            Safety and Security Systems:{" "}
+            {maintenanceBill.safetyAndSecuritySystems} rupees
+          </p>
+          <p>
+            Exterior Maintenance: {maintenanceBill.exteriorMaintenance} rupees
+          </p>
+          <p>Pest Control: {maintenanceBill.pestControl} rupees</p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleCloseBreakdown}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <div className="container">
         <table striped bordered hover className="table mt-4 shadow">
           <thead className="table-dark">

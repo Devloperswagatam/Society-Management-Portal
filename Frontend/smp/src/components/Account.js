@@ -3,15 +3,30 @@ import ApiService from "./services/ApiService";
 import Navbar from "./Navbar";
 import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { Modal } from "react-bootstrap";
 
 const Account = () => {
-
   // const totalAmount = useContext(AccountContext);
 
   const [accounts, setAccounts] = useState([]);
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("pending");
   const [monthFilter, setMonthFilter] = useState("");
-  // const [totalAmount,setTotalAmount] = useState(0);
+  const [showBreakdown, setShowBreakdown] = useState(false);
+  const maintenanceBill = {
+    totalAmount: 5000,
+    laborCosts: 1100,
+    partsAndMaterials: 1000,
+    routineMaintenance: 800,
+    repairs: 500,
+    hvac: 600,
+    electricalSystems: 300,
+    plumbing: 200,
+    safetyAndSecuritySystems: 150,
+    exteriorMaintenance: 250,
+    pestControl: 100,
+  };
+  
+
   const apiService = new ApiService();
 
   useEffect(() => {
@@ -28,7 +43,6 @@ const Account = () => {
     }
   };
 
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
@@ -42,23 +56,22 @@ const Account = () => {
     setMonthFilter(e.target.value);
   };
 
-
   const payAccount = async (billNo) => {
     try {
       const updatedAccount = {
         status: "paid",
       };
       await apiService.updateAccountStatus(billNo, updatedAccount);
-      toast.success("Payment Successfull",{
-        position:'top-center',
-        theme:'colored',
-        autoClose:2000
+      toast.success("Payment Successfull", {
+        position: "top-center",
+        theme: "colored",
+        autoClose: 2000,
       });
       fetchAccounts();
     } catch (error) {
-      toast.error("Error while paying",{
-        position:'top-center',
-        theme:'colored'
+      toast.error("Error while paying", {
+        position: "top-center",
+        theme: "colored",
       });
       console.log("Error updating account status:", error);
     }
@@ -77,6 +90,14 @@ const Account = () => {
     return false;
   });
 
+  const handleShowBreakdown = () => {
+    setShowBreakdown(true);
+  };
+
+  const handleCloseBreakdown = () => {
+    setShowBreakdown(false);
+  };
+
   return (
     <div>
       <Navbar
@@ -87,30 +108,97 @@ const Account = () => {
 
       {/* <Home totalAmount={totalAmount}/> */}
 
-      <h2>Accounts Page</h2>
+      <h2>Maintanance and Events Bills</h2>
 
-      <div className="mb-3">
-        <label htmlFor="statusFilter">Status:</label>
-        <select
-          id="statusFilter"
-          value={statusFilter}
-          onChange={handleStatusFilterChange}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          marginLeft: "1rem",
+        }}
+      >
+        <div className="mb-3">
+          <label htmlFor="statusFilter" style={{ fontSize: "20px" }}>
+            View:&nbsp;&nbsp;
+          </label>
+          <select
+            style={{ height: "2rem", borderRadius: "5rem" }}
+            id="statusFilter"
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+          >
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="monthFilter" style={{ fontSize: "20px" }}>
+            Month:&nbsp;&nbsp;
+          </label>
+          <input
+            style={{
+              borderRadius: "5rem",
+              height: "2rem",
+              border: "1px solid",
+            }}
+            type="text"
+            id="monthFilter"
+            value={monthFilter}
+            onChange={handleMonthFilterChange}
+          />
+        </div>
+      </div>
+
+      <div
+        style={{
+          marginLeft: "80rem",
+          marginTop: "-3.3rem",
+          marginBottom: "1rem",
+        }}
+      >
+        {/* <button className="btn btn-outline-primary" style={{marginRight:'1rem'}}>Events</button> */}
+        <button
+          className="btn btn-outline-primary"
+          onClick={handleShowBreakdown}
         >
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="paid">Paid</option>
-        </select>
+          Breakdown
+        </button>
       </div>
 
-      <div className="mb-3">
-        <label htmlFor="monthFilter">Month:</label>
-        <input
-          type="text"
-          id="monthFilter"
-          value={monthFilter}
-          onChange={handleMonthFilterChange}
-        />
-      </div>
+      <Modal show={showBreakdown} onHide={handleCloseBreakdown}>
+        <Modal.Header closeButton>
+          <Modal.Title>Maintenance Bill Breakdown</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Total Amount: {maintenanceBill.totalAmount} rupees</p>
+          <p>Labor Costs: {maintenanceBill.laborCosts} rupees</p>
+          <p>Parts and Materials: {maintenanceBill.partsAndMaterials} rupees</p>
+          <p>
+            Routine Maintenance: {maintenanceBill.routineMaintenance} rupees
+          </p>
+          <p>Repairs: {maintenanceBill.repairs} rupees</p>
+          <p>HVAC: {maintenanceBill.hvac} rupees</p>
+          <p>Electrical Systems: {maintenanceBill.electricalSystems} rupees</p>
+          <p>Plumbing: {maintenanceBill.plumbing} rupees</p>
+          <p>
+            Safety and Security Systems:{" "}
+            {maintenanceBill.safetyAndSecuritySystems} rupees
+          </p>
+          <p>
+            Exterior Maintenance: {maintenanceBill.exteriorMaintenance} rupees
+          </p>
+          <p>Pest Control: {maintenanceBill.pestControl} rupees</p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleCloseBreakdown}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       <Table className="table">
         <thead className="table-dark">

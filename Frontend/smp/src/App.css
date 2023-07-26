@@ -92,6 +92,13 @@ text{
   }
 }
 
+.custom-calendar-container .react-datepicker-wrapper,
+.custom-calendar-container .react-datepicker__input-container input{
+  width: 100%;
+  height: 2.2rem;
+  border-radius: 5px;
+  border: 0.1px solid gray;
+}
 
 
 /* .custom-calendar-container .react-datepicker-wrapper,
@@ -112,15 +119,15 @@ text{
 } */
 
 
-.custom-calendar-container .react-datepicker-wrapper,
+/* .custom-calendar-container .react-datepicker-wrapper,
 .custom-calendar-container .react-datepicker__input-container input {
   width: 100%;
   height: 2.2rem;
   border-radius: 5px;
   border: none;
-  outline: none; /* Remove default outline */
-  box-shadow: none; /* Remove default box-shadow */
-  position: relative; /* Add relative positioning for pseudo-element */
+  outline: none; 
+  box-shadow: none; 
+  position: relative; 
 }
 
 .custom-calendar-container .react-datepicker-wrapper::before {
@@ -130,12 +137,12 @@ text{
   left: -2px;
   right: -2px;
   bottom: -2px;
-  border: 5px solid transparent; /* Add transparent border */
+  border: 5px solid transparent; 
   border-radius: 5px;
-  pointer-events: none; /* Prevent the pseudo-element from intercepting clicks */
-  transition: border 0.1s ease-in-out; /* Add transition effect */
+  pointer-events: none; 
+  transition: border 0.1s ease-in-out;
 }
 
 .custom-calendar-container .react-datepicker-wrapper:focus-within::before {
-  border-color: #70a1ff; /* Show the outline with primary color on focus */
-}
+  border-color: #70a1ff; 
+} */
