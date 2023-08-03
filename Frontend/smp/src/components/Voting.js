@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "./services/ApiService";
 import Result from "./Result";
-import { Table, Form, Button } from "react-bootstrap";
+import { Table, Form, Button, Modal } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { toast } from "react-toastify";
 import { BsPencilSquare, BsFillClipboardCheckFill } from "react-icons/bs";
@@ -13,7 +13,7 @@ const Voting = () => {
   const [votingEvents, setVotingEvents] = useState([]);
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+  // const [showResults, setShowResults] = useState(false);
   const [filter, setFilter] = useState("future");
   const [searchDate, setSearchDate] = useState("");
   const [candidates, setCandidates] = useState([]);
@@ -25,6 +25,7 @@ const Voting = () => {
     numberofcandidates: "",
     description: "",
   });
+  const [showModal,setShowModal] = useState(false);
 
   useEffect(() => {
     getVotingEvents();
@@ -38,16 +39,16 @@ const Voting = () => {
       .then((response) => {
         let filteredEvents = response.data;
 
-        if (filter === "past") {
+        if (filter === "future") {
           const currentDate = new Date();
           filteredEvents = filteredEvents.filter(
-            (event) => new Date(event.endTime).getDate() < currentDate.getDate()
+            (event) => new Date(event.endTime) >= currentDate
           );
-        } else if (filter === "future") {
+        } else if (filter === "past") {
           const currentDate = new Date();
           filteredEvents = filteredEvents.filter(
             (event) =>
-              new Date(event.startTime).getDate() >= currentDate.getDate()
+              new Date(event.startTime) < currentDate
           );
         }
 
@@ -255,7 +256,7 @@ const Voting = () => {
         // setVotingId(votingId);
         setSelectedCandidates(candidates);
         setShowForm(true);
-        setShowResults(false);
+        // setShowResults(false);
       } else {
         toast.warn("No candidates available for voting", {
           position: "top-center",
@@ -306,7 +307,7 @@ const Voting = () => {
   const handleBack = () => {
     setShowForm(false);
     setSelectedCandidates([]);
-    setShowResults(false);
+    // setShowResults(false);
   };
 
   const handleShowResults = async (votingId) => {
@@ -315,7 +316,8 @@ const Voting = () => {
       const candidates = response.data;
       setSelectedCandidates(candidates);
       setShowForm(false);
-      setShowResults(true);
+      // setShowResults(true);
+      openModal();
     } catch (error) {
       toast.error("Something is wrong !!", {
         position: "top-center",
@@ -351,6 +353,15 @@ const Voting = () => {
     setVotingEvents(filteredEvents);
   };
 
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div>
       <Navbar
@@ -382,13 +393,6 @@ const Voting = () => {
                   <option value="all">All Events</option>
                 </Form.Control>
               </Form.Group>
-              {/* <Form.Group controlId="searchDate">
-                <Form.Control
-                  type="date"
-                  value={searchDate}
-                  onChange={handleSearchDateChange}
-                />
-              </Form.Group> */}
               <Button onClick={handleSearch} className="mr-2">
                 Apply
               </Button>
@@ -564,10 +568,12 @@ const Voting = () => {
                           />
                         </>
                       ) : (
+                        <button className="btn btn-primary">
                         <BsPencilSquare
-                          style={{ fontSize: "20px", color: "blue" }}
+                          style={{ fontSize: "20px" }}
                           onClick={() => startEditing(event)}
                         />
+                        </button>
                       )}
                     </td>
                   )}
@@ -597,7 +603,18 @@ const Voting = () => {
           <Button onClick={handleBack}>Back</Button>
         </div>
       )}
-      {showResults && <Result candidates={selectedCandidates} />}
+      {/* {showResults && <Result candidates={selectedCandidates} />} */}
+      <Modal show={showModal} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Results</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Result candidates={selectedCandidates} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={closeModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

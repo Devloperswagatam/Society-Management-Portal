@@ -608,14 +608,22 @@ const Events = () => {
                         />
                       </>
                     ) : (
-                      <BsPencilSquare
-                        style={{
-                          fontSize: "25px",
-                          color: "blue",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => startEditing(event)}
-                      />
+                      <button
+                        className="btn btn-outline-primary"
+                        disabled={!event.organizerTeam.some(
+                          (organizer) =>
+                            organizer.rid == sessionStorage.getItem("rid")
+                        )}
+                      >
+                        <BsPencilSquare
+                          style={{
+                            fontSize: "25px",
+                            // color: "blue",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => startEditing(event)}
+                        />
+                      </button>
                     )}
                   </td>
                 </tr>

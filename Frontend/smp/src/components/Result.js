@@ -56,7 +56,7 @@ const Result = ({ candidates }) => {
   return (
     <div>
       <h2>Voting Results</h2>
-      <div style={{ height: "500px", width:"50rem",marginLeft:"22rem" }}>
+      <div>
         <Bar data={data} options={options} />
       </div>
     </div>
