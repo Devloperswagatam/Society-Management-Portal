@@ -72,7 +72,7 @@ const Bulletin = () => {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
-
+      <h1>Bulletin Board</h1>
       <div className="bulletin">
         {bulletin.map((bulletin) => (
           <Card
@@ -114,14 +114,14 @@ const Bulletin = () => {
             )}
 
             <Card.Body>
-              <Card.Title style={{ textAlign: "center", fontSize: "4rem" }}>
-                Bulletin Board
-              </Card.Title>
+              {/* <Card.Title style={{ textAlign: "center", fontSize: "4rem" }}>
+              
+              </Card.Title> */}
               <Card.Subtitle
-                className="mb-2 text-muted"
-                style={{ fontSize: "2rem" }}
+                className="mb-4"
+                style={{ fontSize: "2rem" , fontWeight:"700"}}
               >
-                {bulletin.name}
+               {bulletin.name}
               </Card.Subtitle>
               <Card.Text
                 className="card-description"
