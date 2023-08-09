@@ -63,10 +63,11 @@ const ComplaintHandler = () => {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
-      <div className="container">
+      <h1>Complaint Handler</h1>
+      <div className="container" style={{marginTop:'-3rem'}}>
         <div className="d-flex justify-content-end mb-3">
         </div>
-        <Link className="btn btn-success" to="/ContactPeopleList" >
+        <Link className="btn btn-success" to="/ContactPeopleList" style={{marginLeft:'68rem',marginBottom:'-5rem'}}>
             Contact
           </Link>
         <div className="py-4">

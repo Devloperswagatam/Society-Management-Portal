@@ -108,7 +108,7 @@ const Account = () => {
 
       {/* <Home totalAmount={totalAmount}/> */}
 
-      <h2>Maintanance and Events Bills</h2>
+      <h2>Maintenance Bills</h2>
 
       <div
         style={{
@@ -148,6 +148,7 @@ const Account = () => {
             id="monthFilter"
             value={monthFilter}
             onChange={handleMonthFilterChange}
+            placeholder="Enter month in digit"
           />
         </div>
       </div>

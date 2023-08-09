@@ -57,6 +57,7 @@ const SuggestionHandler = () => {
         isLoggedIn={sessionStorage.getItem("isLoggedIn")}
         name={sessionStorage.getItem("name")}
       />
+      <h1>Suggestion Handler</h1>
       <div className="container">
         <div className="py-4">
         <div className="mb-3">
