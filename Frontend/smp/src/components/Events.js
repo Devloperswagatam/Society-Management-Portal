@@ -613,7 +613,7 @@ const Events = () => {
                         disabled={!event.organizerTeam.some(
                           (organizer) =>
                             organizer.rid == sessionStorage.getItem("rid")
-                        )}
+                        ) || event.status === "closed"}
                       >
                         <BsPencilSquare
                           style={{

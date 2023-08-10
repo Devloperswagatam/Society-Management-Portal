@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import { toast } from "react-toastify";
 import { BsPencilSquare, BsFillClipboardCheckFill } from "react-icons/bs";
 import { MdCancel, MdEditOff } from "react-icons/md";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const Voting = () => {
   const apiService = new ApiService();
@@ -25,7 +25,7 @@ const Voting = () => {
     numberofcandidates: "",
     description: "",
   });
-  const [showModal,setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getVotingEvents();
@@ -47,8 +47,7 @@ const Voting = () => {
         } else if (filter === "past") {
           const currentDate = new Date();
           filteredEvents = filteredEvents.filter(
-            (event) =>
-              new Date(event.startTime) < currentDate
+            (event) => new Date(event.startTime) < currentDate
           );
         }
 
@@ -107,14 +106,14 @@ const Voting = () => {
         toast.success("Voting event edited", {
           position: "top-center",
           theme: "colored",
-          autoClose:1000
+          autoClose: 1000,
         });
       })
       .catch((error) => {
         toast.error(error.response.data.message, {
           position: "top-center",
           theme: "colored",
-          autoClose:2000
+          autoClose: 2000,
         });
       });
   };
@@ -197,19 +196,18 @@ const Voting = () => {
     return !!matchingCandidate;
   };
 
-
   const handleWithdrawNomination = async (votingId) => {
     try {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Yes, withdraw it!',
-        cancelButtonText: 'No, cancel!',
-        cancelButtonColor: '#d33',
-        confirmButtonColor: '#3085d6',
-        reverseButtons: true
+        confirmButtonText: "Yes, withdraw it!",
+        cancelButtonText: "No, cancel!",
+        cancelButtonColor: "#d33",
+        confirmButtonColor: "#3085d6",
+        reverseButtons: true,
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
@@ -230,11 +228,7 @@ const Voting = () => {
             });
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire(
-            'Cancelled',
-            'Your nomination is safe :)',
-            'error'
-          );
+          Swal.fire("Cancelled", "Your nomination is safe :)", "error");
         }
       });
     } catch (error) {
@@ -245,7 +239,6 @@ const Voting = () => {
       });
     }
   };
-  
 
   const handleVote = async (votingId) => {
     try {
@@ -568,11 +561,14 @@ const Voting = () => {
                           />
                         </>
                       ) : (
-                        <button className="btn btn-primary">
-                        <BsPencilSquare
-                          style={{ fontSize: "20px" }}
-                          onClick={() => startEditing(event)}
-                        />
+                        <button
+                          className="btn btn-primary"
+                          disabled={event.status === "closed"}
+                        >
+                          <BsPencilSquare
+                            style={{ fontSize: "20px" }}
+                            onClick={() => startEditing(event)}
+                          />
                         </button>
                       )}
                     </td>
@@ -583,11 +579,25 @@ const Voting = () => {
           </Table>
         </>
       ) : (
-        <div>
-          {/* <h2>Vote Form</h2> */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           {selectedCandidates.map((candidate) => (
-            <div key={candidate.rid}>
-              {candidate.resident.name}
+            <div
+              key={candidate.rid}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                margin: "10px 0",
+              }}
+            >
+              <span style={{ marginRight: "10px" }}>
+                {candidate.resident.name}
+              </span>
               <Button
                 onClick={() =>
                   handleVoteSubmit(
@@ -595,12 +605,19 @@ const Voting = () => {
                     candidate.resident.rid
                   )
                 }
+                style={{ padding: "5px 10px" }}
               >
                 Vote
               </Button>
             </div>
           ))}
-          <Button onClick={handleBack}>Back</Button>
+          <Button
+            className="btn btn-danger"
+            onClick={handleBack}
+            style={{ marginTop: "20px" }}
+          >
+            Back
+          </Button>
         </div>
       )}
       {/* {showResults && <Result candidates={selectedCandidates} />} */}
@@ -612,7 +629,9 @@ const Voting = () => {
           <Result candidates={selectedCandidates} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={closeModal}>Close</Button>
+          <Button variant="danger" onClick={closeModal}>
+            Close
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
